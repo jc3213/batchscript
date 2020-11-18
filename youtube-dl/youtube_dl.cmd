@@ -23,8 +23,9 @@ CALL :Warn Format
 SET /P option_f=Select Format: 
 IF "%option_f%"=="1" CALL :Audio
 IF "%option_f%"=="2" CALL :Best
-IF "%option_f%"=="3" CALL :720p
-IF "%option_f%"=="4" CALL :1080p
+IF "%option_f%"=="3" CALL :1080p
+IF "%option_f%"=="4" CALL :720p
+IF "%option_f%"=="5" CALL :480p
 IF DEFINED format EXIT /B
 GOTO :Format
 ::
@@ -65,8 +66,11 @@ CALL :Process "%url%"
 GOTO :URL
 ::
 :Process
-bin\youtube-dl.exe %format% %output% %archive% %server% %1 -v
+bin\youtube-dl.exe %format% %output% %archive% %server% %1 -v || GOTO :Retry
 EXIT /B
+:Retry
+TIMEOUT /T 5
+GOTO :Process
 ::
 :Audio
 ECHO Format Option: Audio Only
@@ -76,13 +80,17 @@ EXIT /B
 ECHO Format Option: Best Quality
 SET format=-f "bestvideo+bestaudio/best"
 EXIT /B
+:1080p
+ECHO Format Option: Best Quality @1080p
+SET format=-f "bestvideo[height=1080]+bestaudio/best[height=1080]"
+EXIT /B
 :720p
 ECHO Format Option: Best Quality @720p
 SET format=-f "bestvideo[height=720]+bestaudio/best[height=720]"
 EXIT /B
-:1080p
-ECHO Format Option: Best Quality @1080p
-SET format=-f "bestvideo[height=1080]+bestaudio/best[height=1080]"
+:480p
+ECHO Format Option: Best Quality @480p
+SET format=-f "bestvideo[height=480]+bestaudio/best[height=480]"
 EXIT /B
 ::
 :Space
@@ -99,8 +107,9 @@ EXIT /B
 :Warn_Format
 ECHO 1. Audio Only
 ECHO 2. Best Quality
-ECHO 3. Best Quality @720p
-ECHO 4. Best Quality @1080p
+ECHO 3. Best Quality @1080p
+ECHO 4. Best Quality @720p
+ECHO 5. Best Quality @480p
 EXIT /B
 :Warn_Output
 ECHO %~DP0download (Default)
