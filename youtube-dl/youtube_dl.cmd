@@ -8,7 +8,8 @@ FOR /F "usebackq tokens=1-2 delims==" %%I IN ("youtube-dl.conf") DO (
     IF "%%I"=="format" CALL :%%J 2>NUL
     IF "%%I"=="dir" SET dir=%%J
     IF "%%I"=="proxy" SET proxy=%%J
-	IF "%%I"=="history" set history=%%J
+    IF "%%I"=="history" set history=%%J
+    IF "%%I"=="retry" set retry=%%J
 )
 :Wizard
 CALL :Format
@@ -20,12 +21,12 @@ GOTO :URL
 :Format
 IF DEFINED format EXIT /B
 CALL :Warn Format
-SET /P option_f=Select Format: 
-IF "%option_f%"=="1" CALL :Audio
-IF "%option_f%"=="2" CALL :Best
-IF "%option_f%"=="3" CALL :1080p
-IF "%option_f%"=="4" CALL :720p
-IF "%option_f%"=="5" CALL :480p
+SET /P form=Select Format: 
+IF "%form%"=="1" CALL :Audio
+IF "%form%"=="2" CALL :Best
+IF "%form%"=="3" CALL :1080p
+IF "%form%"=="4" CALL :720p
+IF "%form%"=="5" CALL :480p
 IF DEFINED format EXIT /B
 GOTO :Format
 ::
@@ -53,6 +54,7 @@ IF DEFINED proxy (
 IF "%pass%"=="2" GOTO :Server
 IF "%pass%"=="1" GOTO :Proxy
 IF "%pass%"=="0" EXIT /B
+GOTO :Bypass
 :Server
 SET /P proxy=Proxy Server: 
 IF DEFINED proxy (
@@ -71,22 +73,23 @@ EXIT /B
 :URL
 CALL :Space
 SET /P url=Video URL: 
-SET Attempt=0
-SET Retry=5
+SET attempt=0
+IF NOT DEFINED retry SET retry=5
 CALL :Space
-IF EXIST "%url%" (
-    FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Process "%%I")
-) ELSE (
-    CALL :Process "%url%"
+IF DEFINED url (
+    IF EXIST "%url%" (
+        FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Process "%%I")
+    ) ELSE (
+        CALL :Process "%url%"
+    )
 )
 GOTO :URL
 ::
 :Process
-IF "%Retry%"=="%Attempt%" GOTO :URL
-SET /A Attempt=%Attempt%+1
-ECHO %Attempt%
+IF "%retry%"=="%attempt%" GOTO :URL
 bin\youtube-dl.exe %format% %output% %archive% %server% %1 -v || (
     TIMEOUT /T 5
+    SET /A attempt=%attempt%+1
     GOTO :Process
 )
 EXIT /B
