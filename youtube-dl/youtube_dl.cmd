@@ -56,12 +56,10 @@ IF "%pass%"=="1" GOTO :Proxy
 IF "%pass%"=="0" EXIT /B
 GOTO :Bypass
 :Server
+SET proxy=
 SET /P proxy=Proxy Server: 
-IF DEFINED proxy (
-    GOTO :Proxy
-) ELSE (
-    GOTO :Server
-)
+IF DEFINED proxy GOTO :Proxy
+GOTO :Server
 :Proxy
 SET server=--proxy "!proxy!"
 EXIT /B
@@ -87,7 +85,7 @@ GOTO :URL
 ::
 :Process
 IF "%retry%"=="%attempt%" GOTO :URL
-bin\youtube-dl.exe %format% %output% %archive% %server% %1 -v || (
+bin\youtube-dl.exe %format% %output% %archive% %server% %1 --verbose || (
     TIMEOUT /T 5
     SET /A attempt=%attempt%+1
     GOTO :Process
