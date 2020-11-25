@@ -12,8 +12,8 @@ FOR /F "usebackq tokens=1-2 delims==" %%I IN ("youtube-dl.conf") DO (
 )
 :Wizard
 CALL :Format
-CALL :Output
-CALL :Proxy
+CALL :Folder
+CALL :Bypass
 CALL :Archive
 GOTO :URL
 ::
@@ -29,23 +29,39 @@ IF "%option_f%"=="5" CALL :480p
 IF DEFINED format EXIT /B
 GOTO :Format
 ::
-:Output
-CALL :Warn Output
-IF DEFINED dir (ECHO Download Folder: %dir%) ELSE (SET /P dir=Select Folder: )
-IF NOT DEFINED dir ECHO Download Folder: %~DP0download && SET dir=download
+:Folder
+CALL :Warn Folder
+IF DEFINED dir (
+    ECHO Download Folder: %dir%
+) ELSE (
+    SET /P dir=Select Folder: 
+)
+IF NOT DEFINED dir (
+    ECHO Download Folder: %~DP0download
+    SET dir=download
+)
 SET output=-o "!dir!\%%(title)s.%%(ext)s"
 EXIT /B
 ::
-:Proxy
-CALL :Warn Proxy
-SET /P option_p=Use Proxy Server: 
-IF "%option_p%"=="1" GOTO :Server
-IF "%option_p%"=="0" EXIT /B
-GOTO :Proxy
+:Bypass
+IF DEFINED proxy (
+    CALL :Warn Bypass
+    SET /P pass=Use Proxy Server:
+) ELSE (
+    GOTO :Server
+)
+IF "%pass%"=="2" GOTO :Server
+IF "%pass%"=="1" GOTO :Proxy
+IF "%pass%"=="0" EXIT /B
 :Server
-CALL :Warn Server
-IF DEFINED proxy (ECHO Proxy Server: %proxy%) ELSE (SET /P proxy=Proxy Server: )
-IF DEFINED proxy SET server=--proxy "!proxy!"
+SET /P proxy=Proxy Server: 
+IF DEFINED proxy (
+    GOTO :Proxy
+) ELSE (
+    GOTO :Server
+)
+:Proxy
+SET server=--proxy "!proxy!"
 EXIT /B
 ::
 :Archive
@@ -55,23 +71,25 @@ EXIT /B
 :URL
 CALL :Space
 SET /P url=Video URL: 
-IF EXIST "%url%" (GOTO :List) ELSE (GOTO :Video)
-:List
+SET Attempt=0
+SET Retry=5
 CALL :Space
-FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Process "%%I")
-GOTO :URL
-:Video
-CALL :Space
-CALL :Process "%url%"
+IF EXIST "%url%" (
+    FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Process "%%I")
+) ELSE (
+    CALL :Process "%url%"
+)
 GOTO :URL
 ::
 :Process
-bin\youtube-dl.exe %format% %output% %archive% %server% %1 -v || GOTO :Retry
+IF "%Retry%"=="%Attempt%" GOTO :URL
+SET /A Attempt=%Attempt%+1
+ECHO %Attempt%
+bin\youtube-dl.exe %format% %output% %archive% %server% %1 -v || (
+    TIMEOUT /T 5
+    GOTO :Process
+)
 EXIT /B
-:Retry
-TIMEOUT /T 5
-GOTO :Process
-::
 :Audio
 ECHO Format Option: Audio Only
 SET format=-f "bestaudio"
@@ -111,11 +129,12 @@ ECHO 3. Best Quality @1080p
 ECHO 4. Best Quality @720p
 ECHO 5. Best Quality @480p
 EXIT /B
-:Warn_Output
+:Warn_Folder
 ECHO %~DP0download (Default)
 EXIT /B
-:Warn_Proxy
-ECHO 1. Yes
+:Warn_Bypass
+ECHO 2. Other
+ECHO 1. Yes ^(%proxy%^)
 ECHO 0. No
 EXIT /B
 :Warn_Server
