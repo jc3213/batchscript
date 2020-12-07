@@ -38,16 +38,13 @@ EXIT /B
 SET attempt=0
 IF NOT DEFINED retry SET retry=5
 :Process
-IF "%retry%"=="%attempt%" (
-ECHO "%retry%"=="%attempt%"
-    PAUSE
-    GOTO :Wizard
-)
 bin\youtube-dl.exe %server% --update --verbose || (
+    IF "%retry%"=="%attempt%" GOTO :URL
     TIMEOUT /T 5
     SET /A attempt=%attempt%+1
     GOTO :Process
 )
+GOTO :Wizard
 EXIT /B
 :Space
 ECHO.
