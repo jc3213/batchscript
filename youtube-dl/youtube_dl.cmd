@@ -84,8 +84,8 @@ IF DEFINED url (
 GOTO :URL
 ::
 :Process
-IF "%retry%"=="%attempt%" GOTO :URL
 bin\youtube-dl.exe %format% %output% %archive% %server% %1 --verbose || (
+    IF "%retry%"=="%attempt%" GOTO :URL
     TIMEOUT /T 5
     SET /A attempt=%attempt%+1
     GOTO :Process
