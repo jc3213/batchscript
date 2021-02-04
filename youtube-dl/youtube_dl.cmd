@@ -8,11 +8,11 @@ FOR /F "usebackq tokens=1-2 delims==" %%I IN ("youtube-dl.conf") DO (
     IF "%%I"=="format" CALL :%%J 2>NUL
     IF "%%I"=="dir" SET dir=%%J
     IF "%%I"=="proxy" SET proxy=%%J
-    IF "%%I"=="history" set history=%%J
-    IF "%%I"=="retry" set retry=%%J
+    IF "%%I"=="history" SET history=%%J
+    IF "%%I"=="retry" SET retry=%%J
 )
-IF NOT DEFINED retry SET retry=5
 :Wizard
+IF NOT DEFINED retry SET retry=5
 CALL :Format
 CALL :Folder
 CALL :Bypass
@@ -57,10 +57,11 @@ IF "%pass%"=="1" GOTO :Proxy
 IF "%pass%"=="0" EXIT /B
 GOTO :Bypass
 :Server
+CALL :Warn Server
 SET proxy=
 SET /P proxy=Proxy Server: 
 IF DEFINED proxy GOTO :Proxy
-GOTO :Server
+EXIT /B
 :Proxy
 SET server=--proxy "!proxy!"
 EXIT /B
