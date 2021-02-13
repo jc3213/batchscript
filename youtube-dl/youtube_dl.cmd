@@ -79,7 +79,8 @@ IF "%url%"=="@folder" CALL :Clear Folder
 IF "%url%"=="@proxy" CALL :Clear Bypass
 IF "%url%"=="@update" CALL :Updater
 IF EXIST "%url%" FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Download "%%I")
-ECHO "%url%" | FIND "https://" && CALL :Download "%url%"
+CALL :Space
+ECHO Downloading "%url%" | FIND "https://" && CALL :Download "%url%"
 GOTO :URL
 :Download
 bin\youtube-dl.exe %format% %output% %archive% %server% %1 --verbose && CALL :Finish || CALL :Retry
@@ -88,9 +89,9 @@ CALL :Download %1
 bin\youtube-dl.exe %server% --update --verbose && CALL :Finish || CALL :Retry
 CALL :Updater
 :Retry
-IF "%retry%"=="%attempt%" GOTO :URL
-TIMEOUT /T 5
+IF "%retry%"=="%attempt%" GOTO :Finish
 SET /A attempt=%attempt%+1
+TIMEOUT /T 5
 EXIT /B
 :Finish
 SET url=
