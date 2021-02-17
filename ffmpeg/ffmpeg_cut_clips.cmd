@@ -35,21 +35,21 @@ FOR /F "tokens=1-2 delims=-" %%I IN ('ECHO %clip%') DO (
 EXIT /B
 :Name
 FOR /F "tokens=1-3 delims=:" %%I IN ('ECHO %1') DO (
-    SET _HH_=%%I
-	SET _MM_=%%J
-	SET _SS_=%%K
+    SET tf1=%%I
+	SET tf2=%%J
+	SET tf3=%%K
 )
-IF NOT DEFINED _SS_ (
-    IF NOT DEFINED _MM_ (
-        SET name=00.00.%_HH_%
-        SET stamp=00:00:%_HH_%
+IF NOT DEFINED tf3 (
+    IF NOT DEFINED tf2 (
+        SET name=00.00.%tf1%
+        SET stamp=00:00:%tf1%
     ) ELSE (
-        SET name=00.%_HH_%.%_MM_%
-        SET stamp=00:%_HH_%:%_MM_%
+        SET name=00.%tf1%.%tf2%
+        SET stamp=00:%tf1%:%tf2%
     )
 ) ELSE (
-    SET name=%_HH_%.%_MM_%.%_SS_%
-    SET stamp=%_HH_%:%_MM_%:%_SS_%
+    SET name=%tf1%.%tf2%.%tf3%
+    SET stamp=%tf1%:%tf2%:%tf3%
 )
 EXIT /B
 :Stamp
@@ -58,8 +58,9 @@ SET fn0=%name%
 SET ts0=%stamp%
 SET out1=%~DP1%~N1_%fn0%_1%~X1
 SET out2=%~DP1%~N1_%fn0%_2%~X1
-"%~DP0bin\ffmpeg.exe" -to %ss% -i "%1" -c copy %out1%
-"%~DP0bin\ffmpeg.exe" -ss %ss% -i "%1" -c copy %out2%
+"%~DP0bin\ffmpeg.exe" -i "%1" -to %ss% -c copy %out1%
+pause
+"%~DP0bin\ffmpeg.exe" -i "%1" -ss %ss% -c copy %out2%
 CALL :Warning WarnStamp
 EXIT /B
 :WarnStamp
@@ -75,7 +76,7 @@ CALL :NAME %to%
 SET fn2=%name%
 SET ts2=%stamp%
 SET out0=%~DP1%~N1_%fn1%-%fn2%%~X1
-"%~DP0bin\ffmpeg.exe" -ss %ss% -to %to% -i "%1" -c copy %out0%
+"%~DP0bin\ffmpeg.exe" -i "%1" -ss %ss% -to %to% -c copy %out0%
 CALL :Warning WarnPeriod
 EXIT /B
 :WarnPeriod
