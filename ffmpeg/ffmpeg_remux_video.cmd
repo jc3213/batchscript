@@ -45,6 +45,6 @@ IF NOT EXIST "%9" (
 )
 SET input=%input% -i "%9"
 :Proc
-"%~DP0bin\ffmpeg.exe" %input% -c:v copy -c:a copy merged_%~n1.mkv -threads 128
+"%~DP0bin\ffmpeg.exe" %input% -c:v copy -c:a copy remuxed_%~n1.mkv -threads 128
 :End
 EXIT
