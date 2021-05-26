@@ -2,17 +2,32 @@
 IF "%~N1"=="" EXIT
 SETLOCAL EnableDelayedExpansion
 PUSHD %~DPN1
-FOR /F "TOKENS=*" %%I IN (
+SET Seek=1
+:SeekFiles
+IF "%Index%"=="" SET Index=1-9
+FOR /F "TOKENS=*" %%A IN (
     'DIR /B /A-D'
 ) DO (
-    FOR /F "TOKENS=2 DELIMS=-_.()" %%J IN (
-        "%%I"
+    FOR /F "TOKENS=%Index% DELIMS=-_.()" %%B IN (
+        "%%A"
     ) DO (
-        CALL :Filename "%%I" "%%J"
+        IF %Seek% EQU 1 (
+            CALL :ListIndex %%B %%C %%D %%E %%F %%G %%H %%I %%J && GOTO :SeekIndex
+        ) ELSE IF %Seek% GTR 1 (
+            CALL :Filename "%%A" "%%B"
+        )
     )
 )
 PAUSE
 EXIT
+:ListIndex
+IF "%1"=="" GOTO :SeekIndex
+ECHO %Seek% ^>^>    %1
+SET /A Seek=%Seek%+1
+CALL :ListIndex %2 %3 %4 %5 %6 %7 %8
+:SeekIndex
+SET /P Index=Set File Index: 
+GOTO :SeekFiles
 :Filename
 SET String=#%~2
 SET Length=0
@@ -33,6 +48,6 @@ IF %Length% EQU 1 (
 ) ELSE (
     SET Prefix=%2
 )
-ECHO %~1 %~2 %Prefix%%~X1
+ECHO %~1         %~2         %Prefix%%~X1
 REN %1 %Prefix%%~X1
 EXIT /B
