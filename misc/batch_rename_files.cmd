@@ -1,5 +1,5 @@
 @ECHO OFF
-IF "%~N1"=="" EXIT
+IF NOT EXIST %1 EXIT
 SETLOCAL EnableDelayedExpansion
 PUSHD %~DPN1
 SET Seek=1
@@ -26,9 +26,9 @@ IF "%1"=="" GOTO :SeekIndex
 ECHO %1| FINDSTR /R /C:"^[0-9][0-9]*$" > NUL && SET Symbol=** || SET Symbol=
 ECHO %Seek%  ^>^>        %1    %Symbol%
 SET /A Seek=%Seek%+1
-CALL :ListIndex %2 %3 %4 %5 %6 %7 %8
+FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO (CALL :ListIndex %%B)
 :SeekIndex
-SET /P Index=Which one?     
+SET /P Index=Which one?   
 GOTO :SeekFiles
 :Filename
 SET String=#%~2
