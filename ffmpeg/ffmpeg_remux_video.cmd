@@ -9,10 +9,10 @@ FOR /F "USEBACKQ SKIP=13 TOKENS=4,5 DELIMS=,: " %%I IN ("%Temp%\ffmpeg_log_%~N1.
         SET Video=-i "%~1"
     )
 )
-SET Input=%Video% %Audio%
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO CALL :Files %%B
 :Proc
-IF NOT DEFINED Input GOTO :End
-"%~DP0bin\ffmpeg.exe" -fflags +genpts %Input% -c:v copy -c:a copy remuxed_video.mkv
+IF NOT DEFINED Video GOTO :End
+IF NOT DEFINED Audio GOTO :End
+"%~DP0bin\ffmpeg.exe" -fflags +genpts %Video% %Audio% -c:v copy -c:a copy remuxed_video.mkv
 :End
 EXIT
