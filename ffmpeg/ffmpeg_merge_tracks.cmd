@@ -8,6 +8,6 @@ SET /A Index=%Index%+1
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO CALL :Files %%B
 :Proc
 IF NOT DEFINED Input GOTO :End
-"%~DP0bin\ffmpeg.exe" %Input% -filter_complex "amerge=inputs=%Index%" merged_audio_track.%File%
+"%~DP0bin\ffmpeg.exe" %Input% -filter_complex "amerge=inputs=%Index%" merged_audio_track%File%
 :End
 EXIT
