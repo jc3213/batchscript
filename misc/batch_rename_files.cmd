@@ -12,6 +12,7 @@ FOR /F "TOKENS=*" %%A IN (
         "%%A"
     ) DO (
         IF %Seek% EQU 1 (
+            ECHO %%A
             CALL :ListIndex %%B %%C %%D %%E %%F %%G %%H %%I %%J && GOTO :SeekIndex
         ) ELSE IF %Seek% GTR 1 (
             CALL :Filename "%%A" "%%B"
@@ -22,11 +23,12 @@ PAUSE
 EXIT
 :ListIndex
 IF "%1"=="" GOTO :SeekIndex
-ECHO %Seek% ^>^>    %1
+@ECHO %1 | FINDSTR /R /C:"^[0-9][0-9]* $" > NUL && SET Symbol=** || SET Symbol=
+ECHO %Seek%  ^>^>        %1    %Symbol%
 SET /A Seek=%Seek%+1
 CALL :ListIndex %2 %3 %4 %5 %6 %7 %8
 :SeekIndex
-SET /P Index=Set File Index: 
+SET /P Index=Which one?     
 GOTO :SeekFiles
 :Filename
 SET String=#%~2
@@ -48,6 +50,6 @@ IF %Length% EQU 1 (
 ) ELSE (
     SET Prefix=%2
 )
-ECHO %~1         %~2         %Prefix%%~X1
+ECHO %~1        %~2        %Prefix%%~X1
 REN %1 %Prefix%%~X1
 EXIT /B
