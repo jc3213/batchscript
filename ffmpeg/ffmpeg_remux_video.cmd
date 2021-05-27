@@ -1,10 +1,10 @@
 @ECHO OFF
 :Files
 IF NOT EXIST "%~1" GOTO :Proc
-SET Files=-i "%1" %Files%
+SET Input=-i "%1" %Input%
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO CALL :Files %%B
 :Proc
-IF NOT DEFINED Files GOTO :End
-"%~DP0bin\ffmpeg.exe" %Files% -c:v copy -c:a copy remuxed_%~n1.mkv -threads 128
+IF NOT DEFINED Input GOTO :End
+"%~DP0bin\ffmpeg.exe" -fflags +genpts %Input% -c:v copy -c:a copy remuxed_video.mkv
 :End
 EXIT
