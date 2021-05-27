@@ -1,7 +1,7 @@
 @ECHO OFF
 IF NOT EXIST %1 EXIT
 "%~DP0bin\ffmpeg.exe" -i %1 >%Temp%\ffmpeg_log_%~N1.txt 2>&1
-FOR /F "usebackq skip=13 tokens=4,5 delims=,: " %%I IN ("%Temp%\ffmpeg_log_%~N1.txt") DO (
+FOR /F "USEBACKQ SKIP=13 TOKENS=4,5 DELIMS=,: " %%I IN ("%Temp%\ffmpeg_log_%~N1.txt") DO (
 	IF "%%I"=="Audio" SET format=%%J
 )
 IF "%format%"=="aac" CALL :Extract %1 m4a
