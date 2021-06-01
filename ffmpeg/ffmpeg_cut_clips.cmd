@@ -59,7 +59,6 @@ SET ts0=%stamp%
 SET out1=%~DP1%~N1_%fn0%_1%~X1
 SET out2=%~DP1%~N1_%fn0%_2%~X1
 "%~DP0bin\ffmpeg.exe" -i "%1" -to %ss% -c copy %out1%
-pause
 "%~DP0bin\ffmpeg.exe" -i "%1" -ss %ss% -c copy %out2%
 CALL :Warning WarnStamp
 EXIT /B
