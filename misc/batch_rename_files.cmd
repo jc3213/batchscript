@@ -28,7 +28,9 @@ ECHO %Seek%  ^>^>        %1    %Symbol%
 SET /A Seek=%Seek%+1
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO (CALL :ListIndex %%B)
 :SeekIndex
-SET /P Index=Which one?   
+SET /P Index=Which one?  
+IF %Index% LSS 1 GOTO :SeekIndex
+IF %Index% GEQ %Seek% GOTO :SeekIndex 
 GOTO :SeekFiles
 :Filename
 SET String=#%~2
