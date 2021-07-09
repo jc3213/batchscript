@@ -12,7 +12,8 @@ FOR /F "TOKENS=*" %%A IN (
         "%%A"
     ) DO (
         IF %Seek% EQU 1 (
-            ECHO %%A
+            ECHO Option		  		%%A
+            ECHO ===========================================================
             CALL :ListIndex %%B %%C %%D %%E %%F %%G %%H %%I %%J && GOTO :EOF
         ) ELSE IF %Seek% GTR 1 (
             CALL :Filename "%%A" "%%B"
@@ -24,7 +25,7 @@ EXIT
 :ListIndex
 IF "%1"=="" GOTO :SeekIndex
 ECHO %1| FINDSTR /R /C:"^[0-9][0-9]*$" > NUL && SET Symbol=** || SET Symbol=
-ECHO %Seek%  ^>^>        %1    %Symbol%
+ECHO %Seek%		^>^>		%1	  %Symbol%
 SET /A Seek=%Seek%+1
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO (CALL :ListIndex %%B)
 :SeekIndex
