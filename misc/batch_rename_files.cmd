@@ -20,7 +20,7 @@ FOR /F "TOKENS=*" %%A IN (
         )
     )
 )
-PAUSE
+TIMEOUT /T 5
 EXIT
 :ListIndex
 IF "%1"=="" GOTO :SeekIndex
