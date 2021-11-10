@@ -25,7 +25,7 @@ EXIT
 :ListIndex
 IF "%1"=="" GOTO :SeekIndex
 ECHO %1| FINDSTR /R /C:"^[0-9][0-9]*$" > NUL && SET Symbol=** || SET Symbol=
-ECHO %Seek%		^>^>		%1	  %Symbol%
+ECHO %Seek%		^>^>		%~1	  %Symbol%
 SET /A Seek=%Seek%+1
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO (CALL :ListIndex %%B)
 :SeekIndex
@@ -51,7 +51,7 @@ IF %Length% EQU 1 (
 ) ELSE IF %Length% EQU 3 (
     SET Prefix=0%~2
 ) ELSE (
-    SET Prefix=%2
+    SET Prefix=%~2
 )
 ECHO %~1        %~2        %Prefix%%~X1
 REN %1 %Prefix%%~X1
