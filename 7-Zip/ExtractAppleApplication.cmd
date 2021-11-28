@@ -1,10 +1,10 @@
 @ECHO OFF
 PUSHD %~DP0
-IF EXIST 7z.exe GOTO :File
-FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (
-    IF "%%I"=="Path" PUSHD %%K
-)
-IF NOT EXIST 7z.exe GOTO :Error
+FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
+IF EXIST "%Zip%" GOTO :File
+IF NOT EXIST 7za.exe GOTO :Exit
+IF NOT EXIST 7za.dll GOTO :Exit
+SET Zip=7za.exe
 :File
 IF "%1"=="" GOTO :Input
 SET File=%1
@@ -17,18 +17,18 @@ CALL :File %File%
 :Unpack
 SET Name=%Name:Setup=%
 SET Pack=%Name%.msi
-7z.exe e -y "%File%" %Pack% -o%~DP1
-:Extract
-MD %~DP1%Name% 2>NUL
-MSIEXEC /A %~DP1%Pack% /Q TARGETDIR=%~DP1.Unpacked
-COPY %~DP1.Unpacked\iTunes\ASL.dll %~DP1%Name%
-COPY %~DP1.Unpacked\iTunes\CoreAudioToolbox.dll %~DP1%Name%
-COPY %~DP1.Unpacked\iTunes\CoreFoundation.dll %~DP1%Name%
-COPY %~DP1.Unpacked\iTunes\icudt*.dll %~DP1%Name%
-COPY %~DP1.Unpacked\iTunes\libdispatch.dll %~DP1%Name%
-COPY %~DP1.Unpacked\iTunes\objc.dll %~DP1%Name%
-COPY %~DP1.Unpacked\iTunes\pthreadVC2.dll %~DP1%Name%
-RD %~DP1.Unpacked /S /Q 2>NUL
-DEL %~DP1%Pack% 2>NUL
-:Error
-EXIT
+SET Unpack=%CD%\.Unpacked
+"%Zip%" e -y "%File%" %Pack%
+MD %Name% 2>NUL
+MSIEXEC /A %Pack% /Q TARGETDIR=%Unpack%
+COPY %Unpack%\iTunes\ASL.dll %Name%
+COPY %Unpack%\iTunes\CoreAudioToolbox.dll %Name%
+COPY %Unpack%\iTunes\CoreFoundation.dll %Name%
+COPY %Unpack%\iTunes\icudt*.dll %Name%
+COPY %Unpack%\iTunes\libdispatch.dll %Name%
+COPY %Unpack%\iTunes\objc.dll %Name%
+COPY %Unpack%\iTunes\pthreadVC2.dll %Name%
+RD %Unpack% /S /Q 2>NUL
+DEL %Pack% 2>NUL
+:Exit
+TIMEOUT -T 5
