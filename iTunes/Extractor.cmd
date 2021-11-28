@@ -26,8 +26,9 @@ COPY %Unpack%\iTunes\CoreAudioToolbox.dll %Name%
 COPY %Unpack%\iTunes\CoreFoundation.dll %Name%
 COPY %Unpack%\iTunes\icudt*.dll %Name%
 COPY %Unpack%\iTunes\libdispatch.dll %Name%
+COPY %Unpack%\iTunes\libicuin.dll %Name%
+COPY %Unpack%\iTunes\libicuuc.dll %Name%
 COPY %Unpack%\iTunes\objc.dll %Name%
-COPY %Unpack%\iTunes\pthreadVC2.dll %Name%
 RD %Unpack% /S /Q 2>NUL
 DEL %Pack% 2>NUL
 :Exit
