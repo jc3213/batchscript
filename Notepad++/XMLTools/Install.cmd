@@ -3,4 +3,4 @@ FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\SOFTWARE\Notepad++ /VE') DO (IF "%%
 FOR /F "TOKENS=*" %%I IN ('DIR %~DP0*.zip /B /OD') DO (SET Zip=%~DP0%%I)
 MD "%Folder%" 2>NUL
 %SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -Command "Expand-Archive -Force '%Zip%' '%Folder%'"
-TIMEOUT -T 5
+TIMEOUT /T 5
