@@ -1,5 +1,3 @@
 @ECHO OFF
-PUSHD %~DP0
-COPY /Y Backup\mcupdate_AuthenticAMD.dll %SystemRoot%\System32
-COPY /Y Backup\mcupdate_GenuineIntel.dll %SystemRoot%\System32
+%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -Command "Expand-Archive -Force -Path '%~DP0Backup.zip' -DestinationPath '%SystemRoot%\System32'"
 TIMEOUT /T 5
