@@ -58,7 +58,7 @@ IF NOT DEFINED folder SET folder=%~DP0Download
 ECHO.
 ECHO.
 ECHO Download Folder: %folder%
-SET output=-o "!folder!\%%(title)s.%%(ext)s"
+SET output=--output "!folder!\%%(title)s.%%(ext)s"
 EXIT /B
 :Bypass
 IF NOT DEFINED proxy GOTO :Server
@@ -107,23 +107,23 @@ SET url=
 GOTO :URL
 :Audio
 ECHO Format Option: Audio Only
-SET format=-f "bestaudio"
+SET format=--format "bestaudio"
 EXIT /B
 :Best
 ECHO Format Option: Best Quality
-SET format=-f "bestvideo+bestaudio/best"
+SET format=--format "bestvideo+bestaudio/best"
 EXIT /B
 :1080p
 ECHO Format Option: Best Quality @1080p
-SET format=-f "bestvideo[height=1080]+bestaudio/best[height=1080]"
+SET format=--format "bestvideo[height=1080]+bestaudio/best[height=1080]"
 EXIT /B
 :720p
 ECHO Format Option: Best Quality @720p
-SET format=-f "bestvideo[height=720]+bestaudio/best[height=720]"
+SET format=--format "bestvideo[height=720]+bestaudio/best[height=720]"
 EXIT /B
 :480p
 ECHO Format Option: Best Quality @480p
-SET format=-f "bestvideo[height=480]+bestaudio/best[height=480]"
+SET format=--format "bestvideo[height=480]+bestaudio/best[height=480]"
 EXIT /B
 :NewFormat
 SET url=
