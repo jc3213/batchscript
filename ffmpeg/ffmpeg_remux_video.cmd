@@ -7,13 +7,14 @@ FOR /F "USEBACKQ SKIP=13 TOKENS=4,5 DELIMS=,: " %%I IN ("%Temp%\ffmpeg_log_%~N1"
         SET Audio=-i "%~1"
     ) ELSE IF "%%I"=="Video" (
         SET Video=-i "%~1"
-        SET Name=%~N1
+        SET Output="%~DP1remuxed_%~N1.mkv"
     )
 )
 FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO CALL :Files %%B
 :Proc
 IF NOT DEFINED Video GOTO :End
-"%~DP0bin\ffmpeg.exe" -fflags +genpts %Video% %Audio% -c:v copy -c:a copy remuxed_%Name%.mkv
+"%~DP0bin\ffmpeg.exe" -fflags +genpts %Video% %Audio% -c:v copy -c:a copy %Output%
 DEL "%Temp%\ffmpeg_log_*" /F /Q
 :End
+TIMEOUT -T 5
 EXIT
