@@ -1,6 +1,6 @@
 @ECHO OFF
 IF NOT EXIST %1 EXIT
-PUSHD %1
+CD /D %1
 SETLOCAL EnableDelayedExpansion
 SET Seek=1
 :SeekFiles
