@@ -1,7 +1,7 @@
 @ECHO OFF
 IF NOT EXIST %1 EXIT
+PUSHD %1
 SETLOCAL EnableDelayedExpansion
-PUSHD %~DPN1
 SET Seek=1
 :SeekFiles
 IF "%Index%"=="" SET Index=1-9
