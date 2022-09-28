@@ -8,7 +8,7 @@ IF "%Index%"=="" SET Index=1-9
 FOR /F "TOKENS=*" %%A IN (
     'DIR /B /A-D'
 ) DO (
-    FOR /F "TOKENS=%Index% DELIMS=-_.()" %%B IN (
+    FOR /F "TOKENS=%Index% DELIMS=-_.() " %%B IN (
         "%%A"
     ) DO (
         IF %Seek% EQU 1 (
