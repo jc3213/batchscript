@@ -5,11 +5,11 @@ SETLOCAL EnableDelayedExpansion
 IF NOT EXIST youtube-dl.conf GOTO :Wizard
 :Config
 FOR /F "usebackq tokens=1-2 delims==" %%I IN ("youtube-dl.conf") DO (
-    IF "%%I"=="format" CALL :%%J 2>NUL
-    IF "%%I"=="folder" SET folder=%%J
-    IF "%%I"=="proxy" SET proxy=%%J
-    IF "%%I"=="history" SET history=%%J
-    IF "%%I"=="retry" SET retry=%%J
+    IF %%I EQU format CALL :%%J 2>NUL
+    IF %%I EQU folder SET folder=%%J
+    IF %%I EQU proxy SET proxy=%%J
+    IF %%I EQU history SET history=%%J
+    IF %%I EQU retry SET retry=%%J
 )
 :Wizard
 IF NOT DEFINED format CALL :Format
@@ -17,20 +17,29 @@ IF NOT DEFINED folder (CALL :Select) ELSE (CALL :Folder)
 CALL :Bypass
 IF DEFINED history SET archive=--download-archive "!history!"
 IF NOT DEFINED retry SET retry=5
+:Aria2c
+IF NOT EXIST bin\aria2c.exe GOTO :URL
+ECHO Use aria2c download manager?
+ECHO ========================================================================================
+ECHO 0. No
+ECHO 1. Yes
+ECHO ========================================================================================
+SET /P external=Choose: 
+ECHO.
+IF %external% EQU 1 SET aria2c=--external-downloader aria2c --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
 :URL
 ECHO.
 ECHO.
 SET attempt=0
 SET /P url=Video URL: 
-IF "%url%"=="@format" GOTO :NewFormat
-IF "%url%"=="@folder" GOTO :NewFolder
-IF "%url%"=="@proxy" GOTO :NewProxy
-IF "%url%"=="@update" GOTO :Updater
+IF %url% EQU @format GOTO :NewFormat
+IF %url% EQU @folder GOTO :NewFolder
+IF %url% EQU @proxy GOTO :NewProxy
+IF %url% EQU @update GOTO :Updater
 IF EXIST "%url%" FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Download "%%I")
 CALL :Download "%url%"
 :Format
-ECHO.
-ECHO.
+ECHO Set video format
 ECHO ========================================================================================
 ECHO 1. Audio Only
 ECHO 2. Best Quality
@@ -38,51 +47,54 @@ ECHO 3. Best Quality @1080p
 ECHO 4. Best Quality @720p
 ECHO 5. Best Quality @480p
 ECHO ========================================================================================
-SET /P form=Select Format: 
-IF "%form%"=="1" CALL :Audio
-IF "%form%"=="2" CALL :Best
-IF "%form%"=="3" CALL :1080p
-IF "%form%"=="4" CALL :720p
-IF "%form%"=="5" CALL :480p
+SET /P form=Choose: 
+ECHO.
+IF %form% EQU 1 CALL :Audio
+IF %form% EQU 2 CALL :Best
+IF %form% EQU 3 CALL :1080p
+IF %form% EQU 4 CALL :720p
+IF %form% EQU 5 CALL :480p
 IF DEFINED format EXIT /B
 GOTO :Format
 :Select
-ECHO.
-ECHO.
+ECHO Set download folder
 ECHO ========================================================================================
 ECHO %~DP0Download (Default)
 ECHO ========================================================================================
-SET /P folder=Select Folder: 
+SET /P folder=Choose: 
+ECHO.
 IF NOT DEFINED folder SET folder=%~DP0Download
 :Folder
 ECHO.
 ECHO.
 ECHO Download Folder: %folder%
 SET output=--output "!folder!\%%(title)s.%%(ext)s"
+ECHO.
+ECHO.
 EXIT /B
 :Bypass
 IF NOT DEFINED proxy GOTO :Server
-ECHO.
-ECHO.
+ECHO Use proxy server?
 ECHO ========================================================================================
-ECHO 2. Other
-ECHO 1. Yes ^(%proxy%^)
 ECHO 0. No
+ECHO 1. Yes (%proxy%)
+ECHO 2. Other
 ECHO ========================================================================================
-SET /P pass=Use Proxy Server:
-IF "%pass%"=="2" GOTO :Server
-IF "%pass%"=="1" GOTO :Proxy
-IF "%pass%"=="0" EXIT /B
+SET /P pass=Choose: 
+ECHO.
+IF %pass% EQU 2 GOTO :Server
+IF %pass% EQU 1 GOTO :Proxy
+IF %pass% EQU 0 EXIT /B
 GOTO :Bypass
 :Server
-ECHO.
-ECHO.
+ECHO Set proxy server
 ECHO ========================================================================================
-ECHO Keep EMPTY if you don't use a proxy
 ECHO 127.0.0.1:1080 (Sample)
+ECHO Keep EMPTY if you don't use a proxy
 ECHO ========================================================================================
 SET proxy=
 SET /P proxy=Proxy Server: 
+ECHO.
 IF NOT DEFINED proxy GOTO :Server
 :Proxy
 SET server=--proxy "!proxy!"
@@ -90,7 +102,9 @@ EXIT /B
 :Download
 ECHO.
 ECHO.
-bin\youtube-dl.exe %format% %output% %archive% %server% %1 --verbose && CALL :Finish || CALL :Retry
+ECHO %format% %output% %archive% %server% %aria2c%
+PAUSE
+bin\youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 --verbose && CALL :Finish || CALL :Retry
 CALL :Download %1
 :Updater
 ECHO.
@@ -98,7 +112,7 @@ ECHO.
 bin\youtube-dl.exe %server% --update --verbose && CALL :Finish || CALL :Retry
 CALL :Updater
 :Retry
-IF "%retry%"=="%attempt%" GOTO :Finish
+IF %retry% EQU %attempt% GOTO :Finish
 SET /A attempt=%attempt%+1
 TIMEOUT /T 5
 EXIT /B
@@ -106,23 +120,23 @@ EXIT /B
 SET url=
 GOTO :URL
 :Audio
-ECHO Format Option: Audio Only
+ECHO Audio Only
 SET format=--format "bestaudio"
 EXIT /B
 :Best
-ECHO Format Option: Best Quality
+ECHO Best Quality
 SET format=--format "bestvideo+bestaudio/best"
 EXIT /B
 :1080p
-ECHO Format Option: Best Quality @1080p
+ECHO Best Quality @1080p
 SET format=--format "bestvideo[height=1080]+bestaudio/best[height=1080]"
 EXIT /B
 :720p
-ECHO Format Option: Best Quality @720p
+ECHO Best Quality @720p
 SET format=--format "bestvideo[height=720]+bestaudio/best[height=720]"
 EXIT /B
 :480p
-ECHO Format Option: Best Quality @480p
+ECHO Best Quality @480p
 SET format=--format "bestvideo[height=480]+bestaudio/best[height=480]"
 EXIT /B
 :NewFormat
