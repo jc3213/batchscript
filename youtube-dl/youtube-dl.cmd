@@ -24,8 +24,7 @@ ECHO ===========================================================================
 ECHO 0. No
 ECHO 1. Yes
 ECHO ========================================================================================
-SET /P external=Choose: 
-ECHO.
+SET /P external=^> 
 IF %external% EQU 1 SET aria2c=--external-downloader aria2c --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
 :URL
 ECHO.
@@ -47,7 +46,8 @@ ECHO 3. Best Quality @1080p
 ECHO 4. Best Quality @720p
 ECHO 5. Best Quality @480p
 ECHO ========================================================================================
-SET /P form=Choose: 
+SET /P form=^> 
+ECHO.
 ECHO.
 IF %form% EQU 1 CALL :Audio
 IF %form% EQU 2 CALL :Best
@@ -61,8 +61,7 @@ ECHO Set download folder
 ECHO ========================================================================================
 ECHO %~DP0Download (Default)
 ECHO ========================================================================================
-SET /P folder=Choose: 
-ECHO.
+SET /P folder=^> 
 IF NOT DEFINED folder SET folder=%~DP0Download
 :Folder
 ECHO.
@@ -80,7 +79,8 @@ ECHO 0. No
 ECHO 1. Yes (%proxy%)
 ECHO 2. Other
 ECHO ========================================================================================
-SET /P pass=Choose: 
+SET /P pass=^> 
+ECHO.
 ECHO.
 IF %pass% EQU 2 GOTO :Server
 IF %pass% EQU 1 GOTO :Proxy
@@ -95,6 +95,7 @@ ECHO ===========================================================================
 SET proxy=
 SET /P proxy=Proxy Server: 
 ECHO.
+ECHO.
 IF NOT DEFINED proxy GOTO :Server
 :Proxy
 SET server=--proxy "!proxy!"
@@ -102,8 +103,6 @@ EXIT /B
 :Download
 ECHO.
 ECHO.
-ECHO %format% %output% %archive% %server% %aria2c%
-PAUSE
 bin\youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 --verbose && CALL :Finish || CALL :Retry
 CALL :Download %1
 :Updater
