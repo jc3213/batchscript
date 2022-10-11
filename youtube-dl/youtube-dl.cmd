@@ -17,25 +17,27 @@ IF NOT DEFINED folder (CALL :Select) ELSE (CALL :Folder)
 CALL :Bypass
 IF DEFINED history SET archive=--download-archive "!history!"
 IF NOT DEFINED retry SET retry=5
+PUSHD %~DP0bin
 :Aria2c
-IF NOT EXIST bin\aria2c.exe GOTO :URL
+IF NOT EXIST aria2c.exe GOTO :Link
 ECHO Use aria2c download manager?
 ECHO ========================================================================================
 ECHO 0. No
 ECHO 1. Yes
 ECHO ========================================================================================
 SET /P external=^> 
-IF %external% EQU 1 SET aria2c=--external-downloader aria2c --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
-:URL
+IF %external% EQU 1 SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+:Link
 ECHO.
 ECHO.
 SET attempt=0
 SET /P url=Video URL: 
-IF %url% EQU @format GOTO :NewFormat
-IF %url% EQU @folder GOTO :NewFolder
-IF %url% EQU @proxy GOTO :NewProxy
-IF %url% EQU @update GOTO :Updater
+IF "%url%" EQU "@format" GOTO :NewFormat
+IF "%url%" EQU "@folder" GOTO :NewFolder
+IF "%url%" EQU "@proxy" GOTO :NewProxy
+IF "%url%" EQU "@update" GOTO :Updater
 CALL :Download "%url%"
+GOTO :Link
 :Format
 ECHO Set video format
 ECHO ========================================================================================
@@ -95,17 +97,18 @@ SET proxy=
 SET /P proxy=Proxy Server: 
 ECHO.
 ECHO.
+:Proxy
 IF DEFINED proxy SET server=--proxy "!proxy!"
 EXIT /B
 :Download
 ECHO.
 ECHO.
-bin\youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 --verbose && CALL :Finish || CALL :Retry
+youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 --verbose && CALL :Finish || CALL :Retry
 CALL :Download %1
 :Updater
 ECHO.
 ECHO.
-bin\youtube-dl.exe %server% --update --verbose && CALL :Finish || CALL :Retry
+youtube-dl.exe %server% --update --verbose && CALL :Finish || CALL :Retry
 CALL :Updater
 :Retry
 IF %retry% EQU %attempt% GOTO :Finish
@@ -114,7 +117,7 @@ TIMEOUT /T 5
 EXIT /B
 :Finish
 SET url=
-GOTO :URL
+GOTO :Link
 :Audio
 ECHO Audio Only
 SET format=--format "bestaudio"
@@ -140,14 +143,14 @@ SET url=
 SET form=
 SET format=
 CALL :Format
-GOTO :URL
+GOTO :Link
 :NewFolder
 SET url=
 SET dir=
 CALL :Folder
-GOTO :URL
+GOTO :Link
 :NewProxy
 SET url=
 SET pass=
 CALL :Bypass
-GOTO :URL
+GOTO :Link
