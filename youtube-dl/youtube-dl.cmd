@@ -4,7 +4,7 @@ SETLOCAL EnableDelayedExpansion
 :Environment
 IF NOT EXIST youtube-dl.conf GOTO :Wizard
 :Config
-FOR /F "usebackq tokens=1-2 delims==" %%I IN ("youtube-dl.conf") DO (
+FOR /F "tokens=1,2 delims==" %%I IN ('type youtube-dl.conf') DO (
     IF %%I EQU format CALL :%%J 2>NUL
     IF %%I EQU folder SET folder=%%J
     IF %%I EQU proxy SET proxy=%%J
@@ -35,7 +35,6 @@ IF %url% EQU @format GOTO :NewFormat
 IF %url% EQU @folder GOTO :NewFolder
 IF %url% EQU @proxy GOTO :NewProxy
 IF %url% EQU @update GOTO :Updater
-IF EXIST "%url%" FOR /F "usebackq tokens=* delims=" %%I IN ("%url%") DO (CALL :Download "%%I")
 CALL :Download "%url%"
 :Format
 ECHO Set video format
@@ -96,9 +95,7 @@ SET proxy=
 SET /P proxy=Proxy Server: 
 ECHO.
 ECHO.
-IF NOT DEFINED proxy GOTO :Server
-:Proxy
-SET server=--proxy "!proxy!"
+IF DEFINED proxy SET server=--proxy "!proxy!"
 EXIT /B
 :Download
 ECHO.
