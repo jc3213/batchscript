@@ -17,7 +17,7 @@ IF NOT DEFINED folder (CALL :Select) ELSE (CALL :Folder)
 CALL :Bypass
 IF DEFINED history SET archive=--download-archive "!history!"
 IF NOT DEFINED retry SET retry=5
-PUSHD %~DP0bin
+PUSHD bin
 :Aria2c
 IF NOT EXIST aria2c.exe GOTO :Link
 ECHO Use aria2c download manager?
@@ -41,20 +41,20 @@ GOTO :Link
 :Format
 ECHO Set video format
 ECHO ========================================================================================
-ECHO 1. Audio Only
-ECHO 2. Best Quality
-ECHO 3. Best Quality @1080p
-ECHO 4. Best Quality @720p
-ECHO 5. Best Quality @480p
+ECHO 0. Audio Only
+ECHO 1. Best Quality
+ECHO 2. Best Quality @1080p
+ECHO 3. Best Quality @2K
+ECHO 4. Best Quality @4K
 ECHO ========================================================================================
 SET /P form=^> 
 ECHO.
 ECHO.
-IF %form% EQU 1 CALL :Audio
-IF %form% EQU 2 CALL :Best
-IF %form% EQU 3 CALL :1080p
-IF %form% EQU 4 CALL :720p
-IF %form% EQU 5 CALL :480p
+IF %form% EQU 0 CALL :Audio
+IF %form% EQU 1 CALL :Best
+IF %form% EQU 2 CALL :1080p
+IF %form% EQU 3 CALL :2K
+IF %form% EQU 4 CALL :4K
 IF DEFINED format EXIT /B
 GOTO :Format
 :Select
@@ -128,15 +128,15 @@ SET format=--format "bestvideo+bestaudio/best"
 EXIT /B
 :1080p
 ECHO Best Quality @1080p
-SET format=--format "bestvideo[height=1080]+bestaudio/best[height=1080]"
+SET format=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
 EXIT /B
-:720p
-ECHO Best Quality @720p
-SET format=--format "bestvideo[height=720]+bestaudio/best[height=720]"
+:2K
+ECHO Best Quality @2K
+SET format=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
 EXIT /B
 :480p
-ECHO Best Quality @480p
-SET format=--format "bestvideo[height=480]+bestaudio/best[height=480]"
+ECHO Best Quality @4K
+SET format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
 EXIT /B
 :NewFormat
 SET url=
