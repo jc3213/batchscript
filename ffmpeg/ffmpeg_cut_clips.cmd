@@ -1,4 +1,5 @@
 @ECHO OFF
+PUSHD %~DP0bin
 SET file=%1
 CALL :Separator
 ECHO File path sample: C:\Program Files\ffmpeg\my video.mp4
@@ -58,8 +59,8 @@ SET fn0=%name%
 SET ts0=%stamp%
 SET out1=%~DP1%~N1_%fn0%_1%~X1
 SET out2=%~DP1%~N1_%fn0%_2%~X1
-"%~DP0bin\ffmpeg.exe" -i "%1" -to %ss% -c copy %out1%
-"%~DP0bin\ffmpeg.exe" -i "%1" -ss %ss% -c copy %out2%
+ffmpeg.exe -i "%1" -to %ss% -c copy %out1%
+ffmpeg.exe -i "%1" -ss %ss% -c copy %out2%
 CALL :Warning WarnStamp
 EXIT /B
 :WarnStamp
@@ -75,7 +76,7 @@ CALL :NAME %to%
 SET fn2=%name%
 SET ts2=%stamp%
 SET out0=%~DP1%~N1_%fn1%-%fn2%%~X1
-"%~DP0bin\ffmpeg.exe" -i "%1" -ss %ss% -to %to% -c copy %out0%
+ffmpeg.exe -i "%1" -ss %ss% -to %to% -c copy %out0%
 CALL :Warning WarnPeriod
 EXIT /B
 :WarnPeriod
