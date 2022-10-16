@@ -3,7 +3,6 @@ PUSHD %~DP0
 SETLOCAL EnableDelayedExpansion
 :Environment
 IF NOT EXIST youtube-dl.conf GOTO :Wizard
-:Config
 FOR /F "tokens=1,2 delims==" %%I IN ('type youtube-dl.conf') DO (
     IF %%I EQU format CALL :%%J 2>NUL
     IF %%I EQU folder SET folder=%%J
@@ -12,33 +11,12 @@ FOR /F "tokens=1,2 delims==" %%I IN ('type youtube-dl.conf') DO (
     IF %%I EQU retry SET retry=%%J
 )
 :Wizard
-IF NOT DEFINED format CALL :Format
-IF NOT DEFINED folder (CALL :Select) ELSE (CALL :Folder)
-CALL :Bypass
-IF DEFINED history SET archive=--download-archive "!history!"
-IF NOT DEFINED retry SET retry=5
-PUSHD bin
-:Aria2c
-IF NOT EXIST aria2c.exe GOTO :Link
-ECHO Use aria2c download manager?
-ECHO ========================================================================================
-ECHO 0. No
-ECHO 1. Yes
-ECHO ========================================================================================
-SET /P external=^> 
-IF %external% EQU 1 SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
-:Link
-ECHO.
-ECHO.
-SET attempt=0
-SET /P url=Video URL: 
-IF "%url%" EQU "@format" GOTO :NewFormat
-IF "%url%" EQU "@folder" GOTO :NewFolder
-IF "%url%" EQU "@proxy" GOTO :NewProxy
-IF "%url%" EQU "@update" GOTO :Updater
-CALL :Download "%url%"
-GOTO :Link
+CALL :Format
+CALL :Folder
+CALL :Proxy
+GOTO :Config
 :Format
+If DEFINED format GOTO :Folder
 ECHO Set video format
 ECHO ========================================================================================
 ECHO 0. Audio Only
@@ -47,32 +25,35 @@ ECHO 2. Best Quality @1080p
 ECHO 3. Best Quality @2K
 ECHO 4. Best Quality @4K
 ECHO ========================================================================================
-SET /P form=^> 
+SET /P fm=^> 
 ECHO.
 ECHO.
-IF %form% EQU 0 CALL :Audio
-IF %form% EQU 1 CALL :Best
-IF %form% EQU 2 CALL :1080p
-IF %form% EQU 3 CALL :2K
-IF %form% EQU 4 CALL :4K
-IF DEFINED format EXIT /B
-GOTO :Format
-:Select
+IF %fm% EQU 0 CALL :Audio
+IF %fm% EQU 1 CALL :Best
+IF %fm% EQU 2 CALL :1080p
+IF %fm% EQU 3 CALL :2K
+IF %fm% EQU 4 CALL :4K
+IF NOT DEFINED format GOTO :Format
+ECHO.
+ECHO.
+EXIT /B
+:Folder
+IF DEFINED folder GOTO :Output
 ECHO Set download folder
 ECHO ========================================================================================
 ECHO %~DP0Download (Default)
 ECHO ========================================================================================
 SET /P folder=^> 
 IF NOT DEFINED folder SET folder=%~DP0Download
-:Folder
 ECHO.
 ECHO.
+:Output
 ECHO Download Folder: %folder%
 SET output=--output "!folder!\%%(title)s.%%(ext)s"
 ECHO.
 ECHO.
 EXIT /B
-:Bypass
+:Proxy
 IF NOT DEFINED proxy GOTO :Server
 ECHO Use proxy server?
 ECHO ========================================================================================
@@ -80,12 +61,12 @@ ECHO 0. No
 ECHO 1. Yes (%proxy%)
 ECHO 2. Other
 ECHO ========================================================================================
-SET /P pass=^> 
+SET /P px=^> 
 ECHO.
 ECHO.
-IF %pass% EQU 2 GOTO :Server
-IF %pass% EQU 1 GOTO :Proxy
-IF %pass% EQU 0 EXIT /B
+IF %px% EQU 2 GOTO :Server
+IF %px% EQU 1 GOTO :PrxSvr
+IF %px% EQU 0 GOTO :Wizard
 GOTO :Bypass
 :Server
 ECHO Set proxy server
@@ -97,18 +78,48 @@ SET proxy=
 SET /P proxy=Proxy Server: 
 ECHO.
 ECHO.
-:Proxy
+:PrxSvr
 IF DEFINED proxy SET server=--proxy "!proxy!"
 EXIT /B
+:Config
+IF DEFINED history SET archive=--download-archive "!history!"
+IF NOT DEFINED retry SET retry=5
+PUSHD bin
+:Aria2c
+IF NOT EXIST aria2c.exe GOTO :Link
+ECHO Use aria2c download manager?
+ECHO ========================================================================================
+ECHO 0. No
+ECHO 1. Yes
+ECHO ========================================================================================
+SET /P external=^> 
+ECHO.
+ECHO.
+IF %external% EQU 1 SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+:Link
+SET attempt=0
+SET /P url=Video URL: 
+ECHO.
+ECHO.
+IF "%url%" EQU "@format" GOTO :NewFormat
+IF "%url%" EQU "@folder" GOTO :NewFolder
+IF "%url%" EQU "@proxy" GOTO :NewProxy
+IF "%url%" EQU "@update" GOTO :Updater
+IF "%url%" EQU "@external" GOTO :Aria2c
+IF NOT DEFINED url GOTO :Link
+CALL :Download "%url%"
+ECHO.
+ECHO.
+GOTO :Link
 :Download
-ECHO.
-ECHO.
 youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 --verbose && CALL :Finish || CALL :Retry
+ECHO.
+ECHO.
 CALL :Download %1
 :Updater
-ECHO.
-ECHO.
 youtube-dl.exe %server% --update --verbose && CALL :Finish || CALL :Retry
+ECHO.
+ECHO.
 CALL :Updater
 :Retry
 IF %retry% EQU %attempt% GOTO :Finish
@@ -140,17 +151,17 @@ SET format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
 EXIT /B
 :NewFormat
 SET url=
-SET form=
+SET fm=
 SET format=
 CALL :Format
 GOTO :Link
 :NewFolder
 SET url=
-SET dir=
+SET folder=
 CALL :Folder
 GOTO :Link
 :NewProxy
 SET url=
-SET pass=
-CALL :Bypass
+SET px=
+CALL :Proxy
 GOTO :Link
