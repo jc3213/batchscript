@@ -15,7 +15,7 @@ START "" "https://ziahamza.github.io/webui-aria2/"
 IF "%1"=="0" (
     IF NOT EXIST aria2c.vbs (
         ECHO Set Sh=CreateObject^("WScript.Shell"^)>aria2c.vbs
-        ECHO CreateObject^("Wscript.Shell"^).Run Sh.CurrentDirectory & "\aria2c.cmd", ^0>>aria2c.vbs
+        ECHO Sh.Run Sh.CurrentDirectory ^& "\aria2c.cmd", ^0>>aria2c.vbs
     )
     aria2c.vbs
 ) ELSE (bin\aria2c.exe --conf=aria2c.conf)
