@@ -17,7 +17,7 @@ IF "%1"=="0" (
         ECHO Set Sh=CreateObject^("WScript.Shell"^)>aria2c.vbs
         ECHO CreateObject^("Wscript.Shell"^).Run Sh.CurrentDirectory & "\aria2c.cmd", ^0>>aria2c.vbs
     )
-    aria2.vbs
+    aria2c.vbs
 ) ELSE (bin\aria2c.exe --conf=aria2c.conf)
 EXIT
 :Session
