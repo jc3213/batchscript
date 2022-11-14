@@ -1,28 +1,35 @@
 @ECHO OFF
 PUSHD %~DP0
-IF "%1"=="/h" CALL :Run 0
-IF "%1"=="/s" CALL :Session
-IF "%1"=="/sh" CALL :Session 0
-IF "%1"=="/r" CALL :Startup
-IF "%1"=="/rh" CALL :Startup 0
-IF "%1"=="/u" CALL :Unregister
-GOTO :Run
-:Startup
-IF "%1"=="0" (SET App=vbs) ELSE (SET App=cmd)
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /T "REG_SZ" /D "%CD%\aria2c.%App%" /F
-START "" "https://ziahamza.github.io/webui-aria2/"
-:Run
-IF "%1"=="0" (
-    IF NOT EXIST aria2c.vbs (
-        ECHO Set Sh=CreateObject^("WScript.Shell"^)>aria2c.vbs
-        ECHO Sh.Run """" ^& Sh.CurrentDirectory ^& "\aria2c.cmd""", ^0>>aria2c.vbs
-    )
-    aria2c.vbs
-) ELSE (bin\aria2c.exe --conf=aria2c.conf)
+IF "%1"=="/h" GOTO :Hide
+IF "%1"=="/r" GOTO :Register
+IF "%1"=="/u" GOTO :Unregister
+:App
+IF NOT EXIST aria2c.session CALL :Session
+bin\aria2c.exe --conf=aria2c.conf
 EXIT
-:Session
-ECHO OFF>aria2c.session"
-GOTO :Run
+:Hide
+IF NOT EXIST aria2c.session CALL :Session
+IF NOT EXIST aria2.vbs CALL :VBS
+aria2c.vbs
+EXIT
+:Register
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /T "REG_SZ" /D "%CD%\aria2c.vbs" /F
+CALL :Session
+CALL :Startup
+aria2c.vbs
+EXIT
 :Unregister
+TASKKILL /IM "aria2c.exe"
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /F
 TIMEOUT -T 5
+EXIT
+:Session
+ECHO OFF>aria2c.session
+EXIT /B
+:Startup
+ECHO Set objSh = CreateObject("WScript.Shell")>aria2c.vbs
+ECHO Set objFSO = CreateObject("Scripting.FileSystemObject")>>aria2c.vbs
+ECHO Set objFile = objFSO.GetFile(Wscript.ScriptFullName)>>aria2c.vbs
+ECHO objDir = objFSO.GetParentFolderName(objFile)>>aria2c.vbs
+ECHO objSh.run """" ^& objDir ^& "\bin\aria2c.exe"" --conf=""" ^& objDir ^& "\aria2c.conf""", ^0>>aria2c.vbs
+EXIT /B
