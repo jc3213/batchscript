@@ -6,6 +6,7 @@ IF "%1"=="/u" GOTO :Unregister
 :App
 IF NOT EXIST aria2c.session CALL :Session
 bin\aria2c.exe --conf=aria2c.conf
+path %path% & aria2c.exe --conf=aria2c.conf
 EXIT
 :Hide
 IF NOT EXIST aria2c.session CALL :Session
