@@ -14,10 +14,7 @@ aria2c.vbs
 EXIT
 :Register
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /T "REG_SZ" /D "%CD%\aria2c.vbs" /F
-CALL :Session
-CALL :Startup
-aria2c.vbs
-EXIT
+GOTO :Hide
 :Unregister
 TASKKILL /IM "aria2c.exe"
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /F
