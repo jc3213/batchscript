@@ -31,5 +31,5 @@ ECHO Set objSh = CreateObject("WScript.Shell")>aria2c.vbs
 ECHO Set objFSO = CreateObject("Scripting.FileSystemObject")>>aria2c.vbs
 ECHO Set objFile = objFSO.GetFile(Wscript.ScriptFullName)>>aria2c.vbs
 ECHO objDir = objFSO.GetParentFolderName(objFile)>>aria2c.vbs
-ECHO objSh.run """" ^& objDir ^& "\bin\aria2c.exe"" --conf=""" ^& objDir ^& "\aria2c.conf""", ^0>>aria2c.vbs
+ECHO objSh.run "%WinDir%\System32\cmd.exe /c start ""aria2c"" """ ^& objDir ^& "\bin\aria2c.exe"" --conf=""" ^& objDir ^& "\aria2c.conf""", ^0>>aria2c.vbs
 EXIT /B
