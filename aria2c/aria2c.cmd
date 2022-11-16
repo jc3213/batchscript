@@ -9,7 +9,7 @@ bin\aria2c.exe --conf=aria2c.conf
 EXIT
 :Hide
 IF NOT EXIST aria2c.session CALL :Session
-IF NOT EXIST aria2.vbs CALL :Startup
+IF NOT EXIST aria2c.vbs CALL :Startup
 aria2c.vbs
 EXIT
 :Register
