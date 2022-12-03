@@ -30,13 +30,13 @@ GOTO :What
 CALL :Front
 SET Folder=%~DP1cutted_%Name%
 MD "%Folder%" 2>NUL
-FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -crop %Opt% "%Folder%\%%I")
+FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -crop %Area% "%Folder%\%%I")
 GOTO :End
 :Shave
 CALL :Front
 SET Folder=%~DP1cutted_%Name%
 MD "%Folder%" 2>NUL
-FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -shave %Opt% "%Folder%\%%I")
+FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -shave %Area% "%Folder%\%%I")
 GOTO :End
 :JPG
 ECHO.
@@ -93,8 +93,8 @@ ECHO Cut left and right: 300px(width), cut top and bottom: 100px(height)
 ECHO Sample: 300x100+20+30 (width x height + left + top)
 ECHO Crop image area start from: left 20px to 320px, top: 30px to 130px
 ECHO ============================================================
-SET /P Opt=^> 
-IF NOT DEFINED Opt GOTO :Opt
+SET /P Area=^> 
+IF NOT DEFINED Area GOTO :Front
 ECHO.
 ECHO.
 ECHO ============================================================
