@@ -2,16 +2,17 @@
 TITLE ImageMagick Utilities
 IF NOT EXIST %1 GOTO :Exit
 SET Name=%~N1
+SET File=%~X1
+SET Zip=%~DP0bin\7za.exe
 ECHO ============================================================
-CD /D %1 2>NUL
-IF %ErrorLevel% EQU 0 (
+IF NOT DEFINED File (
+    CD /D %1
     ECHO 1^) Crop Image Area
     ECHO 2^) Cut Image Border
     ECHO 3^) Convert to JPG
     ECHO 4^) Compress as ZIP
 ) ELSE (
     ECHO 1^) Repack to new ZIP
-    SET File=%1
 )
 ECHO ============================================================
 :What
@@ -53,10 +54,10 @@ ECHO ============================================================
 ECHO Repacking to new Zip...
 ECHO ============================================================
 SET Folder=%~N1
-ECHO a|"%~DP0bin\7za.exe" x %1 -o"%Folder%"
+ECHO a|"%Zip%" x %1 -o"%Folder%"
 CD %Folder% 2>NUL
 IF %ErrorLevel% NEQ 0 GOTO :Exit
-"%~DP0bin\7za.exe" a "%~DPN1.zip" "*"
+"%Zip%" a "%~DPN1.zip" "*"
 CD..
 RD /S /Q "%Folder%"
 GOTO :Exit
@@ -70,7 +71,7 @@ SET /P Zip=^>
 IF %Zip% NEQ y GOTO :Exit
 :ZIP
 IF NOT DEFINED Folder SET Folder=%~1
-"%~DP0bin\7za.exe" a "%~DPN1.zip" "%Folder%\*"
+"%Zip%" a "%~DPN1.zip" "%Folder%\*"
 ECHO.
 ECHO.
 ECHO ============================================================
