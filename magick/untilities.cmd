@@ -1,53 +1,76 @@
 @ECHO OFF
 TITLE ImageMagick Utilities
-IF NOT EXIST %1 GOTO :Exit
-SET Name=%~N1
-SET File=%~X1
 SET Zip=%~DP0bin\7za.exe
+CD /D %1 2>NUL
+IF %ErrorLevel% EQU 0 GOTO :DirOpt
+IF %~X1 EQU .zip GOTO :ZipOpt
+GOTO :Exit
+:DirOpt
 ECHO ============================================================
-IF NOT DEFINED File (
-    CD /D %1
-    ECHO 1^) Crop Image Area
-    ECHO 2^) Cut Image Border
-    ECHO 3^) Convert to JPG
-    ECHO 4^) Compress as ZIP
-) ELSE (
-    ECHO 1^) Repack to new ZIP
-)
+ECHO 1. Crop Image Area
+ECHO 2. Cut Image Border
+ECHO 3. Convert to JPG
+ECHO 4. Compress as ZIP
 ECHO ============================================================
-:What
-SET /P ACT=^> 
-ECHO.
-IF NOT DEFINED File (
-    IF %ACT% EQU 1 GOTO :Crop
-    IF %ACT% EQU 2 GOTO :Shave
-    IF %ACT% EQU 3 GOTO :JPG
-    IF %ACT% EQU 4 GOTO :ZIP
-) ELSE (
-    IF %ACT% EQU 1 GOTO :Repack
-)
-GOTO :What
+:DirAct
+SET /P Act=^> 
+IF %Act% EQU 1 GOTO :Crop
+IF %Act% EQU 2 GOTO :Shave
+IF %Act% EQU 3 GOTO :JPG
+IF %Act% EQU 4 GOTO :ComZip
+GOTO :DirAct
+:ZipOpt
+ECHO ============================================================
+ECHO 1. Repack to new ZIP
+ECHO ============================================================
+:ZipAct
+SET /P Act=^> 
+IF %Act% EQU 1 GOTO :Repack
+GOTO :ZipAct
 :Crop
-CALL :Front
-SET Folder=%~DP1cutted_%Name%
+CALL :Area
+SET Folder=%~DP1cutted_%~NX1
 MD "%Folder%" 2>NUL
 FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -crop %Area% "%Folder%\%%I")
-GOTO :End
+GOTO :Compress
 :Shave
-CALL :Front
-SET Folder=%~DP1cutted_%Name%
+CALL :Area
+SET Folder=%~DP1cutted_%~NX1
 MD "%Folder%" 2>NUL
 FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -shave %Area% "%Folder%\%%I")
-GOTO :End
+GOTO :Compress
 :JPG
 ECHO.
 ECHO ============================================================
 ECHO ImageMagick is converting images...
 ECHO ============================================================
-SET Folder=%~DP1conv_%~N1
+SET Folder=%~DP1conv_%~NX1
 MD "%Folder%" 2>NUL
 FOR %%I IN (*) DO ("%~DP0bin\magick.exe" %%I "%Folder%\%%~NI.jpg")
-GOTO :End
+GOTO :Compress
+:Compress
+ECHO.
+ECHO.
+ECHO ============================================================
+ECHO Compress as Zip file? (y)
+ECHO ============================================================
+SET /P Com=^> 
+IF %Com% NEQ y GOTO :Remove
+:ComZip
+IF NOT DEFINED Folder SET Folder=%~1
+"%Zip%" a "%~DPNX1.zip" "%Folder%\*"
+:Remove
+ECHO.
+ECHO.
+ECHO ============================================================
+ECHO Remove original files? (y)
+ECHO ============================================================
+SET /P Del=^> 
+IF %Del% NEQ y GOTO :Exit
+CD..
+RD /S /Q %1 2>NUL
+RD /S /Q "%Folder%" 2>NUL
+GOTO :Exit
 :Repack
 ECHO.
 ECHO ============================================================
@@ -61,31 +84,10 @@ IF %ErrorLevel% NEQ 0 GOTO :Exit
 CD..
 RD /S /Q "%Folder%"
 GOTO :Exit
-:End
-ECHO.
-ECHO.
-ECHO ============================================================
-ECHO Compress as Zip file? (y)
-ECHO ============================================================
-SET /P Zip=^> 
-IF %Zip% NEQ y GOTO :Exit
-:ZIP
-IF NOT DEFINED Folder SET Folder=%~1
-"%Zip%" a "%~DPN1.zip" "%Folder%\*"
-ECHO.
-ECHO.
-ECHO ============================================================
-ECHO Remove original files? (y)
-ECHO ============================================================
-SET /P Cfm=^> 
-IF %Cfm% NEQ y GOTO :Exit
-CD..
-RD /S /Q %1 2>NUL
-RD /S /Q "%Folder%" 2>NUL
 :Exit
 TIMEOUT -T 5
 EXIT
-:Front
+:Area
 ECHO.
 ECHO ============================================================
 ECHO https://imagemagick.org/script/command-line-processing.php#geometry
@@ -95,7 +97,7 @@ ECHO Sample: 300x100+20+30 (width x height + left + top)
 ECHO Crop image area start from: left 20px to 320px, top: 30px to 130px
 ECHO ============================================================
 SET /P Area=^> 
-IF NOT DEFINED Area GOTO :Front
+IF NOT DEFINED Area GOTO :Area
 ECHO.
 ECHO.
 ECHO ============================================================
