@@ -14,25 +14,27 @@ FOR /F "tokens=1,2 delims==" %%I IN ('type youtube-dl.conf') DO (
 CALL :Format
 CALL :Folder
 CALL :Proxy
-GOTO :Config
+GOTO :History
 :Format
 If DEFINED format GOTO :Folder
 ECHO Set video format
 ECHO ========================================================================================
-ECHO 0. Audio Only
 ECHO 1. Best Quality
 ECHO 2. Best Quality @1080p
 ECHO 3. Best Quality @2K
 ECHO 4. Best Quality @4K
+ECHO 5. Only Audio
+ECHO 6. Only Audio (AAC)
 ECHO ========================================================================================
 SET /P fm=^> 
 ECHO.
 ECHO.
-IF %fm% EQU 0 CALL :Audio
 IF %fm% EQU 1 CALL :Best
 IF %fm% EQU 2 CALL :1080p
 IF %fm% EQU 3 CALL :2K
 IF %fm% EQU 4 CALL :4K
+IF %fm% EQU 5 CALL :Audio
+IF %fm% EQU 6 CALL :AAC
 IF NOT DEFINED format GOTO :Format
 ECHO.
 ECHO.
@@ -64,10 +66,10 @@ ECHO ===========================================================================
 SET /P px=^> 
 ECHO.
 ECHO.
-IF %px% EQU 2 GOTO :Server
+IF %px% EQU 0 GOTO :History
 IF %px% EQU 1 GOTO :PrxSvr
-IF %px% EQU 0 GOTO :Wizard
-GOTO :Bypass
+IF %px% EQU 2 GOTO :Server
+GOTO :Proxy
 :Server
 ECHO Set proxy server
 ECHO ========================================================================================
@@ -81,7 +83,7 @@ ECHO.
 :PrxSvr
 IF DEFINED proxy SET server=--proxy "!proxy!"
 EXIT /B
-:Config
+:History
 IF DEFINED history SET archive=--download-archive "!history!"
 IF NOT DEFINED retry SET retry=5
 PUSHD bin
@@ -108,30 +110,34 @@ IF "%url%" EQU "@update" GOTO :Updater
 IF "%url%" EQU "@external" GOTO :Aria2c
 IF NOT DEFINED url GOTO :Link
 CALL :Download "%url%"
-ECHO.
-ECHO.
 GOTO :Link
 :Download
 youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 --verbose && CALL :Finish || CALL :Retry
-ECHO.
-ECHO.
 CALL :Download %1
 :Updater
 youtube-dl.exe %server% --update --verbose && CALL :Finish || CALL :Retry
-ECHO.
-ECHO.
 CALL :Updater
 :Retry
 IF %retry% EQU %attempt% GOTO :Finish
 SET /A attempt=%attempt%+1
+ECHO.
+ECHO.
 TIMEOUT /T 5
+ECHO.
+ECHO.
 EXIT /B
 :Finish
 SET url=
+ECHO.
+ECHO.
 GOTO :Link
 :Audio
-ECHO Audio Only
+ECHO Only Audio
 SET format=--format "bestaudio"
+EXIT /B
+:AAC
+ECHO Only Audio (AAC)
+SET format=--format "bestaudio[acodec~='^(aac|mp4a)']"
 EXIT /B
 :Best
 ECHO Best Quality
