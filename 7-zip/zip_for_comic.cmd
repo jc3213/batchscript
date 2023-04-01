@@ -9,10 +9,12 @@ ECHO ==================================================================
 ECHO Remove original files or temporary files? (Y/y)
 ECHO ==================================================================
 SET /P Yes=^> 
+ECHO.
+ECHO.
 FOR %%I IN (%*) DO (CALL :Core %%I)
 GOTO :Exit
 :Core
-CD /D %1
+CD /D %1 2>NUL
 IF %ErrorLevel% EQU 0 GOTO :NewPack
 :Repack
 ECHO a|"%Zip%" x %1 -o"%~DPN1"
