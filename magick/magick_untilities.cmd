@@ -10,14 +10,16 @@ ECHO ============================================================
 ECHO 1. Crop Image Area
 ECHO 2. Cut Image Border
 ECHO 3. Convert to JPG
-ECHO 4. Compress as ZIP
+ECHO 4. Convert to AVIF
+ECHO 5. Compress as ZIP
 ECHO ============================================================
 :DirAct
 SET /P Act=^> 
 IF %Act% EQU 1 GOTO :Crop
 IF %Act% EQU 2 GOTO :Shave
 IF %Act% EQU 3 GOTO :JPG
-IF %Act% EQU 4 GOTO :ComZip
+IF %Act% EQU 4 GOTO :AVIF
+IF %Act% EQU 5 GOTO :ComZip
 GOTO :DirAct
 :ZipOpt
 ECHO ============================================================
@@ -40,13 +42,14 @@ MD "%Folder%" 2>NUL
 FOR %%I IN (*) DO ("%~DP0bin\magick.exe" convert %%I -shave %Area% "%Folder%\%%I")
 GOTO :Compress
 :JPG
-ECHO.
-ECHO ============================================================
-ECHO ImageMagick is converting images...
-ECHO ============================================================
 SET Folder=%~DP1conv_%~NX1
-MD "%Folder%" 2>NUL
+Call :Convert
 FOR %%I IN (*) DO ("%~DP0bin\magick.exe" %%I "%Folder%\%%~NI.jpg")
+GOTO :Compress
+:AVIF
+SET Folder=%~DP1conv_%~NX1
+Call :Convert
+FOR %%I IN (*) DO ("%~DP0bin\magick.exe" %%I "%Folder%\%%~NI.avif")
 GOTO :Compress
 :Compress
 ECHO.
@@ -103,4 +106,11 @@ ECHO.
 ECHO ============================================================
 ECHO ImageMagick is cutting images...
 ECHO ============================================================
+EXIT /B
+:Convert
+ECHO.
+ECHO ============================================================
+ECHO ImageMagick is converting images...
+ECHO ============================================================
+MD "%Folder%" 2>NUL
 EXIT /B
