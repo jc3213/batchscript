@@ -2,7 +2,7 @@
 PUSHD %~DP0
 FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
 IF NOT EXIST "%Zip%" GOTO :Exit
-:File
+:Main
 IF NOT EXIST "%~1" GOTO :Input
 SET File=%1
 SET Name=%~N1
