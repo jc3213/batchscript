@@ -2,6 +2,8 @@
 PUSHD %~DP0
 SET Zip=%ProgramFiles%\7-Zip\7z.exe
 IF EXIST "%Zip%" GOTO :Main
+SET Zip=%CD%\bin\7za.exe
+IF NOT EXIST "%Zip%" GOTO :Exit
 :Main
 ECHO ==================================================================
 ECHO Finding the latest Foobar2000 installer
