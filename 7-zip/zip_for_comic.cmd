@@ -1,8 +1,6 @@
 @ECHO OFF
 PUSHD %~DP0
-SET Zip=%ProgramFiles%\7-Zip\7z.exe
-IF EXIST "%Zip%" GOTO :Main
-SET Zip=%CD%\bin\7za.exe
+FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
 IF NOT EXIST "%Zip%" GOTO :Exit
 :Main
 ECHO ==================================================================
@@ -36,4 +34,3 @@ RD /S /Q "%~1"
 EXIT /B
 :Exit
 TIMEOUT -T 5
-EXIT
