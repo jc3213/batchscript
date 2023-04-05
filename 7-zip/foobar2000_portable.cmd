@@ -2,7 +2,6 @@
 PUSHD %~DP0
 FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
 IF NOT EXIST "%Zip%" GOTO :Exit
-:Main
 ECHO ==================================================================
 ECHO Finding the latest Foobar2000 installer
 ECHO %1
@@ -29,6 +28,5 @@ ECHO %~DPN1
 ECHO ==================================================================
 ECHO.
 ECHO.
-:Exit
 TIMEOUT -T 5
 EXIT
