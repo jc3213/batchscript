@@ -2,16 +2,15 @@
 PUSHD %~DP0
 FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
 IF NOT EXIST "%Zip%" GOTO :Exit
-:Main
 ECHO ==================================================================
 ECHO Remove original files or temporary files? (Y/y)
 ECHO ==================================================================
 SET /P Yes=^> 
 ECHO.
 ECHO.
-FOR %%I IN (%*) DO (CALL :Core %%I)
+FOR %%I IN (%*) DO (CALL :Check %%I)
 GOTO :Exit
-:Core
+:Check
 CD /D %1 2>NUL
 IF %ErrorLevel% EQU 0 GOTO :NewPack
 :Repack
