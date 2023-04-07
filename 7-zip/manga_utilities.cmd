@@ -16,18 +16,13 @@ IF %ErrorLevel% EQU 0 GOTO :NewPack
 :Repack
 ECHO a|"%Zip%" x %1 -o"%~DPN1"
 "%Zip%" a "%~DPN1.zip" "%~DPN1\*"
-IF %Yes% EQU Y GOTO :ReClear
-IF %Yes% EQU y GOTO :ReClear
-EXIT /B
-:ReClear
+IF /I %Yes% NEQ y EXIT /B
 RD /S /Q "%~DPN1"
+IF /I %~X1 NEQ .zip ECHO %1 Not a Zip File
 EXIT /B
 :NewPack
 "%Zip%" a "%~DPNX1.zip" "*"
-IF %Yes% EQU Y GOTO :NewClear
-IF %Yes% EQU y GOTO :NewClear
-EXIT /B
-:NewClear
+IF /I %Yes% NEQ y EXIT /B
 CD..
 RD /S /Q "%~1"
 EXIT /B
