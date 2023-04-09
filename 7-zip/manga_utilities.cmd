@@ -18,7 +18,7 @@ ECHO a|"%Zip%" x %1 -o"%~DPN1"
 "%Zip%" a "%~DPN1.zip" "%~DPN1\*"
 IF /I %Yes% NEQ y EXIT /B
 RD /S /Q "%~DPN1"
-IF /I %~X1 NEQ .zip ECHO %1 Not a Zip File
+IF /I %~X1 NEQ .zip DEL %1 /S /Q
 EXIT /B
 :NewPack
 "%Zip%" a "%~DPNX1.zip" "*"
