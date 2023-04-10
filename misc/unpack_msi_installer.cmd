@@ -1,17 +1,13 @@
 @ECHO OFF
 PUSHD %~DP0
+IF EXIST %1 GOTO :Unpack
 :File
-IF "%1"=="" GOTO :Input
-GOTO :Unpack
-:Input
-SET /P File=Select iTunes Installer: 
-IF NOT EXIST "%File%" GOTO :Input
-CALL :File %File%
+SET /P File=Select .MSI Installer: 
+IF NOT EXIST "%File%" GOTO :File
+CALL :Unpack "%File%"
 :Unpack
-ECHO Unpacking MSI installer %~NX1 . . .
 MSIEXEC /A "%1" /Q TARGETDIR=%~DP1_unpacked
 ECHO.
-ECHO MSI installer %~NX1 has been unpacked
 ECHO.
-PAUSE
+TIMEOUT -T 5
 EXIT
