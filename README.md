@@ -1,6 +1,7 @@
 # How to use
 
-- Download `*.cmd` file into the directory you would like (`A:\aria2`)
-- Download and send corresponding `*.exe` to `\bin` child directory (`A:\aria2\bin`)
-- 7zip batch scripts must have `7z.exe` in the same folder with `*.cmd` files
-- Run `*.cmd` or drag'n drop files on `*.cmd` to work
+- The executable files for `aria2c`, `ffmpeg`, `magick`, and `youtube-dl`
+    - C:\CLI\aria2c.cmd
+    - C:\CLI\bin\aria2c.exe
+- `7-Zip` [Read me](/7-zip/README.md)
+- Working
