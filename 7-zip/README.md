@@ -13,4 +13,4 @@
 - Drag and drop any compressed files or folder on to `manga_utilities.cmd`
     - It will compress folder into `.zip` file
     - It will decompress any **compressed file** and recompress it into `.zip` file
-    - You can choose whether to keep the original / temporary files
+    - You can choose whether to remove the original / temporary files
