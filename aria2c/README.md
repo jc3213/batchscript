@@ -1,5 +1,7 @@
 ## First of all
 - Download the latest [aria2c](https://github.com/aria2/aria2/releases/latest)
+    - C:\cli\aria2c.cmd
+    - C:\cli\bin\aria2c.exe
 - Run `aria2c.cmd`
     - Use [switches](#switches)
 
