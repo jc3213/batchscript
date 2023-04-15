@@ -1,7 +1,7 @@
 ## First of all
 - Download the latest [aria2c](https://github.com/aria2/aria2/releases/latest)
 - Run `aria2c.cmd`
-    - Use [switches](#Switches)
+    - Use [switches](#switches)
 
 ## Switches
 - `/h`
