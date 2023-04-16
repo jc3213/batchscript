@@ -3,7 +3,7 @@
 
 ### Foobar2000 Portable
 - Download [Foobar2000 installer](https://www.foobar2000.org/download)
-- Drag and drop **foobar2000*.exe** over `foobar2000_portable.cmd`
+- Drag and drop foobar2000*.exe over `foobar2000_portable.cmd`
 
 ### iTunes AAC Libs Extractor
 - Run `itunes_aac_libs.cmd`
