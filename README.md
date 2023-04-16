@@ -7,4 +7,5 @@
 # How to use
 - [7-Zip](/7-zip/README.md)
 - [aria2c](/aria2c/README.md)
+- [QQ](/QQ/README.md)
 - Working
