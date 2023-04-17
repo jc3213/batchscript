@@ -27,8 +27,8 @@ ECHO ===========================================================================
 SET /P fm=^> 
 IF %fm% EQU 1 CALL :Best
 IF %fm% EQU 2 CALL :1080p
-IF %fm% EQU 3 CALL :2K
-IF %fm% EQU 4 CALL :4K
+IF %fm% EQU 3 CALL :1440p
+IF %fm% EQU 4 CALL :2160p
 IF %fm% EQU 5 CALL :Audio
 IF %fm% EQU 6 CALL :AAC
 IF NOT DEFINED format GOTO :FormatTemplate
@@ -154,11 +154,11 @@ EXIT /B
 ECHO Selected Format: Best Video Quality @1080p
 SET format=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
 EXIT /B
-:2K
+:1440p
 ECHO Selected Format: Best Video Quality @2K
 SET format=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
 EXIT /B
-:480p
+:2160p
 ECHO Selected Format: Best Video Quality @4K
 SET format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
 EXIT /B
