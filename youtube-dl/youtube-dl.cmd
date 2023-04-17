@@ -1,6 +1,6 @@
 @ECHO OFF
 PUSHD %~DP0bin
-:Environment
+:Switch
 IF "%1" EQU "" GOTO :Wizard
 IF "%2" EQU "" GOTO :Wizard
 IF %~1 EQU -f SET template=%~2
@@ -8,8 +8,8 @@ IF %~1 EQU -o SET folder=%~2
 IF %~1 EQU -p SET proxy=%~2
 IF %~1 EQU -a SET history=%~2
 IF %~1 EQU -r SET retry=%~2
-SHIFT /1
-GOTO :Environment
+SHIFT
+GOTO :Switch
 :Wizard
 IF DEFINED template CALL :%template%
 :Format
@@ -74,16 +74,12 @@ SET proxy=
 SET /P proxy=Proxy Server: 
 ECHO.
 ECHO.
-IF NOT DEFINED proxy GOTO :History
+IF NOT DEFINED proxy GOTO :Subtitle
 :ProxyServer
 ECHO Proxy Server: %proxy%
 SET server=--proxy "%proxy%"
 ECHO.
 ECHO.
-:History
-IF DEFINED history SET archive=--download-archive "%history%"
-:Retry
-IF NOT DEFINED retry SET retry=5
 :Subtitle
 ECHO Download all subtitles?
 ECHO ========================================================================================
@@ -91,39 +87,23 @@ ECHO 0. No
 ECHO 1. Yes
 ECHO ========================================================================================
 SET /P sub=^> 
-ECHO.
-ECHO.
 IF %sub% EQU 1 SET subtitle=--all-subs
+:History
+IF DEFINED history SET archive=--download-archive "%history%"
+:Retry
+IF NOT DEFINED retry SET retry=5
 :Aria2c
-IF NOT EXIST aria2c.exe GOTO :Link
-ECHO Use aria2c download manager?
-ECHO ========================================================================================
-ECHO 0. No
-ECHO 1. Yes
-ECHO ========================================================================================
-SET /P ext=^> 
-ECHO.
-ECHO.
-IF %ext% EQU 1 SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+IF EXIST aria2c.exe SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
 :Link
+ECHO.
+ECHO.
 SET attempt=0
 SET /P url=Video URL: 
-ECHO.
-ECHO.
-IF "%url%" EQU "--f" GOTO :NewFormat
-IF "%url%" EQU "--d" GOTO :NewFolder
-IF "%url%" EQU "--p" GOTO :NewProxy
-IF "%url%" EQU "--u" GOTO :Updater
-IF "%url%" EQU "--e" GOTO :Aria2c
 IF NOT DEFINED url GOTO :Link
-CALL :Download "%url%"
-GOTO :Link
 :Download
-youtube-dl.exe %format% %output% %archive% %server% %aria2c% %1 %subtitle% && CALL :Finish || CALL :Retry
-CALL :Download %1
-:Updater
-youtube-dl.exe %server% --update && CALL :Finish || CALL :Retry
-CALL :Updater
+youtube-dl.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url% && GOTO :Finish
+CALL :Retry
+GOTO :Download
 :Retry
 IF %retry% EQU %attempt% GOTO :Finish
 SET /A attempt=%attempt%+1
@@ -162,19 +142,3 @@ EXIT /B
 ECHO Selected Format: Best Video Quality @4K
 SET format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
 EXIT /B
-:NewFormat
-SET url=
-SET fm=
-SET format=
-CALL :Format
-GOTO :Link
-:NewFolder
-SET url=
-SET folder=
-CALL :Folder
-GOTO :Link
-:NewProxy
-SET url=
-SET px=
-CALL :Proxy
-GOTO :Link
