@@ -104,17 +104,14 @@ SET /P url=Video URL:
 IF NOT DEFINED url GOTO :Link
 :Download
 youtube-dl.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url% && GOTO :Finish
-CALL :Retry
-GOTO :Download
-:Retry
 IF %retry% EQU %attempt% GOTO :Finish
-SET /A attempt=%attempt%+1
+SET /A attempt+=1
 ECHO.
 ECHO.
 TIMEOUT /T 5
 ECHO.
 ECHO.
-EXIT /B
+GOTO :Download
 :Finish
 SET url=
 ECHO.
