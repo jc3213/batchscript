@@ -26,6 +26,6 @@
 - `-p` 
     - The proxy server used for youtube-dl
     - There is a secondary confirmation for using proxy server
-- `-a` 
+- `-h` 
     - The download history for youtube-dl
     - The links in the history will be skipped
