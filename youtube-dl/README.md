@@ -1,0 +1,35 @@
+## First of all
+- Download the latest [youtube-dl](https://yt-dl.org/latest/youtube-dl.exe)
+    - C:\cli\youtube-dl.cmd
+    - C:\cli\bin\youtube-dl.exe
+    - C:\cli\bin\aria2c.exe
+- Run `youtube-dl.cmd`
+    - Use [switches](#switches)
+
+## Switches
+- `-f`
+    - Selected video format
+    - `best`
+        - The best possible video and the best audio quality
+    - `2160p`
+        - The best video quality @2160p and the bese audio quality
+    - `1440p`
+        - The best video quality @1440p and the bese audio quality
+    - `1080p`
+        - The best video quality @1080p and the bese audio quality
+    - `audio`
+        - The bese audio quality
+    - `aac`
+        - The bese audio quality @aac codec
+- `-o`
+    - The download folder where videos are saved
+- `-p` 
+    - The proxy server used for youtube-dl
+    - There is a secondary confirmation for using proxy server
+- `-a` 
+    - The download history for youtube-dl
+    - The links in the history will be skipped
+- `-r`
+    - The maximum retries if an error occurs
+    - The default retries is 5
+    - The default retry interval is 5 seconds
