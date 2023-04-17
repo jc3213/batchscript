@@ -6,8 +6,7 @@ IF "%2" EQU "" GOTO :Wizard
 IF %~1 EQU -f SET template=%~2
 IF %~1 EQU -o SET folder=%~2
 IF %~1 EQU -p SET proxy=%~2
-IF %~1 EQU -a SET history=%~2
-IF %~1 EQU -r SET retry=%~2
+IF %~1 EQU -h SET history=%~2
 SHIFT
 GOTO :Switch
 :Wizard
@@ -92,8 +91,6 @@ SET /P sub=^>
 IF %sub% EQU 1 SET subtitle=--all-subs
 :History
 IF DEFINED history SET archive=--download-archive "%history%"
-:Retry
-IF NOT DEFINED retry SET retry=5
 :Aria2c
 IF EXIST aria2c.exe SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
 :Link
@@ -103,19 +100,10 @@ SET attempt=0
 SET /P url=Video URL: 
 IF NOT DEFINED url GOTO :Link
 :Download
-youtube-dl.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url% && GOTO :Finish
-IF %retry% EQU %attempt% GOTO :Finish
-SET /A attempt+=1
 ECHO.
 ECHO.
-TIMEOUT /T 5
-ECHO.
-ECHO.
-GOTO :Download
-:Finish
+yt-dlp.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url% && GOTO :Finish
 SET url=
-ECHO.
-ECHO.
 GOTO :Link
 :Audio
 ECHO Selected Format: Best Audio Only
