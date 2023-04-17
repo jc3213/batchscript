@@ -29,7 +29,3 @@
 - `-a` 
     - The download history for youtube-dl
     - The links in the history will be skipped
-- `-r`
-    - The maximum retries if an error occurs
-    - The default retries is 5
-    - The default retry interval is 5 seconds
