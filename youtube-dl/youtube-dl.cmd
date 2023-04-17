@@ -25,6 +25,8 @@ ECHO 6. Only Audio (AAC)
 ECHO ========================================================================================
 :FormatTemplate
 SET /P fm=^> 
+ECHO.
+ECHO.
 IF %fm% EQU 1 CALL :Best
 IF %fm% EQU 2 CALL :1080p
 IF %fm% EQU 3 CALL :1440p
@@ -32,10 +34,10 @@ IF %fm% EQU 4 CALL :2160p
 IF %fm% EQU 5 CALL :Audio
 IF %fm% EQU 6 CALL :AAC
 IF NOT DEFINED format GOTO :FormatTemplate
-ECHO.
-ECHO.
 :Folder
 IF DEFINED folder GOTO :FolderPath
+ECHO.
+ECHO.
 ECHO Set download folder
 ECHO ========================================================================================
 ECHO %~DP0youtube-dl (Default)
@@ -47,10 +49,10 @@ ECHO.
 ECHO.
 ECHO Download Folder: %folder%
 SET output=--output "%folder%\%%(title)s.%%(ext)s"
-ECHO.
-ECHO.
 :Proxy
 IF NOT DEFINED proxy GOTO :Server
+ECHO.
+ECHO.
 ECHO Use proxy server?
 ECHO ========================================================================================
 ECHO 0. No
@@ -58,13 +60,13 @@ ECHO 1. Yes (%proxy%)
 ECHO 2. Other
 ECHO ========================================================================================
 SET /P px=^> 
-ECHO.
-ECHO.
-IF %px% EQU 0 GOTO :History
+IF %px% EQU 0 GOTO :Subtitle
 IF %px% EQU 1 GOTO :ProxyServer
 IF %px% EQU 2 GOTO :Server
 GOTO :Proxy
 :Server
+ECHO.
+ECHO.
 ECHO Set proxy server
 ECHO ========================================================================================
 ECHO 127.0.0.1:1080 (Sample)
@@ -72,15 +74,15 @@ ECHO Keep EMPTY if you don't use a proxy
 ECHO ========================================================================================
 SET proxy=
 SET /P proxy=Proxy Server: 
-ECHO.
-ECHO.
 IF NOT DEFINED proxy GOTO :Subtitle
 :ProxyServer
+ECHO.
+ECHO.
 ECHO Proxy Server: %proxy%
 SET server=--proxy "%proxy%"
-ECHO.
-ECHO.
 :Subtitle
+ECHO.
+ECHO.
 ECHO Download all subtitles?
 ECHO ========================================================================================
 ECHO 0. No
