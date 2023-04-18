@@ -8,9 +8,9 @@ ECHO 2. Cut off border
 ECHO 3. Convert format
 ECHO ============================================================
 SET /P Act=^> 
-IF %Act% EQU 1 GOTO :Crop
-IF %Act% EQU 2 GOTO :Shave
-IF %Act% EQU 3 GOTO :Conv
+IF [%Act%] EQU [1] GOTO :Crop
+IF [%Act%] EQU [2] GOTO :Shave
+IF [%Act%] EQU [3] GOTO :Conv
 CLS && GOTO :Option
 :Crop
 CALL :Area
@@ -62,9 +62,9 @@ ECHO 2. png
 ECHO 3. avif
 ECHO ============================================================
 SET /P FM=^> 
-IF %FM% EQU 1 SET Format=jpg
-IF %FM% EQU 2 SET Format=png
-IF %FM% EQU 3 SET Format=avif
+IF [%FM%] EQU [1] SET Format=jpg
+IF [%FM%] EQU [2] SET Format=png
+IF [%FM%] EQU [3] SET Format=avif
 IF NOT DEFINED Format GOTO :Format
 ECHO.
 EXIT /B
