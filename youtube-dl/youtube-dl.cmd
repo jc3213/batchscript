@@ -1,8 +1,8 @@
 @ECHO OFF
 PUSHD %~DP0bin
 :Switch
-IF "%1" EQU "" GOTO :Wizard
-IF "%2" EQU "" GOTO :Wizard
+IF [%1] EQU [] GOTO :Wizard
+IF [%2] EQU [] GOTO :Wizard
 IF %~1 EQU -f SET template=%~2
 IF %~1 EQU -o SET folder=%~2
 IF %~1 EQU -p SET proxy=%~2
@@ -25,12 +25,12 @@ ECHO ===========================================================================
 SET /P fm=^> 
 ECHO.
 ECHO.
-IF %fm% EQU 1 GOTO :Best
-IF %fm% EQU 2 GOTO :1080p
-IF %fm% EQU 3 GOTO :1440p
-IF %fm% EQU 4 GOTO :2160p
-IF %fm% EQU 5 GOTO :Audio
-IF %fm% EQU 6 GOTO :AAC
+IF [%fm%] EQU [1] GOTO :Best
+IF [%fm%] EQU [2] GOTO :1080p
+IF [%fm%] EQU [3] GOTO :1440p
+IF [%fm%] EQU [4] GOTO :2160p
+IF [%fm%] EQU [5] GOTO :Audio
+IF [%fm%] EQU [6] GOTO :AAC
 IF NOT DEFINED format GOTO :FormatTemplate
 :AAC
 ECHO Selected Format: Best Audio Only (AAC)
@@ -70,6 +70,12 @@ ECHO.
 ECHO.
 ECHO Download Folder: %folder%
 SET output=--output "%folder%\%%(title)s.%%(ext)s"
+:History
+IF NOT DEFINED history GOTO :Proxy
+ECHO.
+ECHO.
+ECHO Download History: %history%
+SET archive=--download-archive "%history%"
 :Proxy
 IF NOT DEFINED proxy GOTO :Server
 ECHO.
@@ -81,9 +87,9 @@ ECHO 1. Yes (%proxy%)
 ECHO 2. Other
 ECHO ========================================================================================
 SET /P px=^> 
-IF %px% EQU 0 GOTO :Subtitle
-IF %px% EQU 1 GOTO :ProxyServer
-IF %px% EQU 2 GOTO :Server
+IF [%px%] EQU [0] GOTO :Subtitle
+IF [%px%] EQU [1] GOTO :ProxyServer
+IF [%px%] EQU [2] GOTO :Server
 GOTO :Proxy
 :Server
 ECHO.
@@ -110,9 +116,7 @@ ECHO 0. No
 ECHO 1. Yes
 ECHO ========================================================================================
 SET /P sub=^> 
-IF %sub% EQU 1 SET subtitle=--all-subs
-:History
-IF DEFINED history SET archive=--download-archive "%history%"
+IF [%sub%] EQU [1] SET subtitle=--all-subs
 :Aria2c
 IF EXIST aria2c.exe SET aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
 :Link
