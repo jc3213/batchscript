@@ -4,4 +4,4 @@
     - Set the volume name `Ramdisk`
     - Create sub folder `Temp`
 ## How to use
-- Run `move_temp_to_ramdisk.cmd` with administrative privileges
+- Run `move_qqtemp_to_ramdisk.cmd` with administrative privileges
