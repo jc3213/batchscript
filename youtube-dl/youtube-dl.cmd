@@ -10,9 +10,8 @@ IF %~1 EQU -h SET history=%~2
 SHIFT
 GOTO :Switch
 :Wizard
-IF DEFINED template CALL :%template%
+IF DEFINED template GOTO :%template%
 :Format
-IF DEFINED format GOTO :Folder
 ECHO Select video format
 ECHO ========================================================================================
 ECHO 1. Best Quality
@@ -26,13 +25,36 @@ ECHO ===========================================================================
 SET /P fm=^> 
 ECHO.
 ECHO.
-IF %fm% EQU 1 CALL :Best
-IF %fm% EQU 2 CALL :1080p
-IF %fm% EQU 3 CALL :1440p
-IF %fm% EQU 4 CALL :2160p
-IF %fm% EQU 5 CALL :Audio
-IF %fm% EQU 6 CALL :AAC
+IF %fm% EQU 1 GOTO :Best
+IF %fm% EQU 2 GOTO :1080p
+IF %fm% EQU 3 GOTO :1440p
+IF %fm% EQU 4 GOTO :2160p
+IF %fm% EQU 5 GOTO :Audio
+IF %fm% EQU 6 GOTO :AAC
 IF NOT DEFINED format GOTO :FormatTemplate
+:AAC
+ECHO Selected Format: Best Audio Only (AAC)
+SET format=--format "bestaudio[acodec~='^(aac|mp4a)']"
+GOTO :Folder
+:Audio
+ECHO Selected Format: Best Audio Only
+SET format=--format "bestaudio"
+GOTO :Folder
+:1080p
+ECHO Selected Format: Best Video Quality @1080p
+SET format=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
+GOTO :Folder
+:1440p
+ECHO Selected Format: Best Video Quality @2K
+SET format=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
+GOTO :Folder
+:2160p
+ECHO Selected Format: Best Video Quality @4K
+SET format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
+GOTO :Folder
+:Best
+ECHO Selected Format: Best Video Quality
+SET format=--format "bestvideo+bestaudio/best"
 :Folder
 IF DEFINED folder GOTO :FolderPath
 ECHO.
@@ -72,7 +94,7 @@ ECHO 127.0.0.1:1080 (Sample)
 ECHO Keep EMPTY if you don't use a proxy
 ECHO ========================================================================================
 SET proxy=
-SET /P proxy=Proxy Server: 
+SET /P proxy=^> 
 IF NOT DEFINED proxy GOTO :Subtitle
 :ProxyServer
 ECHO.
@@ -102,30 +124,6 @@ IF NOT DEFINED url GOTO :Link
 :Download
 ECHO.
 ECHO.
-yt-dlp.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url% && GOTO :Finish
+youtube-dl.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url%
 SET url=
 GOTO :Link
-:Audio
-ECHO Selected Format: Best Audio Only
-SET format=--format "bestaudio"
-EXIT /B
-:AAC
-ECHO Selected Format: Best Audio Only (AAC)
-SET format=--format "bestaudio[acodec~='^(aac|mp4a)']"
-EXIT /B
-:Best
-ECHO Selected Format: Best Video Quality
-SET format=--format "bestvideo+bestaudio/best"
-EXIT /B
-:1080p
-ECHO Selected Format: Best Video Quality @1080p
-SET format=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
-EXIT /B
-:1440p
-ECHO Selected Format: Best Video Quality @2K
-SET format=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
-EXIT /B
-:2160p
-ECHO Selected Format: Best Video Quality @4K
-SET format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
-EXIT /B
