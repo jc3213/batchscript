@@ -1,8 +1,8 @@
 @echo off
-for /F %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
+for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
 set Profile=%Public%\Documents\Tencent\QQ\UserDataInfo.ini
 if not exist "%Profile%" goto :Document
-for /F "tokens=1,2 delims==" %%a in ('type %Profile%') do (
+for /f "tokens=1,2 delims==" %%a in ('type %Profile%') do (
     if %%a equ UserDataSavePathType set Type=%%b
     if %%a equ UserDataSavePath set Path=%%b
 )
@@ -33,7 +33,7 @@ cd %1
 rd /s /q QQ\WinTemp 2>nul
 mklink /d QQ\WinTemp %Ramdisk%
 CD..
-exit /B
+exit /b
 :Profile
 cd %1
 rd /s /q Audio 2>nul
@@ -52,6 +52,6 @@ mklink /d Ads %Ramdisk%
 mklink /d AppWebCache %Ramdisk%
 mklink /d OfflinePackage %Ramdisk%
 cd..
-exit /B
+exit /b
 :Exit
 timeout /t 5
