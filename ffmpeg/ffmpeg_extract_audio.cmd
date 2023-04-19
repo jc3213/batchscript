@@ -1,6 +1,5 @@
 @echo off
 pushd %~dp0bin
-if not exist "%~1" EXIT
 for %%a in (%*) do (call :Audio %%a)
 timeout /t 5
 exit
@@ -24,4 +23,3 @@ echo.
 if not defined ext goto :Format
 :Extract
 ffmpeg.exe -i %1 -vn -acodec copy %~dpn1.%ext%
-exit /b
