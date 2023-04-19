@@ -1,104 +1,104 @@
-@ECHO OFF
-PUSHD %~DP0bin
-SET file=%1
-CALL :Separator
-ECHO File path sample: C:\Program Files\ffmpeg\my video.mp4
-ECHO Split after specific timestamp: 00:01:02.345
-ECHO Split by parts based on timestamp: 00:01:02.123-00:03:04.345
-ECHO Short timestamp format 01:23.456 and 12.345 are also available
-CALL :Separator
-ECHO.
+@echo off
+pushd %~dp0bin
+set file=%1
+call :Separator
+echo File path sample: C:\Program Files\ffmpeg\my video.mp4
+echo Split after specific timestamp: 00:01:02.345
+echo Split by parts based on timestamp: 00:01:02.123-00:03:04.345
+echo Short timestamp format 01:23.456 and 12.345 are also available
+call :Separator
+echo.
 :Main
-CALL :File
-CALL :Time
-IF NOT DEFINED to (
-    CALL :Stamp %file%
-) ELSE (
-    CALL :Period %file%
+call :File
+call :Time
+if not defined to (
+    call :Stamp %file%
+) else (
+    call :Period %file%
 )
-CALL :Clear
-GOTO :Main
+call :Clear
+goto :Main
 :File
-IF NOT DEFINED file (
-    SET /P file=Select File: 
-) ELSE (
-    ECHO Current file: %file%
+if not defined file (
+    set /p file=Select File: 
+) else (
+    echo Current file: %file%
 )
-IF NOT DEFINED file GOTO :File
-EXIT /B
+if not defined file goto :File
+exit /b
 :Time
-SET /P clip=Timestamp: 
-IF NOT DEFINED clip GOTO :Time
-FOR /F "tokens=1-2 delims=-" %%I IN ('ECHO %clip%') DO (
-    SET ss=%%I
-	SET to=%%J
+set /p clip=Timestamp: 
+if not defined clip goto :Time
+for /f "tokens=1-2 delims=-" %%a in ('echo %clip%') do (
+    set ss=%%a
+	set to=%%b
 )
-EXIT /B
+exit /b
 :Name
-FOR /F "tokens=1-3 delims=:" %%I IN ('ECHO %1') DO (
-    SET tf1=%%I
-	SET tf2=%%J
-	SET tf3=%%K
+for /f "tokens=1-3 delims=:" %%a in ('echo %1') do (
+    set tf1=%%a
+	set tf2=%%b
+	set tf3=%%c
 )
-IF NOT DEFINED tf3 (
-    IF NOT DEFINED tf2 (
-        SET name=00.00.%tf1%
-        SET stamp=00:00:%tf1%
-    ) ELSE (
-        SET name=00.%tf1%.%tf2%
-        SET stamp=00:%tf1%:%tf2%
+if not defined tf3 (
+    if not defined tf2 (
+        set name=00.00.%tf1%
+        set stamp=00:00:%tf1%
+    ) else (
+        set name=00.%tf1%.%tf2%
+        set stamp=00:%tf1%:%tf2%
     )
-) ELSE (
-    SET name=%tf1%.%tf2%.%tf3%
-    SET stamp=%tf1%:%tf2%:%tf3%
+) else (
+    set name=%tf1%.%tf2%.%tf3%
+    set stamp=%tf1%:%tf2%:%tf3%
 )
-EXIT /B
+exit /b
 :Stamp
-CALL :Name %ss%
-SET fn0=%name%
-SET ts0=%stamp%
-SET out1=%~DP1%~N1_%fn0%_1%~X1
-SET out2=%~DP1%~N1_%fn0%_2%~X1
+call :Name %ss%
+set fn0=%name%
+set ts0=%stamp%
+set out1=%~dp1%~n1_%fn0%_1%~x1
+set out2=%~dp1%~n1_%fn0%_2%~x1
 ffmpeg.exe -i "%1" -to %ss% -c copy %out1%
 ffmpeg.exe -i "%1" -ss %ss% -c copy %out2%
-CALL :Warning WarnStamp
-EXIT /B
+call :Warning WarnStamp
+exit /b
 :WarnStamp
-ECHO [Mode]        Split after specific timestamp
-ECHO [Timestamp]   %ts0%
-ECHO [Output]      %out1%, %out2%
-EXIT /B
+echo [Mode]        Split after specific timestamp
+echo [Timestamp]   %ts0%
+echo [Output]      %out1%, %out2%
+exit /b
 :Period
-CALL :NAME %ss%
-SET fn1=%name%
-SET ts1=%stamp%
-CALL :NAME %to%
-SET fn2=%name%
-SET ts2=%stamp%
-SET out0=%~DP1%~N1_%fn1%-%fn2%%~X1
+call :Name %ss%
+set fn1=%name%
+set ts1=%stamp%
+call :Name %to%
+set fn2=%name%
+set ts2=%stamp%
+set out0=%~dp1%~n1_%fn1%-%fn2%%~x1
 ffmpeg.exe -i "%1" -ss %ss% -to %to% -c copy %out0%
-CALL :Warning WarnPeriod
-EXIT /B
+call :Warning WarnPeriod
+exit /b
 :WarnPeriod
-ECHO [Mode]        Split by parts based on timestamp
-ECHO [Timestamp]   %ts1%-%ts2%
-ECHO [Output]      %out0%
-EXIT /B
+echo [Mode]        Split by parts based on timestamp
+echo [Timestamp]   %ts1%-%ts2%
+echo [Output]      %out0%
+exit /b
 :Warning
-ECHO.
-CALL :Separator
-ECHO [Input]       %file%
-CALL :%1
-CALL :Separator
-ECHO.
-EXIT /B
+echo.
+call :Separator
+echo [input]       %file%
+call :%1
+call :Separator
+echo.
+exit /b
 :Separator
-ECHO =======================================================================
-EXIT /B
+echo =======================================================================
+exit /b
 :Clear
-SET clip=
-SET name=
-SET stamp=
-SET ss=
-SET to=
-EXIT /B
+set clip=
+set name=
+set stamp=
+set ss=
+set to=
+exit /b

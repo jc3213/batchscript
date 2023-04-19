@@ -1,14 +1,14 @@
-@ECHO OFF
-PUSHD %~DP0bin
-SET Index=0
-SET File=%~X1
+@echo off
+pushd %~dp0bin
+set /a index=0
+set File=%~x1
 :Files
-IF NOT EXIST "%~1" GOTO :Proc
-SET Input=-i "%1" %Input%
-SET /A Index=%Index%+1
-FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO CALL :Files %%B
+if not exist "%~1" goto :Proc
+set input=-i "%1" %input%
+set /a index+=1
+for /f "tokens=1,* delims= " %%a in ("%*") do call :Files %%b
 :Proc
-IF NOT DEFINED Input GOTO :End
-ffmpeg.exe %Input% -filter_complex "amerge=inputs=%Index%" merged_audio_track%File%
+if not defined input goto :End
+ffmpeg.exe %input% -filter_complex "amerge=inputs=%index%" merged_audio_track%File%
 :End
-TIMEOUT -T 5
+timeout /t 5

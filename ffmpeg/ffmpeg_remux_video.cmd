@@ -1,21 +1,20 @@
-@ECHO OFF
-PUSHD %~DP0bin
+@echo off
+pushd %~dp0bin
 :Files
-IF NOT EXIST "%~1" GOTO :Remux
-ffmpeg.exe -i "%~1" >"%Temp%\ffmpeg_log_%~N1" 2>&1
-FOR /F "USEBACKQ SKIP=13 TOKENS=4,5 DELIMS=,: " %%I IN ("%Temp%\ffmpeg_log_%~N1") DO (
-	IF "%%I"=="Audio" (
-        SET Audio=-i "%~1"
-    ) ELSE IF "%%I"=="Video" (
-        SET Video=-i "%~1"
-        SET Output="%~DP1remuxed_%~N1.mkv"
+if not exist "%~1" goto :Remux
+ffmpeg.exe -i "%~1" >"%Temp%\ffmpeg_log_%~n1" 2>&1
+for /f "usebackq skip=13 tokens=4,5 delims=,: " %%a in ("%Temp%\ffmpeg_log_%~n1") do (
+	if "%%a"=="Audio" (
+        set Audio=-i "%~1"
+    ) else if "%%a"=="Video" (
+        set Video=-i "%~1"
+        set Output="%~dp1remuxed_%~n1.mkv"
     )
 )
-FOR /F "TOKENS=1,* DELIMS= " %%A IN ("%*") DO CALL :Files %%B
+for /f "tokens=1,* delims= " %%a in ("%*") do (call :Files %%b)
 :Remux
-IF NOT DEFINED Video GOTO :End
+if not defined Video goto :Exit
 ffmpeg.exe -fflags +genpts %Video% %Audio% -c:v copy -c:a copy %Output%
-DEL "%Temp%\ffmpeg_log_*" /F /Q
-:End
-TIMEOUT -T 5
-EXIT
+del "%Temp%\ffmpeg_log_*" /f /Q
+:Exit
+timeout /t 5
