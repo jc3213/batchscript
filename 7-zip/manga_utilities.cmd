@@ -1,27 +1,27 @@
-@ECHO OFF
-PUSHD %~DP0
-FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
-ECHO ==================================================================
-ECHO Remove original files or temporary files? (Y/y)
-ECHO ==================================================================
-SET /P Yes=^> 
-FOR %%I IN (%*) DO (CALL :Check %%I)
-GOTO :Exit
+@echo off
+pushd %~dp0
+for /f "tokens=1,2*" %%a in ('reg query "HKLM\Software\7-Zip" /V "Path"') do (if "%%a"=="Path" set Zip=%%c7z.exe)
+echo ==================================================================
+echo Remove original files or temporary files? (Y/y)
+echo ==================================================================
+set /p Yes=^> 
+for %%a in (%*) do (call :Check %%a)
+goto :Exit
 :Check
-CD /D %1 2>NUL
-IF %ErrorLevel% EQU 0 GOTO :NewPack
+cd /d %1 2>nul
+if %ErrorLevel% equ 0 goto :NewPack
 :Repack
-ECHO a|"%Zip%" x %1 -o"%~DPN1"
-"%Zip%" a "%~DPN1.zip" "%~DPN1\*"
-IF /I [%Yes%] NEQ [y] EXIT /B
-RD /S /Q "%~DPN1"
-IF /I %~X1 NEQ .zip DEL %1 /S /Q
-EXIT /B
+echo a|"%Zip%" x %1 -o"%~dnp1"
+"%Zip%" a "%~dnp1.zip" "%~dnp1\*"
+if /i [%Yes%] neq [y] exit /b
+rd /s /q "%~dnp1"
+if /i %~X1 neq .zip del %1 /s /q
+exit /b
 :NewPack
-"%Zip%" a "%~DPNX1.zip" "*"
-IF /I [%Yes%] NEQ [y] EXIT /B
-CD..
-RD /S /Q "%~1"
-EXIT /B
+"%Zip%" a "%~dnpx1.zip" "*"
+if /i [%Yes%] neq [y] exit /b
+cd..
+rd /s /q "%~1"
+exit /b
 :Exit
-TIMEOUT -T 5
+timeout /t 5

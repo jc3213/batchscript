@@ -1,38 +1,38 @@
-@ECHO OFF
-PUSHD %~DP0
-FOR /F "tokens=1,2*" %%I IN ('REG QUERY HKLM\Software\7-Zip /V Path') DO (IF "%%I"=="Path" SET Zip=%%K7z.exe)
-IF %PROCESSOR_ARCHITECTURE% EQU AMD64 (CALL :X64) ELSE (CALL :X86)
-SET Installer=iTunes%Arch%Setup.exe
-IF EXIST %Installer% GOTO :Extractor
-CURL https://www.apple.com/itunes/download/win%Arch% --location --output %Installer%
+@echo off
+pushd %~dp0
+for /f "tokens=1,2*" %%a in ('reg query HKLM\Software\7-Zip /V Path') do (if "%%a"=="Path" set Zip=%%c7z.exe)
+if %PROCESSOR_ARCHITECTURE% equ AMD64 (call :X64) else (call :X86)
+set Installer=iTunes%Arch%Setup.exe
+if exist %Installer% goto :Extractor
+curl https://www.apple.com/itunes/download/win%Arch% --location --output %Installer%
 :Extractor
-MD %Unpack% 2>NUL
-MD %Output% 2>NUL
+md %Unpack% 2>nul
+md %Output% 2>nul
 "%Zip%" e -y %Installer% %iTunes%
-MSIEXEC /A %iTunes% /QN TARGETDIR="%Unpack%"
-COPY %Unpack%\iTunes\ASL.dll %Output%
-COPY %Unpack%\iTunes\CoreAudioToolbox.dll %Output%
-COPY %Unpack%\iTunes\CoreFoundation.dll %Output%
-COPY %Unpack%\iTunes\icudt*.dll %Output%
-COPY %Unpack%\iTunes\libdispatch.dll %Output%
-COPY %Unpack%\iTunes\libicuin.dll %Output%
-COPY %Unpack%\iTunes\libicuuc.dll %Output%
-COPY %Unpack%\iTunes\objc.dll %Output%
-DEL %iTunes% 2>NUL
-DEL %Installer% 2>NUL
-RD %Unpack% /S /Q 2>NUL
+msiexec /a %iTunes% /qn targetdir="%Unpack%"
+copy %Unpack%\iTunes\ASL.dll %Output%
+copy %Unpack%\iTunes\CoreAudioToolbox.dll %Output%
+copy %Unpack%\iTunes\CoreFoundation.dll %Output%
+copy %Unpack%\iTunes\icudt*.dll %Output%
+copy %Unpack%\iTunes\libdispatch.dll %Output%
+copy %Unpack%\iTunes\libicuin.dll %Output%
+copy %Unpack%\iTunes\libicuuc.dll %Output%
+copy %Unpack%\iTunes\objc.dll %Output%
+del %iTunes% 2>nul
+del %Installer% 2>nul
+rd %Unpack% /s /q 2>nul
 :Exit
-TIMEOUT -T 5
-EXIT
+timeout /t 5
+exit
 :X64
-SET Arch=64
-SET Output=iTunes64
-SET iTunes=iTunes64.msi
-SET Unpack=%CD%\.iTunes64
-EXIT /B
+set Arch=64
+set Output=iTunes64
+set iTunes=iTunes64.msi
+set Unpack=%CD%\.iTunes64
+exit /b
 :X86
-SET Arch=32
-SET Output=iTunes
-SET iTunes=iTunes.msi
-SET Unpack=%CD%\.iTunes
-EXIT /B
+set Arch=32
+set Output=iTunes
+set iTunes=iTunes.msi
+set Unpack=%CD%\.iTunes
+exit /b
