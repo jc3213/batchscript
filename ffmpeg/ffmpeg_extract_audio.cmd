@@ -15,8 +15,7 @@ if [%Codec%] equ [flac] set Format=flac
 if [%Codec%] equ [alac] set Format=m4a
 if defined Format goto :Extract
 echo ==========================================================================
-echo Unknown audio format of %1
-echo The audio codec is %Codec%
+echo Unknown audio codec %Codec% of %~nx1
 echo Please set the file extention
 echo ==========================================================================
 :Format
