@@ -1,3 +1,3 @@
-@ECHO OFF
-SCHTASKS /Change /DISABLE /TN "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
-TIMEOUT /T 5
+@echo off
+schtasks /change /disable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
+tmeout /t 5

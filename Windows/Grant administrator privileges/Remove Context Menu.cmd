@@ -1,4 +1,4 @@
-@ECHO OFF
-REG DELETE "HKCR\*\shell\runas" /F
-REG DELETE "HKCR\Directory\shell\runas" /F
-TIMEOUT /T 5
+@echo off
+reg delete "HKCR\*\shell\runas" /f
+reg delete "HKCR\Directory\shell\runas" /f
+timeout /t 5

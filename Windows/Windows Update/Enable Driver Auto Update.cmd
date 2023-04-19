@@ -1,3 +1,3 @@
-@ECHO OFF
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /V "ExcludeWUDriversInQualityUpdate" /F
-TIMEOUT /T 5
+@echo off
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /f
+timeout /t 5

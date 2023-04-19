@@ -1,3 +1,3 @@
-@ECHO OFF
-REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /V "MultiTaskingAltTabFilter" /T "REG_DWORD" /D "0x00000003" /F
-TIMEOUT /T 5
+@echo off
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /t "REG_DWORD" /d "0x00000003" /f
+timeout /t 5

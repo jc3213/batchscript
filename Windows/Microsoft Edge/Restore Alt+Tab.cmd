@@ -1,3 +1,3 @@
-@ECHO OFF
-REG DELETE "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /V "MultiTaskingAltTabFilter"
-TIMEOUT /T 5
+@echo off
+reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter"
+timeout /t 5

@@ -1,5 +1,5 @@
-@ECHO OFF
-SC STOP "SysMain"
-SC CONFIG "SysMain" START=DISABLED
-DEL /F /S /Q %SystemRoot%\Prefetch\*.*
-TIMEOUT /T 5
+@echo off
+SC stop "SysMain"
+sc config "SysMain" start=disabled
+del /f /s /q %SystemRoot%\Prefetch\*.*
+timeout /t 5

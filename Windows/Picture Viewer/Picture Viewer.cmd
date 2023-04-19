@@ -1,73 +1,73 @@
-@ECHO OFF
-SET FileExt=HKLM\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations
+@echo off
+set FileExt=HKLM\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations
 ::
-SET FileBmp=PhotoViewer.FileAssoc.Bitmap
-SET FileJfif=PhotoViewer.FileAssoc.JFIF
-SET FileJpeg=PhotoViewer.FileAssoc.Jpeg
-SET FileGif=PhotoViewer.FileAssoc.Gif
-SET FilePng=PhotoViewer.FileAssoc.Png
-SET FileTiff=PhotoViewer.FileAssoc.Tiff
-SET FileWdp=PhotoViewer.FileAssoc.Wdp
+set FileBmp=PhotoViewer.FileAssoc.Bitmap
+set FileJfif=PhotoViewer.FileAssoc.JFIF
+set FileJpeg=PhotoViewer.FileAssoc.Jpeg
+set FileGif=PhotoViewer.FileAssoc.Gif
+set FilePng=PhotoViewer.FileAssoc.Png
+set FileTiff=PhotoViewer.FileAssoc.Tiff
+set FileWdp=PhotoViewer.FileAssoc.Wdp
 ::
-SET PhotoViewer=^%%ProgramFiles^%%\Windows Photo Viewer\PhotoViewer.dll
-SET ImgIcon=^%%SystemRoot^%%\System32\imageres.dll
-SET WdpIcon=^%%SystemRoot^%%\System32\wmphoto.dll
-SET MuiVerb=@^%%ProgramFiles^%%\Windows Photo Viewer\photoviewer.dll,-3043
-SET DropTarget={FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}
-SET OpenCommand=^%%SystemRoot^%%\System32\rundll32.exe \"%PhotoViewer%\", ImageView_Fullscreen ^%%1
+set PhotoViewer=^%%ProgramFiles^%%\Windows Photo Viewer\PhotoViewer.dll
+set ImgIcon=^%%SystemRoot^%%\System32\imageres.dll
+set WdpIcon=^%%SystemRoot^%%\System32\wmphoto.dll
+set MuiVerb=@^%%ProgramFiles^%%\Windows Photo Viewer\photoviewer.dll,-3043
+set DropTarget={FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}
+set OpenCommand=^%%SystemRoot^%%\System32\rundll32.exe \"%PhotoViewer%\", ImageView_Fullscreen ^%%1
 ::File Associations
-REG ADD "%FileExt%" /V ".bmp" /T "REG_SZ" /D "%FileBmp%" /F
-REG ADD "%FileExt%" /V ".dib" /T "REG_SZ" /D "%FileBmp%" /F
-REG ADD "%FileExt%" /V ".gif" /T "REG_SZ" /D "%FileGif%" /F
-REG ADD "%FileExt%" /V ".jfif" /T "REG_SZ" /D "%FileJfif%" /F
-REG ADD "%FileExt%" /V ".jpe" /T "REG_SZ" /D "%FileJpeg%" /F
-REG ADD "%FileExt%" /V ".jpeg" /T "REG_SZ" /D "%FileJpeg%" /F
-REG ADD "%FileExt%" /V ".jpg" /T "REG_SZ" /D "%FileJpeg%" /F
-REG ADD "%FileExt%" /V ".png" /T "REG_SZ" /D "%FilePng%" /F
-REG ADD "%FileExt%" /V ".tiff" /T "REG_SZ" /D "%FileTiff%" /F
-REG ADD "%FileExt%" /V ".tif" /T "REG_SZ" /D "%FileTiff%" /F
-REG ADD "%FileExt%" /V ".wdp" /T "REG_SZ" /D "%FileWdp%" /F
+reg add "%FileExt%" /v ".bmp" /t "REG_SZ" /d "%FileBmp%" /f
+reg add "%FileExt%" /v ".dib" /t "REG_SZ" /d "%FileBmp%" /f
+reg add "%FileExt%" /v ".gif" /t "REG_SZ" /d "%FileGif%" /f
+reg add "%FileExt%" /v ".jfif" /t "REG_SZ" /d "%FileJfif%" /f
+reg add "%FileExt%" /v ".jpe" /t "REG_SZ" /d "%FileJpeg%" /f
+reg add "%FileExt%" /v ".jpeg" /t "REG_SZ" /d "%FileJpeg%" /f
+reg add "%FileExt%" /v ".jpg" /t "REG_SZ" /d "%FileJpeg%" /f
+reg add "%FileExt%" /v ".png" /t "REG_SZ" /d "%FilePng%" /f
+reg add "%FileExt%" /v ".tiff" /t "REG_SZ" /d "%FileTiff%" /f
+reg add "%FileExt%" /v ".tif" /t "REG_SZ" /d "%FileTiff%" /f
+reg add "%FileExt%" /v ".wdp" /t "REG_SZ" /d "%FileWdp%" /f
 ::File Bmp
-REG ADD "HKCR\%FileBmp%" /V "FriendlyTypeName" /T "REG_EXPAND_SZ" /D "@%PhotoViewer%,-3056" /F
-REG ADD "HKCR\%FileBmp%" /V "ImageOptionFlags" /T "REG_DWORD" /D "0x00000001" /F
-REG ADD "HKCR\%FileBmp%\DefaultIcon" /VE /T "REG_SZ" /D "%ImgIcon%,-70" /F
-REG ADD "HKCR\%FileBmp%\shell\open\command" /VE /T "REG_EXPAND_SZ" /D "%OpenCommand%" /F
-REG ADD "HKCR\%FileBmp%\shell\open\DropTarget" /V "Clsid" /T  "REG_SZ" /D "%DropTarget%" /F
+reg add "HKCR\%FileBmp%" /v "FriendlyTypeName" /t "REG_EXPAND_SZ" /d "@%PhotoViewer%,-3056" /f
+reg add "HKCR\%FileBmp%" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKCR\%FileBmp%\DefaultIcon" /ve /t "REG_SZ" /d "%ImgIcon%,-70" /f
+reg add "HKCR\%FileBmp%\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%OpenCommand%" /f
+reg add "HKCR\%FileBmp%\shell\open\DropTarget" /v "Clsid" /t  "REG_SZ" /d "%DropTarget%" /f
 ::File Jfif
-REG ADD "HKCR\%FileJfif%" /V "EditFlags" /T "REG_DWORD" /D "0x00010000" /F
-REG ADD "HKCR\%FileJfif%" /V "FriendlyTypeName" /T "REG_EXPAND_SZ" /D "@%PhotoViewer%,-3055" /F
-REG ADD "HKCR\%FileJfif%" /V "ImageOptionFlags" /T "REG_DWORD" /D "0x00000001" /F
-REG ADD "HKCR\%FileJfif%\DefaultIcon" /VE /T "REG_SZ" /D "%ImgIcon%,-72" /F
-REG ADD "HKCR\%FileJfif%\shell\open" /V "MuiVerb" /T "REG_EXPAND_SZ" /D "%MuiVerb%" /F
-REG ADD "HKCR\%FileJfif%\shell\open\command" /VE /T "REG_EXPAND_SZ" /D "%OpenCommand%" /F
-REG ADD "HKCR\%FileJfif%\shell\open\DropTarget" /V "Clsid" /T "REG_SZ" /D "%DropTarget%" /F
+reg add "HKCR\%FileJfif%" /v "EditFlags" /t "REG_DWORD" /d "0x00010000" /f
+reg add "HKCR\%FileJfif%" /v "FriendlyTypeName" /t "REG_EXPAND_SZ" /d "@%PhotoViewer%,-3055" /f
+reg add "HKCR\%FileJfif%" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKCR\%FileJfif%\DefaultIcon" /ve /t "REG_SZ" /d "%ImgIcon%,-72" /f
+reg add "HKCR\%FileJfif%\shell\open" /v "MuiVerb" /t "REG_EXPAND_SZ" /d "%MuiVerb%" /f
+reg add "HKCR\%FileJfif%\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%OpenCommand%" /f
+reg add "HKCR\%FileJfif%\shell\open\DropTarget" /v "Clsid" /t "REG_SZ" /d "%DropTarget%" /f
 ::File Jpeg
-REG ADD "HKCR\%FileJpeg%" /V "EditFlags" /T "REG_DWORD" /D "0x00010000" /F
-REG ADD "HKCR\%FileJpeg%" /V "FriendlyTypeName" /T "REG_EXPAND_SZ" /D "@%PhotoViewer%,-3055" /F
-REG ADD "HKCR\%FileJpeg%" /V "ImageOptionFlags" /T "REG_DWORD" /D "0x00000001" /F
-REG ADD "HKCR\%FileJpeg%\DefaultIcon" /VE /T "REG_SZ" /D "%ImgIcon%,-72" /F
-REG ADD "HKCR\%FileJpeg%\shell\open" /V "MuiVerb" /T "REG_EXPAND_SZ" /D "%MuiVerb%" /F
-REG ADD "HKCR\%FileJpeg%\shell\open\command" /VE /T "REG_EXPAND_SZ" /D "%OpenCommand%" /F
-REG ADD "HKCR\%FileJpeg%\shell\open\DropTarget" /V "Clsid" /T "REG_SZ" /D "%DropTarget%" /F
+reg add "HKCR\%FileJpeg%" /v "EditFlags" /t "REG_DWORD" /d "0x00010000" /f
+reg add "HKCR\%FileJpeg%" /v "FriendlyTypeName" /t "REG_EXPAND_SZ" /d "@%PhotoViewer%,-3055" /f
+reg add "HKCR\%FileJpeg%" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKCR\%FileJpeg%\DefaultIcon" /ve /t "REG_SZ" /d "%ImgIcon%,-72" /f
+reg add "HKCR\%FileJpeg%\shell\open" /v "MuiVerb" /t "REG_EXPAND_SZ" /d "%MuiVerb%" /f
+reg add "HKCR\%FileJpeg%\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%OpenCommand%" /f
+reg add "HKCR\%FileJpeg%\shell\open\DropTarget" /v "Clsid" /t "REG_SZ" /d "%DropTarget%" /f
 ::File Png
-REG ADD "HKCR\%FilePng%" /V "FriendlyTypeName" /T "REG_EXPAND_SZ" /D "@%PhotoViewer%,-3057" /F
-REG ADD "HKCR\%FilePng%" /V "ImageOptionFlags" /T "REG_DWORD" /D "0x00000001" /F
-REG ADD "HKCR\%FilePng%\DefaultIcon" /VE /T "REG_SZ" /D "%ImgIcon%,-71" /F
-REG ADD "HKCR\%FilePng%\shell\open\command" /VE /T "REG_EXPAND_SZ" /D "%OpenCommand%" /F
-REG ADD "HKCR\%FilePng%\shell\open\DropTarget" /V "Clsid" /T "REG_SZ" /D "%DropTarget%" /F
+reg add "HKCR\%FilePng%" /v "FriendlyTypeName" /t "REG_EXPAND_SZ" /d "@%PhotoViewer%,-3057" /f
+reg add "HKCR\%FilePng%" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKCR\%FilePng%\DefaultIcon" /ve /t "REG_SZ" /d "%ImgIcon%,-71" /f
+reg add "HKCR\%FilePng%\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%OpenCommand%" /f
+reg add "HKCR\%FilePng%\shell\open\DropTarget" /v "Clsid" /t "REG_SZ" /d "%DropTarget%" /f
 ::File Tiff
-REG ADD "HKCR\%FileTiff%" /V "FriendlyTypeName" /T "REG_EXPAND_SZ" /D "@%PhotoViewer%,-3058" /F
-REG ADD "HKCR\%FileTiff%" /V "ImageOptionFlags" /T "REG_DWORD" /D "0x00000001" /F
-REG ADD "HKCR\%FileTiff%\DefaultIcon" /VE /T "REG_SZ" /D "%ImgIcon%,-122" /F
-REG ADD "HKCR\%FileTiff%\shell\open" /V "MuiVerb" /T "REG_EXPAND_SZ" /D "%MuiVerb%" /F
-REG ADD "HKCR\%FileTiff%\shell\open\command" /VE /T "REG_EXPAND_SZ" /D "%OpenCommand%" /F
-REG ADD "HKCR\%FileTiff%\shell\open\DropTarget" /V "Clsid" /T "REG_SZ" /D "%DropTarget%" /F
+reg add "HKCR\%FileTiff%" /v "FriendlyTypeName" /t "REG_EXPAND_SZ" /d "@%PhotoViewer%,-3058" /f
+reg add "HKCR\%FileTiff%" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKCR\%FileTiff%\DefaultIcon" /ve /t "REG_SZ" /d "%ImgIcon%,-122" /f
+reg add "HKCR\%FileTiff%\shell\open" /v "MuiVerb" /t "REG_EXPAND_SZ" /d "%MuiVerb%" /f
+reg add "HKCR\%FileTiff%\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%OpenCommand%" /f
+reg add "HKCR\%FileTiff%\shell\open\DropTarget" /v "Clsid" /t "REG_SZ" /d "%DropTarget%" /f
 ::File Wdp
-REG ADD "HKCR\%FileWdp%" /V "EditFlags" /T "REG_DWORD" /D "0x00010000" /F
-REG ADD "HKCR\%FileWdp%" /V "ImageOptionFlags" /T "REG_DWORD" /D "0x00000001" /F
-REG ADD "HKCR\%FileWdp%\DefaultIcon" /VE /T "REG_SZ" /D "%WdpIcon%,-400" /F
-REG ADD "HKCR\%FileWdp%\shell\open" /V "MuiVerb" /T "REG_EXPAND_SZ" /D "%MuiVerb%" /F
-REG ADD "HKCR\%FileWdp%\shell\open\command" /VE /T "REG_EXPAND_SZ" /D "%OpenCommand%" /F
-REG ADD "HKCR\%FileWdp%\shell\open\DropTarget" /V "Clsid" /T "REG_SZ" /D "%DropTarget%" /F
+reg add "HKCR\%FileWdp%" /v "EditFlags" /t "REG_DWORD" /d "0x00010000" /f
+reg add "HKCR\%FileWdp%" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKCR\%FileWdp%\DefaultIcon" /ve /t "REG_SZ" /d "%WdpIcon%,-400" /f
+reg add "HKCR\%FileWdp%\shell\open" /v "MuiVerb" /t "REG_EXPAND_SZ" /d "%MuiVerb%" /f
+reg add "HKCR\%FileWdp%\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%OpenCommand%" /f
+reg add "HKCR\%FileWdp%\shell\open\DropTarget" /v "Clsid" /t "REG_SZ" /d "%DropTarget%" /f
 ::End
-TIMEOUT /T 5
+timeout /t 5

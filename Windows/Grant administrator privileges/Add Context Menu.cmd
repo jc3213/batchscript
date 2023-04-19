@@ -1,21 +1,21 @@
-@ECHO OFF
-SET File=HKCR\*\shell\runas
-SET Folder=HKCR\Directory\shell\runas
-SET Menu=Grant administrator privileges
-SET Icon=C:\Windows\system32\imageres.dll,-78
-SET Admin=%%SystemRoot%%\system32\cmd.exe /C TAKEOWN /F \"%%1\" ^&^& ICACLS \"%%1\" /grant Administrators:F
-SET Admin@=%%SystemRoot%%\system32\cmd.exe /C TAKEOWN /F \"%%1\" /R /D Y ^&^& ICACLS \"%%1\" /grant Administrators:F /T
+@echo off
+set File=HKCR\*\shell\runas
+set Folder=HKCR\Directory\shell\runas
+set Menu=Grant administrator privileges
+set Icon=C:\Windows\system32\imageres.dll,-78
+set Admin=%%SystemRoot%%\system32\cmd.exe /c takeown /f \"%%1\" ^&^& icacls \"%%1\" /grant Administrators:F
+set Admin@=%%SystemRoot%%\system32\cmd.exe /c takeown /f \"%%1\" /R /d Y ^&^& icacls \"%%1\" /grant Administrators:F /t
 ::File
-REG ADD "%File%" /VE /T "REG_SZ" /D "%Menu%" /F
-REG ADD "%File%" /V "Icon" /T "REG_SZ" /D "%Icon%" /F
-REG ADD "%File%" /V "NoWorkingDirectory"  /T "REG_SZ" /D "" /F
-REG ADD "%File%\command" /VE /T "REG_EXPAND_SZ" /D "%Admin%" /F
-REG ADD "%File%\command" /V "IsolatedCommand" /T "REG_EXPAND_SZ" /D "%Admin%" /F
+reg add "%File%" /ve /t "REG_SZ" /d "%Menu%" /f
+reg add "%File%" /v "Icon" /t "REG_SZ" /d "%Icon%" /f
+reg add "%File%" /v "NoWorkingDirectory"  /t "REG_SZ" /d "" /f
+reg add "%File%\command" /ve /t "REG_EXPAND_SZ" /d "%Admin%" /f
+reg add "%File%\command" /v "IsolatedCommand" /t "REG_EXPAND_SZ" /d "%Admin%" /f
 ::Folder
-REG ADD "%Folder%" /VE /T "REG_SZ" /D "%Menu%" /F
-REG ADD "%Folder%" /V "Icon" /T "REG_SZ" /D "%Icon%" /F
-REG ADD "%Folder%" /V "NoWorkingDirectory" /T "REG_SZ" /D "" /F
-REG ADD "%Folder%\command" /VE /T "REG_EXPAND_SZ" /D "%Admin@%" /F
-REG ADD "%Folder%\command" /V "IsolatedCommand" /T "REG_EXPAND_SZ" /D "%Admin@%" /F
+reg add "%Folder%" /ve /t "REG_SZ" /d "%Menu%" /f
+reg add "%Folder%" /v "Icon" /t "REG_SZ" /d "%Icon%" /f
+reg add "%Folder%" /v "NoWorkingDirectory" /t "REG_SZ" /d "" /f
+reg add "%Folder%\command" /ve /t "REG_EXPAND_SZ" /d "%Admin@%" /f
+reg add "%Folder%\command" /v "IsolatedCommand" /t "REG_EXPAND_SZ" /d "%Admin@%" /f
 ::End
-TIMEOUT /T 5
+timeout /t 5

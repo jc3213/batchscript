@@ -1,3 +1,3 @@
-@ECHO OFF
-SCHTASKS /Change /ENABLE /TN "\Microsoft\Windows\Defrag\ScheduledDefrag"
-TIMEOUT /T 5
+@echo off
+schtasks /change /enable /tn "\Microsoft\Windows\Defrag\ScheduledDefrag"
+timeout /t 5

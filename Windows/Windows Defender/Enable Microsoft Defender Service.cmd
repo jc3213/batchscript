@@ -1,4 +1,4 @@
-@ECHO OFF
-REG ADD "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /V "Start" /T "REG_DWORD" /D "0x00000002" /F
-ECHO Reboot is required for changes to take effect
-TIMEOUT /T 5
+@echo off
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DWORD" /d "0x00000002" /f
+echo Reboot is required for changes to take effect
+tmeout /t 5

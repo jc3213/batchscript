@@ -1,9 +1,9 @@
-@ECHO OFF
-SCHTASKS /Change /ENABLE /TN "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
-SCHTASKS /Change /ENABLE /TN "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /V "AllowTelemetry" /F
-SC CONFIG "DiagTrack" START=AUTO
-SC START "DiagTrack"
-SC CONFIG "DPS" START=AUTO
-SC START "DPS"
-TIMEOUT /T 5
+@echo off
+schtasks /change /enable /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
+schtasks /change /enable /tn "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v "AllowTelemetry" /f
+sc config "DiagTrack" start=auto
+sc start "DiagTrack"
+sc config "DPS" start=auto
+sc start "DPS"
+timeout /t 5

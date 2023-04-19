@@ -1,6 +1,6 @@
-@ECHO OFF
-SC CONFIG "wuauserv" START=DEMAND
-SC START "wuauserv"
-SC CONFIG "UsoSvc" START=DELAYED-AUTO
-SC START "UsoSvc"
-TIMEOUT /T 5
+@echo off
+sc config "wuauserv" start=demand
+sc start "wuauserv"
+sc config "UsoSvc" start=delayed-auto
+sc start "UsoSvc"
+timeout /t 5

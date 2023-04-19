@@ -1,12 +1,12 @@
-@ECHO OFF
-NET STOP wuauserv
-NET STOP cryptSvc
-NET STOP bits
-NET STOP msiserver
-RD /Q /S %SystemRoot%\SoftwareDistribution
-RD /Q /S %SystemRoot%\System32\catroot2
-NET START wuauserv
-NET START cryptSvc
-NET START bits
-NET START msiserver
-TIMEOUT /T 5
+@echo off
+net stop wuauserv
+net stop cryptSvc
+net stop bits
+net stop msiserver
+rd /q /s %SystemRoot%\SoftwareDistribution
+rd /q /s %SystemRoot%\System32\catroot2
+net start wuauserv
+net start cryptSvc
+net start bits
+net start msiserver
+timeout /t 5

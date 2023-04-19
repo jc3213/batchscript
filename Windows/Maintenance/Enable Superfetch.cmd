@@ -1,4 +1,4 @@
-@ECHO OFF
-SC CONFIG "SysMain" START=AUTO
-SC START "SysMain"
-TIMEOUT /T 5
+@echo off
+sc config "SysMain" start=auto
+sc start "SysMain"
+timeout /t 5

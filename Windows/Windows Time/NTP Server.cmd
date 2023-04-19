@@ -1,46 +1,48 @@
-@ECHO OFF
-IF %1 EQU /r GOTO :Sync
-ECHO ===========================================================
-ECHO 1. China Time Server
-ECHO 2. Ali
-ECHO 3. Tencent
-ECHO 4. Google
-ECHO 5. Apple
-ECHO 0. Synchronize Time Now
-ECHO ===========================================================
+@echo off
+if [%1] equ [/r] goto :Sync
+echo ===========================================================
+echo 1. China Time Server
+echo 2. Ali
+echo 3. Tencent
+echo 4. Google
+echo 5. Apple
+echo 0. Synchronize Time Now
+echo ===========================================================
 :Select
-SET /P NTP=^> 
-IF %NTP% EQU 1 SET Server=cn.ntp.org.cn
-IF %NTP% EQU 2 SET Server=ntp.aliyun.com
-IF %NTP% EQU 3 SET Server=ntp.tencent.com
-IF %NTP% EQU 4 SET Server=time.google.com
-IF %NTP% EQU 5 SET Server=time.apple.com
-IF %NTP% EQU 0 GOTO :Sync
-IF NOT DEFINED Server GOTO :Select
-ECHO.
-ECHO.
-:Time
-REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /VE /T "REG_SZ" /D "0" /F
-REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /V "0" /T "REG_SZ" /D "%Server%" /F
-REG ADD "HKLM\SYSTEM\ControlSet001\Services\W32Time\Parameters" /V "NtpServer" /T "REG_SZ" /D "%Server%,0x9" /F
-REG ADD "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /V "NtpServer" /T "REG_SZ" /D "%Server%,0x9" /F
+set /p NTP=^> 
+if [%NTP%] equ [1] call :Server "cn.ntp.org.cn"
+if [%NTP%] equ [2] call :Server "ntp.aliyun.com"
+if [%NTP%] equ [3] call :Server "ntp.tencent.com"
+if [%NTP%] equ [4] call :Server "time.google.com"
+if [%NTP%] equ [5] call :Server "time.apple.com"
+if [%NTP%] equ [0] goto :Sync
+goto :Select
+:Server
+echo.
+echo.
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /ve /t "REG_SZ" /d "0" /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t "REG_SZ" /d "%~1" /f
+reg add "HKLM\SYSTEM\ControlSet001\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%~1,0x9" /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%~1,0x9" /f
+echo.
+echo.
 :Sync
-TASKKILL /F /IM "explorer.exe"
-ECHO.
-ECHO.
-NET STOP W32TIME
-ECHO.
-ECHO.
-NET START W32TIME
-ECHO.
-ECHO.
-W32TM /resync
-ECHO.
-ECHO.
-W32TM /resync
-ECHO.
-ECHO.
-START "" "explorer.exe"
+taskkill /f /im "explorer.exe"
+echo.
+echo.
+net stop W32Time
+echo.
+echo.
+net start W32Time
+echo.
+echo.
+w32tm /resync
+echo.
+echo.
+w32tm /resync
+echo.
+echo.
+start "" "explorer.exe"
 :Exit
-TIMEOUT /T 5
-EXIT
+timeout /t 5
+exit
