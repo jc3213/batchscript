@@ -1,57 +1,57 @@
-@ECHO OFF
-FOR /F %%I in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') DO SET Ramdisk=%%I\Temp
-SET Profile=%Public%\Documents\Tencent\QQ\UserDataInfo.ini
-IF NOT EXIST "%Profile%" GOTO :Document
-FOR /F "TOKENS=1,2 DELIMS==" %%I IN ('type %Profile%') DO (
-    IF %%I EQU UserDataSavePathType SET Type=%%J
-    IF %%I EQU UserDataSavePath SET Path=%%J
+@echo off
+for /F %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
+set Profile=%Public%\Documents\Tencent\QQ\UserDataInfo.ini
+if not exist "%Profile%" goto :Document
+for /F "tokens=1,2 delims==" %%a in ('type %Profile%') do (
+    if %%a equ UserDataSavePathType set Type=%%b
+    if %%a equ UserDataSavePath set Path=%%b
 )
-IF %Type% EQU 1 GOTO :Document
-IF %Type% EQU 2 GOTO :Defined
-GOTO :Exit
+if %Type% equ 1 goto :Document
+if %Type% equ 2 goto :Defined
+goto :Exit
 :Defined
-CD /D %Path%
-IF %ErrorLevel% EQU 0 GOTO :Process
+cd /d %Path%
+if %ErrorLevel% equ 0 goto :Process
 :Document
-CD /D %UserProfile%\Documents\Tencent Files
+cd /d %UserProfile%\Documents\Tencent Files
 :Process
-FOR /D %%I IN (*) DO (CALL :Profile "%%I")
-CD /D %AppData%\Tencent
-RD /S /Q Logs 2>NUL
-RD /S /Q QQTempSys 2>NUL
-RD /S /Q QQ\Temp 2>NUL
-RD /S /Q QQ\webkit_cache 2>NUL
-MKLINK /D Logs %Ramdisk%
-MKLINK /D QQTempSys %Ramdisk%
-MKLINK /D QQ\Temp %Ramdisk%
-MKLINK /D QQ\webkit_cache %Ramdisk%
-CD Users
-FOR /D %%I IN (*) DO (CALL :AppData "%%I")
-GOTO :Exit
+for /d %%a in (*) do (call :Profile "%%a")
+cd /d %AppData%\Tencent
+rd /s /q Logs 2>nul
+rd /s /q QQTempSys 2>nul
+rd /s /q QQ\Temp 2>nul
+rd /s /q QQ\webkit_cache 2>nul
+mklink /d Logs %Ramdisk%
+mklink /d QQTempSys %Ramdisk%
+mklink /d QQ\Temp %Ramdisk%
+mklink /d QQ\webkit_cache %Ramdisk%
+cd Users
+for /d %%a in (*) do (call :AppData "%%a")
+goto :Exit
 :AppData
-CD %1
-RD /S /Q QQ\WinTemp 2>NUL
-MKLINK /D QQ\WinTemp %Ramdisk%
+cd %1
+rd /s /q QQ\WinTemp 2>nul
+mklink /d QQ\WinTemp %Ramdisk%
 CD..
-EXIT /B
+exit /B
 :Profile
-CD %1
-RD /S /Q Audio 2>NUL
-RD /S /Q FileRecv 2>NUL
-RD /S /Q Image 2>NUL
-RD /S /Q Video 2>NUL
-MKLINK /D Audio %Ramdisk%
-MKLINK /D FileRecv %Ramdisk%
-MKLINK /D Image %Ramdisk%
-MKLINK /D Video %Ramdisk%
-IF %1 EQU "All Users" CD.. && EXIT /B
-RD /S /Q Ads 2>NUL
-RD /S /Q AppWebCache 2>NUL
-RD /S /Q OfflinePackage 2>NUL
-MKLINK /D Ads %Ramdisk%
-MKLINK /D AppWebCache %Ramdisk%
-MKLINK /D OfflinePackage %Ramdisk%
-CD..
-EXIT /B
+cd %1
+rd /s /q Audio 2>nul
+rd /s /q FileRecv 2>nul
+rd /s /q Image 2>nul
+rd /s /q Video 2>nul
+mklink /d Audio %Ramdisk%
+mklink /d FileRecv %Ramdisk%
+mklink /d Image %Ramdisk%
+mklink /d Video %Ramdisk%
+if %1 equ "All Users" cd.. && exit /B
+rd /s /q Ads 2>nul
+rd /s /q AppWebCache 2>nul
+rd /s /q OfflinePackage 2>nul
+mklink /d Ads %Ramdisk%
+mklink /d AppWebCache %Ramdisk%
+mklink /d OfflinePackage %Ramdisk%
+cd..
+exit /B
 :Exit
-TIMEOUT /T 5
+timeout /t 5
