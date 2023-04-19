@@ -1,13 +1,13 @@
-@ECHO OFF
-PUSHD %~DP0
-IF EXIST %1 GOTO :Unpack
+@echo off
+pushd %~dp0
+if exist %1 goto :Unpack
 :File
-SET /P File=Select .MSI Installer: 
-IF NOT EXIST "%File%" GOTO :File
-CALL :Unpack "%File%"
+set /p File=Select .MSI Installer: 
+if not exist "%File%" goto :File
+call :Unpack "%File%"
 :Unpack
-MSIEXEC /A "%1" /Q TARGETDIR=%~DP1_unpacked
-ECHO.
-ECHO.
-TIMEOUT -T 5
-EXIT
+msiexec /a "%1" /q targetdir=%~DP1_unpacked
+echo.
+echo.
+timeout /t 5
+exit
