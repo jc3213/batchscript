@@ -2,7 +2,7 @@
 if not exist %1 exit
 cd /d %1
 setlocal EnableDelayedExpansion
-set Seek=1
+set /a Seek=1
 :SeekFiles
 if [%Index%] equ [] set Index=1-9
 for /f "tokens=*" %%a in ('dir /b /a-d') do (
@@ -22,7 +22,7 @@ exit
 if "%1"=="" goto :SeekIndex
 echo %1| findstr /r /c:"^[0-9][0-9]*$" >nul && set Symbol=** || set Symbol=
 echo %Seek%		^>^>		%~1	  %Symbol%
-set /a Seek=%Seek%+1
+set /a Seek+=1
 for /f "tokens=1,* delims= " %%a in ("%*") do (call :ListIndex %%b)
 :SeekIndex
 set /p Index=Which one?  
@@ -32,10 +32,8 @@ goto :SeekFiles
 :Filename
 set String=#%~2
 set Length=0
-for %%k in (
-    4096 2048 1024 512 256 128 64 32 16 8 4 2 1
-) do (
-    if "!String:~%%k,1!" NEQ "" (
+for %%k in (4096 2048 1024 512 256 128 64 32 16 8 4 2 1) do (
+    if "!String:~%%k,1!" neq "" (
         set /a Length+=%%k
         set String=!String:~%%k!
     )
