@@ -6,7 +6,7 @@ set /p File=Select .MSI Installer:
 if not exist "%File%" goto :File
 call :Unpack "%File%"
 :Unpack
-msiexec /a "%1" /q targetdir=%~DP1_unpacked
+msiexec /a "%1" /q TARGETDIR=%~DP1_unpacked
 echo.
 echo.
 timeout /t 5
