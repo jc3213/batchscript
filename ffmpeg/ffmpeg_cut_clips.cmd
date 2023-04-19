@@ -6,8 +6,8 @@ timeout /t 5
 exit
 :Main
 echo =======================================================================
-echo Split video by timestamp: 00:01:02.345
-echo Cut video during periods: 00:01:02.123-00:03:04.345
+echo Split video by timestamp: 00:12:24
+echo Cut video during periods: 00:07:02.33-00:08:04.682
 echo File: %1
 echo =======================================================================
 :Time
