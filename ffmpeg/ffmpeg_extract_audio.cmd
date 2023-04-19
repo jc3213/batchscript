@@ -1,19 +1,28 @@
 @echo off
 pushd %~dp0bin
 if not exist "%~1" EXIT
-ffmpeg.exe -i "%~1" >%Temp%\ffmpeg_log_%~n1.txt 2>&1
-for /f "usebackq skip=13 tokens=4,5 delims=,: " %%a in ("%Temp%\ffmpeg_log_%~n1.txt") do (
-	if "%%a"=="Audio" set format=%%J
-)
-if "%format%"=="aac" call :Extract %1 m4a
-if "%format%"=="opus" call :Extract %1 webm
-if "%format%"=="mp3" call :Extract %1 mp3
-if "%format%"=="vorbis" call :Extract %1 ogg
-if "%format%"=="pcm_s16le" call :Extract %1 wav
-if "%format%"=="flac" call :Extract %1 flac
-if "%format%"=="alac" call :Extract %1 m4a
-if not defined ext set /p ext=Audio Format: 
-:Extract
-ffmpeg.exe -i %1 -vn -acodec copy %~n1.%2
-del /S /Q /f %Temp%\ffmpeg_log_%~n1.txt
+for %%a in (%*) do (call :Audio %%a)
 timeout /t 5
+exit
+:Audio
+for /f "tokens=3,4 delims= " %%a in ('ffmpeg.exe -i %1 2^>^&1 ^| findstr /i "audio"') do (if %%a equ Audio: set Codec=%%b)
+if [%Codec%] equ [aac] set Format=m4a
+if [%Codec%] equ [opus] set Format=webm
+if [%Codec%] equ [mp3] set Format=mp3
+if [%Codec%] equ [vorbis] set Format=ogg
+if [%Codec%] equ [pcm_s16le] set Format=wav
+if [%Codec%] equ [flac] set Format=flac
+if [%Codec%] equ [alac] set Format=m4a
+if defined Format goto :Extract
+echo ==========================================================================
+echo Unknown audio format of %1
+echo The audio codec is %Codec%
+echo Please set the file extention
+echo ==========================================================================
+:Format
+set /p Format=^> 
+echo.
+if not defined Format goto :Format
+:Extract
+ffmpeg.exe -i %1 -vn -acodec copy %~dpn1.%Format%
+exit /b
