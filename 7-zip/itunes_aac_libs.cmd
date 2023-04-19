@@ -9,7 +9,7 @@ curl https://www.apple.com/itunes/download/win%Arch% --location --output %Instal
 md %Unpack% 2>nul
 md %Output% 2>nul
 "%Zip%" e -y %Installer% %iTunes%
-msiexec /a %iTunes% /qn targetdir="%Unpack%"
+msiexec /a %iTunes% /qn TARGETDIR="%Unpack%"
 copy %Unpack%\iTunes\ASL.dll %Output%
 copy %Unpack%\iTunes\CoreAudioToolbox.dll %Output%
 copy %Unpack%\iTunes\CoreFoundation.dll %Output%
