@@ -1,82 +1,82 @@
-@ECHO OFF
-TITLE ImageMagick Utilities
-SET Magick=%~DP0bin\magick.exe
+@echo off
+title ImageMagick Utilities
+set Magick=%~dp0bin\magick.exe
 :Option
-ECHO ============================================================
-ECHO 1. Crop with area
-ECHO 2. Cut off border
-ECHO 3. Convert format
-ECHO ============================================================
-SET /P Act=^> 
-IF [%Act%] EQU [1] GOTO :Crop
-IF [%Act%] EQU [2] GOTO :Shave
-IF [%Act%] EQU [3] GOTO :Conv
-CLS && GOTO :Option
+echo ============================================================
+echo 1. Crop with area
+echo 2. Cut off border
+echo 3. Convert format
+echo ============================================================
+set /p Act=^> 
+if [%Act%] equ [1] goto :Crop
+if [%Act%] equ [2] goto :Shave
+if [%Act%] equ [3] goto :Conv
+cls && goto :Option
 :Crop
-CALL :Area
-FOR %%I IN (%*) DO (CALL :Process %%I crop)
-GOTO :Exit
+call :Area
+for %%a in (%*) do (call :Process %%a crop)
+goto :Exit
 :Shave
-CALL :Area
-FOR %%I IN (%*) DO (CALL :Process %%I shave)
-GOTO :Exit
+call :Area
+for %%a in (%*) do (call :Process %%a shave)
+goto :Exit
 :Conv
-CALL :Format
-FOR %%I IN (%*) DO (CALL :Convert %%I)
-GOTO :Exit
+call :Format
+for %%a in (%*) do (call :Convert %%a)
+goto :Exit
 :Area
-ECHO.
-ECHO.
-ECHO ============================================================
-ECHO https://imagemagick.org/script/command-line-processing.php#geometry
-ECHO Sample: 300x100 (width x height)
-ECHO Cut left and right: 300px(width), cut top and bottom: 100px(height)
-ECHO Sample: 300x100+20+30 (width x height + left + top)
-ECHO Crop image area start from: left 20px to 320px, top: 30px to 130px
-ECHO ============================================================
-SET /P Area=^> 
-IF NOT DEFINED Area GOTO :Area
-ECHO.
-ECHO.
-ECHO ============================================================
-ECHO ImageMagick is processing images...
-ECHO ============================================================
-ECHO.
-EXIT /B
+echo.
+echo.
+echo ============================================================
+echo https://imagemagick.org/script/command-line-processing.php#geometry
+echo Sample: 300x100 (width x height)
+echo Cut left and right: 300px(width), cut top and bottom: 100px(height)
+echo Sample: 300x100+20+30 (width x height + left + top)
+echo Crop image area start from: left 20px to 320px, top: 30px to 130px
+echo ============================================================
+set /p Area=^> 
+if not defined Area goto :Area
+echo.
+echo.
+echo ImageMagick is processing images...
+exit /b
 :Process
-CD /D %1 2>NUL
-IF %ErrorLevel% EQU 0 (
-    MD "%~DP1cutted_%~NX1" 2>NUL
-    FOR %%I IN (*) DO ("%Magick%" convert "%%I" -%2 %Area% "%~DP1cutted_%~NX1\%%I")
-    CD..
-) ELSE (
-    "%Magick%" convert %1 -%2 %Area% "%~DP1cutted_%~NX1"
+cd /d %1 2>nul
+if %ErrorLevel% equ 0 (
+    md "%~dp1cutted_%~nx1" 2>nul
+    for %%a in (*) do ("%Magick%" convert "%%a" -%2 %Area% "%~dp1cutted_%~nx1\%%a")
+    cd..
+) else (
+    "%Magick%" convert %1 -%2 %Area% "%~dp1cutted_%~nx1"
 )
-EXIT /B
+exit /b
 :Format
-ECHO.
-ECHO.
-ECHO ============================================================
-ECHO 1. jpg
-ECHO 2. png
-ECHO 3. avif
-ECHO ============================================================
-SET /P FM=^> 
-IF [%FM%] EQU [1] SET Format=jpg
-IF [%FM%] EQU [2] SET Format=png
-IF [%FM%] EQU [3] SET Format=avif
-IF NOT DEFINED Format GOTO :Format
-ECHO.
-EXIT /B
+echo.
+echo.
+echo ============================================================
+echo 1. jpg
+echo 2. png
+echo 3. avif
+echo ============================================================
+set /p FM=^> 
+if [%FM%] equ [1] set Format=jpg
+if [%FM%] equ [2] set Format=png
+if [%FM%] equ [3] set Format=avif
+if not defined Format goto :Format
+echo.
+echo.
+echo ImageMagick is converting images...
+exit /b
 :Convert
-CD /D %1 2>NUL
-IF %ErrorLevel% EQU 0 (
-    MD "%~DP1conv_%~NX1" 2>NUL
-    FOR %%I IN (*) DO ("%Magick%" "%%I" "%~DP1conv_%~NX1\%%~NI.%Format%")
-    CD..
-) ELSE (
-    "%Magick%" %1 "%~DP1conv_%~N1.%Format%"
+cd /d %1 2>nul
+if %ErrorLevel% equ 0 (
+    md "%~dp1conv_%~nx1" 2>nul
+    for %%a in (*) do ("%Magick%" "%%a" "%~dp1conv_%~nx1\%%~na.%Format%")
+    cd..
+) else (
+    "%Magick%" %1 "%~dp1conv_%~n1.%Format%"
 )
-EXIT /B
+exit /b
 :Exit
-TIMEOUT -T 5
+echo.
+timeout /t 5

@@ -1,32 +1,32 @@
-@ECHO OFF
-PUSHD %~DP0
-IF "%1"=="/h" GOTO :Hide
-IF "%1"=="/r" GOTO :Register
-IF "%1"=="/u" GOTO :Unregister
+@echo off
+pushd %~dp0
+if [%1] equ [/h] goto :Hide
+if [%1] equ [/r] goto :Register
+if [%1] equ [/u] goto :Unregister
 :App
-IF NOT EXIST aria2c.session CALL :Session
+if not exist aria2c.session call :Session
 bin\aria2c.exe --conf=aria2c.conf
-EXIT
+exit
 :Hide
-IF NOT EXIST aria2c.session CALL :Session
-IF NOT EXIST aria2c.vbs CALL :Startup
+if not exist aria2c.session call :Session
+if not exist aria2c.vbs call :Startup
 aria2c.vbs
-EXIT
+exit
 :Register
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /T "REG_SZ" /D "%CD%\aria2c.vbs" /F
-GOTO :Hide
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /t "REG_SZ" /d "%CD%\aria2c.vbs" /f
+goto :Hide
 :Unregister
-TASKKILL /IM "aria2c.exe"
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "aria2c" /F
-TIMEOUT -T 5
-EXIT
+taskkill /im "aria2c.exe"
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /f
+timeout /t 5
+exit
 :Session
-ECHO OFF>aria2c.session
-EXIT /B
+type nul>aria2c.session
+exit /b
 :Startup
-ECHO Set objSh = CreateObject("WScript.Shell")>aria2c.vbs
-ECHO Set objFSO = CreateObject("Scripting.FileSystemObject")>>aria2c.vbs
-ECHO Set objFile = objFSO.GetFile(Wscript.ScriptFullName)>>aria2c.vbs
-ECHO objDir = objFSO.GetParentFolderName(objFile)>>aria2c.vbs
-ECHO objSh.run "%WinDir%\System32\cmd.exe /k pushd " ^& objDir ^& " && bin\aria2c.exe --conf=aria2c.conf", ^0>>aria2c.vbs
-EXIT /B
+echo Set objSh = CreateObject("WScript.Shell")>aria2c.vbs
+echo Set objFSO = CreateObject("Scripting.FileSystemObject")>>aria2c.vbs
+echo Set objFile = objFSO.GetFile(Wscript.ScriptFullName)>>aria2c.vbs
+echo objDir = objFSO.GetParentFolderName(objFile)>>aria2c.vbs
+echo objSh.run "%WinDir%\System32\cmd.exe /k pushd " ^& objDir ^& " && bin\aria2c.exe --conf=aria2c.conf", ^0>>aria2c.vbs
+exit /b
