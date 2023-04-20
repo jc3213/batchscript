@@ -1,7 +1,7 @@
 @echo off
 if not exist %1 exit
 cd /d %1
-setlocal EnableDelayedExpansion
+setlocal enabledelayedexpansion
 set /a Seek=1
 :SeekFiles
 if [%Index%] equ [] set Index=1-9
