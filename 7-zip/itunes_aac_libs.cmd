@@ -1,14 +1,14 @@
 @echo off
 pushd %~dp0
 for /f "tokens=1,2*" %%a in ('reg query HKLM\Software\7-Zip /V Path') do (if "%%a"=="Path" set Zip=%%c7z.exe)
-if %PROCESSOR_ARCHITECTURE% equ AMD64 (call :X64) else (call :X86)
+if %Processor_Architecture% equ AMD64 (call :X64) else (call :X86)
 set Installer=iTunes%Arch%Setup.exe
 if exist %Installer% goto :Extractor
 curl https://www.apple.com/itunes/download/win%Arch% --location --output %Installer%
 :Extractor
+"%Zip%" e -y %Installer% %iTunes%
 md %Unpack% 2>nul
 md %Output% 2>nul
-"%Zip%" e -y %Installer% %iTunes%
 msiexec /a %iTunes% /qn TARGETDIR="%Unpack%"
 copy %Unpack%\iTunes\ASL.dll %Output%
 copy %Unpack%\iTunes\CoreAudioToolbox.dll %Output%
