@@ -71,7 +71,7 @@ echo Set image quality: 1-100
 echo Default: 80
 echo ============================================================
 set /p QU=^> 
-echo %QU%| findstr /r /c:"^([1-9][0-9]?|100)$" >nul || set QU=80
+echo %QU%| findstr /r "^[1-9]$ ^[1-9][0-9]$ ^100$" >nul  || set QU=80
 echo.
 echo.
 echo ImageMagick is converting images...
