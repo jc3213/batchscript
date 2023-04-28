@@ -15,7 +15,6 @@ echo ===========================================================
 :Input
 set /p index=^> 
 echo.
-if not defined index goto :Input
 echo %index%| findstr /r /c:"^[0-9][0-9]*$" >nul || goto :Input
 for /f %%a in ('dir /b /a-d') do (call :Rename "%%a")
 timeout /t 5
@@ -26,7 +25,7 @@ echo %seek%        ^>^>        %~1  %better%
 set /a seek+=1
 call :Option %2
 :Rename
-for /f "tokens=1 delims=-_.() " %%a in (%1) do (call :Filename %1 "%%a")
+for /f "tokens=%index% delims=-_.() " %%a in (%1) do (call :Filename %1 "%%a")
 exit /b
 :Filename
 set string=#%~2
