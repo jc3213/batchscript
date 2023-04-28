@@ -63,6 +63,15 @@ if [%FM%] equ [1] set Format=jpg
 if [%FM%] equ [2] set Format=png
 if [%FM%] equ [3] set Format=avif
 if not defined Format goto :Format
+:Quality
+echo.
+echo.
+echo ============================================================
+echo Set image quality: 1-100
+echo Default: 80
+echo ============================================================
+set /p QU=^> 
+echo %QU%| findstr /r /c:"^([1-9][0-9]?|100)$" >nul || set QU=80
 echo.
 echo.
 echo ImageMagick is converting images...
@@ -70,11 +79,11 @@ exit /b
 :Convert
 cd /d %1 2>nul
 if %ErrorLevel% equ 0 goto :ConvertFolder
-"%Magick%" %1 "%~dp1conv_%~n1.%Format%"
+"%Magick%" %1 -quality %QU% "%~dp1conv_%~n1.%Format%"
 exit /b
 :ConvertFolder
 md "%~dp1conv_%~nx1" 2>nul
-for %%a in (*) do ("%Magick%" "%%a" "%~dp1conv_%~nx1\%%~na.%Format%")
+for %%a in (*) do ("%Magick%" "%%a" -quality %QU% "%~dp1conv_%~nx1\%%~na.%Format%")
 cd..
 exit /b
 :Exit
