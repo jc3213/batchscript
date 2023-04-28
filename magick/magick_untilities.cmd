@@ -42,13 +42,13 @@ echo ImageMagick is processing images...
 exit /b
 :Process
 cd /d %1 2>nul
-if %ErrorLevel% equ 0 (
-    md "%~dp1cutted_%~nx1" 2>nul
-    for %%a in (*) do ("%Magick%" convert "%%a" -%2 %Area% "%~dp1cutted_%~nx1\%%a")
-    cd..
-) else (
-    "%Magick%" convert %1 -%2 %Area% "%~dp1cutted_%~nx1"
-)
+if %ErrorLevel% equ 0 goto :ProcessFolder
+"%Magick%" convert %1 -%2 %Area% "%~dp1cutted_%~nx1"
+exit /b
+:ProcessFolder
+md "%~dp1cutted_%~nx1" 2>nul
+for %%a in (*) do ("%Magick%" convert "%%a" -%2 %Area% "%~dp1cutted_%~nx1\%%a")
+cd..
 exit /b
 :Format
 echo.
@@ -69,13 +69,13 @@ echo ImageMagick is converting images...
 exit /b
 :Convert
 cd /d %1 2>nul
-if %ErrorLevel% equ 0 (
-    md "%~dp1conv_%~nx1" 2>nul
-    for %%a in (*) do ("%Magick%" "%%a" "%~dp1conv_%~nx1\%%~na.%Format%")
-    cd..
-) else (
-    "%Magick%" %1 "%~dp1conv_%~n1.%Format%"
-)
+if %ErrorLevel% equ 0 goto :ConvertFolder
+"%Magick%" %1 "%~dp1conv_%~n1.%Format%"
+exit /b
+:ConvertFolder
+md "%~dp1conv_%~nx1" 2>nul
+for %%a in (*) do ("%Magick%" "%%a" "%~dp1conv_%~nx1\%%~na.%Format%")
+cd..
 exit /b
 :Exit
 echo.
