@@ -15,12 +15,12 @@ echo ===========================================================
 :Input
 set /p index=^> 
 echo.
-echo %index%| findstr /r /c:"^[0-9][0-9]*$" >nul || goto :Input
+echo %index%| findstr /r "^[1-9][0-9]*$" >nul || goto :Input
 for /f %%a in ('dir /b /a-d') do (call :Rename "%%a")
 timeout /t 5
 exit
 :Text
-echo %~1| findstr /r /c:"^[0-9][0-9]*$" >nul && set better=** || set better=
+echo %~1| findstr /r "^[0-9][0-9]*$" >nul && set better=** || set better=
 echo %seek%            ^>^>            %~1        %better%
 set /a seek+=1
 call :Option %2
