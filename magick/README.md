@@ -21,8 +21,8 @@
     - Sample: 400x200
         - Width: 400px
         - Height: 200px
-    - Cut both 400px from left and right of the image
-    - Cut both 200px from top and bottom of the image
+    - Cut 400px from both left and right of the image
+    - Cut 200px from both top and bottom of the image
 - Convert images
     - Image Quality: 1-100
     - Default: 90
