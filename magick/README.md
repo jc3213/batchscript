@@ -14,7 +14,7 @@
         - Top: 20px
         - Left: 80px
     - Starts from top 20px, select a 400px wide area that ends at 420px
-    - starts from left 80px, select a 200px high area that ends at 280px
+    - Starts from left 80px, select a 200px high area that ends at 280px
     - Crop the image inside the area
 - Cut off border
     - Read [ImageMagick Geometry](https://imagemagick.org/script/command-line-processing.php#geometry)
