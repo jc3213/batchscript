@@ -11,10 +11,10 @@
     - Sample: 400x200+20+80
         - Width: 400px
         - Height: 200px
-        - Top: 20px
-        - Left: 80px
-    - Starts from top 20px, select a 400px wide area that ends at 420px
-    - Starts from left 80px, select a 200px high area that ends at 280px
+        - Left: 20px
+        - Top: 80px
+    - Starts from left 20px, select a 400px wide area that ends at 420px
+    - Starts from top 80px, select a 200px high area that ends at 280px
     - Crop the image inside the area
 - Cut off border
     - Read [ImageMagick Geometry](https://imagemagick.org/script/command-line-processing.php#geometry)
