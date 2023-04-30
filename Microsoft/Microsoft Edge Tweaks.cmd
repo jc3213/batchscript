@@ -5,8 +5,8 @@ echo ==================================================================
 echo 1. Bing discovery button
 echo 2. Desktop search bar
 echo 3. Alt + Tab behavior
-echo 4. User profile folder
-echo 5. Browser caches folder
+echo 4. Manage user profile
+echo 5. Manage browser caches
 echo ==================================================================
 set /p main=^> 
 if [%main%] equ [1] goto :bingbn
@@ -80,7 +80,7 @@ reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v
 goto :clear
 :profile
 cls
-title Move Profile Folder
+title Manage User Profile
 echo ==================================================================
 echo 1. Move to user documents
 echo 2. User defined folder
@@ -120,7 +120,7 @@ goto :clear
 @echo off
 :caches
 cls
-title Move Caches Folder
+title Manage Browser Caches
 echo ==================================================================
 echo 1. Move to RAMDISK
 echo 2. User defined folder
