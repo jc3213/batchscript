@@ -1,0 +1,180 @@
+@echo off
+set /a int=0
+:main
+title Microsoft Edge Tweaks
+echo ==================================================================
+echo 1. The Bing button
+echo 2. Desktop search bar
+echo 3. Alt + Tab behavior
+echo 4. Move user profiles
+echo 5. Move browser caches
+echo ==================================================================
+set /p main=^> 
+if [%main%] equ [1] goto :bingbn
+if [%main%] equ [2] goto :search
+if [%main%] equ [3] goto :alttab
+if [%main%] equ [4] goto :profile
+if [%main%] equ [5] goto :caches
+goto :back
+:bingbn
+echo.
+title Tweak The Bing Button
+echo ==================================================================
+echo 1. Disable the Bing button
+echo 2. Enable the Bing button
+echo 0. Back to main menu
+echo ==================================================================
+set /p btn=^> 
+if [%btn%] equ [1] goto :btnoff
+if [%btn%] equ [2] goto :btnbak
+if [%btn%] equ [0] goto :back
+goto :bingbn
+:btnoff
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled"  /t "REG_DWORD" /d "0x00000000" /f
+goto :back
+:btnbak
+echo.
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled" /f
+goto :back
+:search
+echo.
+title Tweak Desktop Search Bar
+echo ==================================================================
+echo 1. Disable desktop search bar
+echo 2. Enable desktop search bar
+echo 0. Back to main menu
+echo ==================================================================
+set /p bar=^> 
+if [%bar%] equ [1] goto :baroff
+if [%bar%] equ [2] goto :barbak
+if [%bar%] equ [0] goto :back
+goto :search
+:baroff
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed"  /t "REG_DWORD" /d "0x00000000" /f
+goto :back
+:barbak
+echo.
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed" /f
+goto :back
+:alttab
+echo.
+title Change Alt + Tab Behavior
+echo ==================================================================
+echo 1. Switch only via windows
+echo 2. Restore default behavior
+echo 0. Back to main menu
+echo ==================================================================
+set /p alt=^> 
+if [%alt%] equ [1] goto :altoff
+if [%alt%] equ [2] goto :altbak
+if [%alt%] equ [0] goto :back
+goto :alttab
+:altoff
+echo.
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /t "REG_DWORD" /d "0x00000003" /f
+goto :back
+:altbak
+echo.
+reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /f
+goto :back
+:profile
+echo.
+title User Profile Folder
+echo ==================================================================
+echo 1. Move to user documents
+echo 2. User defined folder
+echo 3. Restore default folder
+echo 0. Back to main menu
+echo ==================================================================
+set /p pro=^> 
+if [%pro%] equ [1] goto :prodoc
+if [%pro%] equ [2] goto :prodef
+if [%pro%] equ [3] goto :probak
+if [%pro%] equ [0] goto :back
+goto :profile
+:prodoc
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%UserProfile%\Documents\EdgeUserData" /f
+goto :back
+:probak
+echo.
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
+goto :back
+:prodef
+echo.
+echo ==================================================================
+echo Sample: D:\EdgeUserData
+echo ==================================================================
+set /p pdir=^> 
+if exist "%pdir%" goto :prodir
+echo.
+echo %pdir% is not a valid path
+set pro=
+set pdir=
+goto :profile
+:prodir
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%pdir%" /f
+goto :back
+@echo off
+:caches
+echo.
+title Browser Caches Folder
+echo ==================================================================
+echo 1. Move to RAMDISK
+echo 2. User defined folder
+echo 3. Restore default folder
+echo 0. Back to main menu
+echo ==================================================================
+set /p csh=^> 
+if [%csh%] equ [1] goto :cshram
+if [%csh%] equ [2] goto :cshdef
+if [%csh%] equ [3] goto :cshbak
+if [%csh%] equ [0] goto :back
+echo.
+goto :caches
+:cshram
+for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
+if exist "%Ramdisk%" goto :cshset
+echo No RAMDISK detected!
+goto :back
+:cshset
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%Ramdisk%" /f
+goto :back
+:cshbak
+echo.
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /f
+goto :back
+:cshdef
+echo.
+echo ==================================================================
+echo Sample: R:\Temp
+echo ==================================================================
+set /p cdir=^> 
+if exist "%cdir%" goto :cshdir
+echo.
+echo %cdir% is not a valid path
+set csh=
+set cdir=
+goto :caches
+:cshdir
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%cdir%" /f
+goto :back
+:back
+set main=
+set btn=
+set bar=
+set alt=
+set pro=
+set pdir=
+set csh=
+set cdir=
+echo.
+pause
+cls
+goto :main
+timeout /t 5
