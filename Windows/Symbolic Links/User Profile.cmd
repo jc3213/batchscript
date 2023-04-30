@@ -13,18 +13,18 @@ rd /s /q "%UserProfile%\Music" 2>nul
 rd /s /q "%UserProfile%\Pictures" 2>nul
 rd /s /q "%UserProfile%\Saved Games" 2>nul
 rd /s /q "%UserProfile%\Videos" 2>nul
-md "%Drive%:\Home\Desktop" 2>nul
-md "%Drive%:\Home\Documents" 2>nul
-md "%Drive%:\Home\Downloads" 2>nul
-md "%Drive%:\Home\Music" 2>nul
-md "%Drive%:\Home\Pictures" 2>nul
-md "%Drive%:\Home\Saved Games" 2>nul
-md "%Drive%:\Home\Videos" 2>nul
-mklink /d "%UserProfile%\Desktop" "%Drive%:\Home\Desktop"
-mklink /d "%UserProfile%\Documents" "%Drive%:\Home\Documents"
-mklink /d "%UserProfile%\Downloads" "%Drive%:\Home\Downloads"
-mklink /d "%UserProfile%\Music" "%Drive%:\Home\Music"
-mklink /d "%UserProfile%\Pictures" "%Drive%:\Home\Pictures"
-mklink /d "%UserProfile%\Saved Games" "%Drive%:\Home\Saved Games"
-mklink /d "%UserProfile%\Videos" "%Drive%:\Home\Videos"
+md "%drive%\Home\Desktop" 2>nul
+md "%drive%\Home\Documents" 2>nul
+md "%drive%\Home\Downloads" 2>nul
+md "%drive%\Home\Music" 2>nul
+md "%drive%\Home\Pictures" 2>nul
+md "%drive%\Home\Saved Games" 2>nul
+md "%drive%\Home\Videos" 2>nul
+mklink /d "%UserProfile%\Desktop" "%drive%\Home\Desktop"
+mklink /d "%UserProfile%\Documents" "%drive%\Home\Documents"
+mklink /d "%UserProfile%\Downloads" "%drive%\Home\Downloads"
+mklink /d "%UserProfile%\Music" "%drive%\Home\Music"
+mklink /d "%UserProfile%\Pictures" "%drive%\Home\Pictures"
+mklink /d "%UserProfile%\Saved Games" "%drive%\Home\Saved Games"
+mklink /d "%UserProfile%\Videos" "%drive%\Home\Videos"
 timeout /t 5
