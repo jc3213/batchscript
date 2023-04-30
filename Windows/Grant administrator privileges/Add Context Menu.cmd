@@ -4,7 +4,7 @@ set Folder=HKCR\Directory\shell\runas
 set Menu=Grant administrator privileges
 set Icon=C:\Windows\system32\imageres.dll,-78
 set Admin=%%SystemRoot%%\system32\cmd.exe /c takeown /f \"%%1\" ^&^& icacls \"%%1\" /grant Administrators:F
-set Admin@=%%SystemRoot%%\system32\cmd.exe /c takeown /f \"%%1\" /R /d Y ^&^& icacls \"%%1\" /grant Administrators:F /t
+set Admin@=%%SystemRoot%%\system32\cmd.exe /c takeown /f \"%%1\" /r /d y ^&^& icacls \"%%1\" /grant Administrators:F /t
 ::File
 reg add "%File%" /ve /t "REG_SZ" /d "%Menu%" /f
 reg add "%File%" /v "Icon" /t "REG_SZ" /d "%Icon%" /f
