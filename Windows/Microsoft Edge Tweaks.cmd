@@ -1,13 +1,12 @@
 @echo off
-set /a int=0
 :main
 title Microsoft Edge Tweaks
 echo ==================================================================
 echo 1. Bing discovery button
 echo 2. Desktop search bar
 echo 3. Alt + Tab behavior
-echo 4. Move user profiles
-echo 5. Move browser caches
+echo 4. User profile folder
+echo 5. Browser caches folder
 echo ==================================================================
 set /p main=^> 
 if [%main%] equ [1] goto :bingbn
@@ -15,7 +14,7 @@ if [%main%] equ [2] goto :search
 if [%main%] equ [3] goto :alttab
 if [%main%] equ [4] goto :profile
 if [%main%] equ [5] goto :caches
-goto :back
+goto :clear
 :bingbn
 echo.
 title Tweak Discovery Button
@@ -32,11 +31,11 @@ goto :bingbn
 :btnoff
 echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled"  /t "REG_DWORD" /d "0x00000000" /f
-goto :back
+goto :clear
 :btnbak
 echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled" /f
-goto :back
+goto :clear
 :search
 echo.
 title Tweak Desktop Search Bar
@@ -53,11 +52,11 @@ goto :search
 :baroff
 echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed"  /t "REG_DWORD" /d "0x00000000" /f
-goto :back
+goto :clear
 :barbak
 echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed" /f
-goto :back
+goto :clear
 :alttab
 echo.
 title Change Alt + Tab Behavior
@@ -74,14 +73,14 @@ goto :alttab
 :altoff
 echo.
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /t "REG_DWORD" /d "0x00000003" /f
-goto :back
+goto :clear
 :altbak
 echo.
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /f
-goto :back
+goto :clear
 :profile
 echo.
-title User Profile Folder
+title Move Profile Folder
 echo ==================================================================
 echo 1. Move to user documents
 echo 2. User defined folder
@@ -97,11 +96,11 @@ goto :profile
 :prodoc
 echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%UserProfile%\Documents\EdgeUserData" /f
-goto :back
+goto :clear
 :probak
 echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
-goto :back
+goto :clear
 :prodef
 echo.
 echo ==================================================================
@@ -117,11 +116,11 @@ goto :profile
 :prodir
 echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%pdir%" /f
-goto :back
+goto :clear
 @echo off
 :caches
 echo.
-title Browser Caches Folder
+title Move Caches Folder
 echo ==================================================================
 echo 1. Move to RAMDISK
 echo 2. User defined folder
@@ -139,15 +138,15 @@ goto :caches
 for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
 if exist "%Ramdisk%" goto :cshset
 echo No RAMDISK detected!
-goto :back
+goto :clear
 :cshset
 echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%Ramdisk%" /f
-goto :back
+goto :clear
 :cshbak
 echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /f
-goto :back
+goto :clear
 :cshdef
 echo.
 echo ==================================================================
@@ -163,7 +162,10 @@ goto :caches
 :cshdir
 echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%cdir%" /f
-goto :back
+goto :clear
+:clear
+echo.
+pause
 :back
 set main=
 set btn=
@@ -173,8 +175,6 @@ set pro=
 set pdir=
 set csh=
 set cdir=
-echo.
-pause
 cls
 goto :main
 timeout /t 5
