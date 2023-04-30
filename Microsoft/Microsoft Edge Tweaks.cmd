@@ -14,7 +14,7 @@ if [%main%] equ [2] goto :search
 if [%main%] equ [3] goto :alttab
 if [%main%] equ [4] goto :profile
 if [%main%] equ [5] goto :caches
-goto :clear
+goto :back
 :bingbn
 echo.
 title Tweak Discovery Button
@@ -177,4 +177,3 @@ set csh=
 set cdir=
 cls
 goto :main
-timeout /t 5
