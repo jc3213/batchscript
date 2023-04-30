@@ -20,7 +20,7 @@ echo.
 title Tweak Discovery Button
 echo ==================================================================
 echo 1. Disable discovery button
-echo 2. Enable discovery button
+echo 2. Restore discovery button
 echo 0. Back to main menu
 echo ==================================================================
 set /p btn=^> 
@@ -41,7 +41,7 @@ echo.
 title Tweak Desktop Search Bar
 echo ==================================================================
 echo 1. Disable desktop search bar
-echo 2. Enable desktop search bar
+echo 2. Restore desktop search bar
 echo 0. Back to main menu
 echo ==================================================================
 set /p bar=^> 
