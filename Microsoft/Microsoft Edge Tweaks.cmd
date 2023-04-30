@@ -16,7 +16,7 @@ if [%main%] equ [4] goto :profile
 if [%main%] equ [5] goto :caches
 goto :back
 :bingbn
-echo.
+cls
 title Tweak Discovery Button
 echo ==================================================================
 echo 1. Disable discovery button
@@ -37,7 +37,7 @@ echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled" /f
 goto :clear
 :search
-echo.
+cls
 title Tweak Desktop Search Bar
 echo ==================================================================
 echo 1. Disable desktop search bar
@@ -58,7 +58,7 @@ echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed" /f
 goto :clear
 :alttab
-echo.
+cls
 title Change Alt + Tab Behavior
 echo ==================================================================
 echo 1. Switch only via windows
@@ -79,7 +79,7 @@ echo.
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /f
 goto :clear
 :profile
-echo.
+cls
 title Move Profile Folder
 echo ==================================================================
 echo 1. Move to user documents
@@ -102,7 +102,7 @@ echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
 goto :clear
 :prodef
-echo.
+cls
 echo ==================================================================
 echo Sample: D:\EdgeUserData
 echo ==================================================================
@@ -119,7 +119,7 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d
 goto :clear
 @echo off
 :caches
-echo.
+cls
 title Move Caches Folder
 echo ==================================================================
 echo 1. Move to RAMDISK
@@ -132,7 +132,6 @@ if [%csh%] equ [1] goto :cshram
 if [%csh%] equ [2] goto :cshdef
 if [%csh%] equ [3] goto :cshbak
 if [%csh%] equ [0] goto :back
-echo.
 goto :caches
 :cshram
 for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
