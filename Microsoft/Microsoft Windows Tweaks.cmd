@@ -1,23 +1,25 @@
 @echo off
 set backup=%~dp0microcode_backup.zip
 :main
-title Microsoft Windows Tweaks
+title Windows Management Tweaks
 echo ==================================================================
 echo 1. Manage power plan
 echo 2. Manage diagnostic
 echo 3. Manage maintenance
 echo 4. Manage anti-virus
-echo 5. Manage CPU microcode
+echo 5. Manage system update
+echo 6. Manage CPU microcode
 echo ==================================================================
 set /p main=^> 
 if [%main%] equ [1] goto :powerp
 if [%main%] equ [2] goto :wndiag
 if [%main%] equ [3] goto :wnmain
 if [%main%] equ [4] goto :antivr
-if [%main%] equ [5] goto :cpumic
+if [%main%] equ [5] goto :update
+if [%main%] equ [6] goto :cpumic
 goto :back
 :powerp
-echo.
+cls
 title Manage Power Plan
 echo ==================================================================
 echo 1. Disable hibernation
@@ -52,7 +54,7 @@ powercfg /change disk-timeout-ac 20
 powercfg /change disk-timeout-dc 20
 goto :clear
 :wndiag
-echo.
+cls
 title Manage Windows Diagnostic
 echo ==================================================================
 echo 1. Disable diagnostic
@@ -85,7 +87,7 @@ sc config "DPS" start=auto
 sc start "DPS"
 goto :clear
 :wnmain
-echo.
+cls
 title Manage Windows Maintenance
 echo ==================================================================
 echo 1. Disable auto maintenance
@@ -132,7 +134,7 @@ sc config "SysMain" start=auto
 sc start "SysMain"
 goto :clear
 :antivr
-echo.
+cls
 title Manage Microsoft Defender
 echo ==================================================================
 echo 1. Disable context menu
@@ -204,8 +206,55 @@ reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSp
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DWORD" /d "0x00000002" /f
 goto :clear
-:cpumic
+:update
+cls
+title Manage Windows Update
+echo ==================================================================
+echo 1. Disable auto update
+echo 2. Restore auto update
+echo 3. Disable drivers auto update
+echo 4. Restore drivers auto update
+echo 5. Disable wuauserv service
+echo 6. Restore wuauserv service
+echo 0. Back to main menu
+echo ==================================================================
+set /p upd=^> 
+if [%upd%] equ [1] goto :autoff
+if [%upd%] equ [2] goto :autoon
+if [%upd%] equ [3] goto :drvoff
+if [%upd%] equ [4] goto :drivon
+if [%upd%] equ [3] goto :wusoff
+if [%upd%] equ [4] goto :wusvon
+if [%upd%] equ [0] goto :back
+goto :update
+:autoff
 echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t "REG_DWORD" /d "0x00000001" /f
+goto :clear
+:autoon
+echo.
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /f
+goto :clear
+:drvoff
+echo.
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t "REG_DWORD" /d "0x00000001" /f
+goto :clear
+:drivon
+echo.
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /f
+goto :clear
+:wusoff
+echo.
+sc stop "wuauserv"
+sc config "wuauserv" start=disabled
+goto :clear
+:wusvon
+echo.
+sc config "wuauserv" start=demand
+sc start "wuauserv"
+goto :clear
+:cpumic
+cls
 title Manage CPU Microcode
 echo ==================================================================
 echo 1. Remove CPU microcode
@@ -216,7 +265,7 @@ set /p cpu=^>
 if [%cpu%] equ [1] goto :cpurem
 if [%cpu%] equ [2] goto :cpubak
 if [%cpu%] equ [0] goto :back
-goto cpumic
+goto :cpumic
 :cpurem
 pushd %SystemRoot%\System32
 powershell -Command "Compress-Archive -Force -Path 'mcupdate_AuthenticAMD.dll','mcupdate_GenuineIntel.dll' -DestinationPath '%backup%'"
@@ -236,6 +285,7 @@ set main=
 set pow=
 set wda=
 set man=
+set upd=
 set cpu=
 cls
 goto :main
