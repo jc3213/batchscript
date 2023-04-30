@@ -3,7 +3,7 @@ set /a int=0
 :main
 title Microsoft Edge Tweaks
 echo ==================================================================
-echo 1. The Bing button
+echo 1. Bing discovery button
 echo 2. Desktop search bar
 echo 3. Alt + Tab behavior
 echo 4. Move user profiles
@@ -18,10 +18,10 @@ if [%main%] equ [5] goto :caches
 goto :back
 :bingbn
 echo.
-title Tweak The Bing Button
+title Tweak Discovery Button
 echo ==================================================================
-echo 1. Disable the Bing button
-echo 2. Enable the Bing button
+echo 1. Disable discovery button
+echo 2. Enable discovery button
 echo 0. Back to main menu
 echo ==================================================================
 set /p btn=^> 
