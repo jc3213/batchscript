@@ -1,5 +1,6 @@
 # Important
-- Most of the `.cmd`s in [Windows](/Windows/) require administrative privileges
+- [Windows](/Windows/) and [Microsoft](/Microsoft/) require administrative privileges mostly
+- [Microsoft](/Microsoft/) is consolidated interactive management bachscript
 
 # How to use
 - [7-Zip](/7-zip/README.md)
