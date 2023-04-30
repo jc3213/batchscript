@@ -1,12 +1,11 @@
 @echo off
-:Drive
+:input
 echo ====================================================
 echo Please enter the disk label for user profile
 echo ====================================================
-set /p Label=^>
-if not defined Label cls && goto :Drive
-set Drive=%Label::=%
-:Profile
+set /p label=^>
+set drive=%label:~0,1%:
+if not exist %drive% cls && goto :input
 rd /s /q "%UserProfile%\Desktop" 2>nul
 rd /s /q "%UserProfile%\Documents" 2>nul
 rd /s /q "%UserProfile%\Downloads" 2>nul
