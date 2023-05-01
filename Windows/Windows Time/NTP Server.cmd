@@ -1,5 +1,6 @@
 @echo off
-if [%1] equ [/r] goto :Sync
+if [%1] equ [/r] goto :update
+:main
 echo ===========================================================
 echo 1. China Time Server
 echo 2. Ali
@@ -8,25 +9,23 @@ echo 4. Google
 echo 5. Apple
 echo 0. Synchronize Time Now
 echo ===========================================================
-:Select
-set /p NTP=^> 
-if [%NTP%] equ [1] call :Server "cn.ntp.org.cn"
-if [%NTP%] equ [2] call :Server "ntp.aliyun.com"
-if [%NTP%] equ [3] call :Server "ntp.tencent.com"
-if [%NTP%] equ [4] call :Server "time.google.com"
-if [%NTP%] equ [5] call :Server "time.apple.com"
-if [%NTP%] equ [0] goto :Sync
-goto :Select
-:Server
+set /p act=^> 
+if [%act%] equ [1] set ntp=cn.ntp.org.cn
+if [%act%] equ [2] set ntp=ntp.aliyun.com
+if [%act%] equ [3] set ntp=ntp.tencent.com
+if [%act%] equ [4] set ntp=time.google.com
+if [%act%] equ [5] set ntp=time.apple.com
+if [%act%] equ [0] goto :update
+if not defined ntp cls && goto :main
 echo.
 echo.
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /ve /t "REG_SZ" /d "0" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t "REG_SZ" /d "%~1" /f
-reg add "HKLM\SYSTEM\ControlSet001\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%~1,0x9" /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%~1,0x9" /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t "REG_SZ" /d "%ntp%" /f
+reg add "HKLM\SYSTEM\ControlSet001\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%ntp%,0x9" /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%ntp%,0x9" /f
 echo.
 echo.
-:Sync
+:update
 taskkill /f /im "explorer.exe"
 echo.
 echo.
@@ -43,6 +42,6 @@ w32tm /resync
 echo.
 echo.
 start "" "explorer.exe"
-:Exit
+:exit
 timeout /t 5
-exit
+
