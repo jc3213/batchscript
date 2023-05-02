@@ -1,23 +1,17 @@
 @echo off
 pushd %~dp0
 if not exist aria2c.session type nul > aria2c.session
-if [%1] equ [/h] goto :NoWindow
-if [%1] equ [/r] goto :Register
+if [%1] equ [/h] goto :nowindow
+if [%1] equ [/r] goto :register
 if [%1] equ [/u] goto :Unregister
 bin\aria2c.exe --conf=aria2c.conf
-:Register
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /t "REG_SZ" /d "%CD%\aria2c.vbs" /f
-:NoWindow
-if exist aria2c.vbs goto :VBS
-echo Set objSh = CreateObject("WScript.Shell")>aria2c.vbs
-echo Set objFSO = CreateObject("Scripting.FileSystemObject")>>aria2c.vbs
-echo Set objFile = objFSO.GetFile(Wscript.ScriptFullName)>>aria2c.vbs
-echo objDir = objFSO.GetParentFolderName(objFile)>>aria2c.vbs
-echo objSh.run "%WinDir%\System32\cmd.exe /k pushd " ^& objDir ^& " && bin\aria2c.exe --conf=aria2c.conf", ^0>>aria2c.vbs
-:VBS
-aria2c.vbs
+:register
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /t "REG_SZ" /d "mshta vbscript:CreateObject(\"Shell.Application\").ShellExecute(\"cmd.exe\",\"/c pushd \"\"%~dp0\\"\" ^&^& bin\aria2c.exe --conf=aria2c.conf\",\"\",\"\",0)(window.close)" /f
+pause
+:nowindow
+start "" mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c pushd ""%~dp0"" && bin\aria2c.exe --conf=aria2c.conf","","",0)(window.close)
 exit
-:Unregister
+:unregister
 taskkill /im "aria2c.exe"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /f
 timeout /t 5
