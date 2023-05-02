@@ -116,6 +116,7 @@ if /i [%sub%] neq [1] goto :aria2c
 echo.
 echo.
 echo Download subtitles: Yes
+set subtitle=--all-subs
 :aria2c
 if not exist aria2c.exe goto :link
 echo.
