@@ -9,10 +9,9 @@ bin\aria2c.exe --conf=aria2c.conf
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /t "REG_SZ" /d "mshta vbscript:CreateObject(\"Shell.Application\").ShellExecute(\"cmd.exe\",\"/c pushd \"\"%~dp0\\"\" ^&^& bin\aria2c.exe --conf=aria2c.conf\",\"\",\"\",0)(window.close)" /f
 pause
 :nowindow
-start "" mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c pushd ""%~dp0"" && bin\aria2c.exe --conf=aria2c.conf","","",0)(window.close)
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c pushd ""%~dp0"" && bin\aria2c.exe --conf=aria2c.conf","","",0)(window.close)
 exit
 :unregister
 taskkill /im "aria2c.exe"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /f
 timeout /t 5
-
