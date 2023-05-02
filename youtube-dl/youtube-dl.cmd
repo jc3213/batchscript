@@ -40,19 +40,19 @@ echo Selected Quality: Best Audio Only
 set format=--format "bestaudio"
 goto :folder
 :1080p
-echo Selected Quality: Best Video ^& Audio Quality @1080p
+echo Selected Quality: Best Video ^& Audio @1080p
 set format=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
 goto :folder
 :1440p
-echo Selected Quality: Best Video ^& Audio Quality @2K
+echo Selected Quality: Best Video ^& Audio @2K
 set format=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
 goto :folder
 :2160p
-echo Selected Quality: Best Video ^& Audio Quality @4K
+echo Selected Quality: Best Video ^& Audio @4K
 set format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
 goto :folder
 :best
-echo Selected Quality: Best Video ^& Audio Quality
+echo Selected Quality: Best Video ^& Audio
 set format=--format "bestvideo+bestaudio/best"
 :folder
 if defined folder goto :path
@@ -81,27 +81,25 @@ echo.
 echo.
 echo Use proxy server?
 echo ========================================================================================
-echo 0. No
-echo 1. Yes (%proxy%)
+echo 1. %proxy%
 echo 2. Other
 echo ========================================================================================
 set /p px=^> 
-if [%px%] equ [0] goto :subtitle
-if [%px%] equ [1] goto :prxservr
+if [%px%] equ [1] goto :prxsvr
 if [%px%] equ [2] goto :server
-goto :proxy
+goto :subtitle
 :server
 echo.
 echo.
 set proxy=
 echo Set proxy server
 echo ========================================================================================
-echo 127.0.0.1:1080 (Sample)
+echo Sample: 127.0.0.1:1080
 echo Keep EMPTY if you don't use a proxy
 echo ========================================================================================
 set /p proxy=^> 
 if not defined proxy goto :subtitle
-:prxservr
+:prxsvr
 echo.
 echo.
 echo Proxy Server: %proxy%
@@ -119,7 +117,11 @@ echo.
 echo.
 echo Download subtitles: Yes
 :aria2c
-if exist aria2c.exe set aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+if not exist aria2c.exe goto :link
+echo.
+echo.
+echo External Downloader: aria2c
+set aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
 :link
 echo.
 echo.
