@@ -2,18 +2,18 @@
 pushd %~dp0
 for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set zip=%%b7z.exe)
 if %Processor_architecture% equ AMD64 goto :x64
-set bit=32
+set ver=32
 goto :main
 :x64
 set bit=64
 set ver=64
 :main
 set setup=iTunes%bit%Setup.exe
-set output=iTunes%ver%
-set iTunes=iTunes%ver%.msi
-set unpack=%CD%\_iTunes%ver%
+set output=iTunes%bit%
+set iTunes=iTunes%bit%.msi
+set unpack=%CD%\_iTunes%bit%
 if exist %setup% goto :unzip
-curl https://www.apple.com/itunes/download/win%bit% --location --output %setup%
+curl https://www.apple.com/itunes/download/win%ver% --location --output %setup%
 :unzip
 "%zip%" e -y %setup% %iTunes%
 md %unpack% 2>nul
