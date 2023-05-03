@@ -4,7 +4,7 @@ for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set 
 if %Processor_architecture% equ AMD64 (call :x64) else (call :x86)
 set setup=iTunes%arch%Setup.exe
 if exist %setup% goto :unzip
-curl https://www.apple.com/itunes/download/win%arch% --location --silent --output %setup%
+curl https://www.apple.com/itunes/download/win%arch% --location --output %setup%
 :unzip
 "%zip%" e -y %setup% %iTunes%
 md %unpack% 2>nul
