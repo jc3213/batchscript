@@ -2,8 +2,9 @@
 - Download and install [7-zip](https://7-zip.org/)
 
 ### Foobar2000 Portable
-- Download [Foobar2000 installer](https://www.foobar2000.org/download)
-- Drag and drop foobar2000*.exe over `foobar2000_portable.cmd`
+- Download `foobar_portable.cmd`
+- Follow the prompt
+- It will automatically download foobar2000 installer and make it portable
 
 ### iTunes AAC Libs Extractor
 - Run `itunes_aac_libs.cmd`
