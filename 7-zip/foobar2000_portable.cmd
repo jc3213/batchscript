@@ -1,6 +1,5 @@
 @echo off
 pushd %~dp0
-set /a int=0
 for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set zip=%%b7z.exe)
 for /f "tokens=*" %%a in ('curl https://www.foobar2000.org/download --silent ^| findstr /r /c:"/getfile/foobar2000_.*\.exe"') do (call :menu "%%a")
 :menu
@@ -22,7 +21,7 @@ curl %url% --location --silent --output %app%.exe
 :unpack
 echo.
 echo.
-echo Make Portable: %app%.exe
+echo Make portable: %app%.exe
 "%zip%" x "%~dp0%app%.exe" -y -x!$PLUGINSDIR -x!$R0 -x!uninstall.exe -o"%~dp0%app%"
 type nul > %app%\portable_mode_enabled
 echo.
@@ -30,7 +29,7 @@ echo.
 del /s /q %app%.exe
 echo.
 echo.
-echo Portable Location: %~dp0%app%
+echo Portable location: %~dp0%app%
 echo.
 echo.
 timeout /t 5
