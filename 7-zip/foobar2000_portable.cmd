@@ -17,7 +17,9 @@ if exist %app%.exe goto :unpack
 echo.
 echo.
 echo Downloading: %url%
-curl %url% --location --silent --output %app%.exe
+echo.
+echo.
+curl %url% --location --output %app%.exe
 :unpack
 echo.
 echo.
