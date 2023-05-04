@@ -1,7 +1,7 @@
 @echo off
 pushd %~dp0
 for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set zip=%%b7z.exe)
-if %Processor_architecture% equ AMD64 goto :x64
+if %Processor_Architecture% equ AMD64 goto :x64
 set ver=32
 goto :main
 :x64
