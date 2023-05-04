@@ -30,6 +30,6 @@ exit /b
 set input=%~2
 set name=000%input%
 set name=%name:~-4%
-echo %~1        %~2        %name%%~X1
-ren %1 %name%%~X1
+echo %~1        %~2        %name%%~x1
+ren %1 %name%%~x1
 exit /b
