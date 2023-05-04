@@ -1,26 +1,26 @@
 @echo off
 pushd %~dp0bin
 set file=%1
-if defined file goto :Main
+if defined file goto :main
 timeout /t 5
 exit
-:Main
+:main
 echo =======================================================================
 echo Split video by timestamp: 00:12:24
 echo Cut video during periods: 00:07:02.33-00:08:04.682
 echo File: %1
 echo =======================================================================
-:Time
+:input
 set /p clip=^> 
 echo.
-if not defined clip goto :Time
-for /f "tokens=1-2 delims=-" %%a in ('echo %clip%') do (
+if not defined clip goto :input
+for /f "tokens=1,2 delims=-" %%a in ('echo %clip%') do (
     set ss=%%a
     set to=%%b
 )
-if defined to goto :Period
-:Stamp
-call :Name %ss%
+if defined to goto :period
+:stamp
+call :name %ss%
 set fn0=%name%
 set ts0=%stamp%
 set out1=%~dp1%~n1_%fn0%_1%~x1
@@ -36,11 +36,11 @@ echo [Output]      %out1%
 echo [Output]      %out2%
 echo =======================================================================
 goto :Clear
-:Period
-call :Name %ss%
+:period
+call :name %ss%
 set fn1=%name%
 set ts1=%stamp%
-call :Name %to%
+call :name %to%
 set fn2=%name%
 set ts2=%stamp%
 set out0=%~dp1%~n1_%fn1%-%fn2%%~x1
@@ -63,23 +63,16 @@ echo.
 echo.
 echo.
 echo.
-goto :Main
-:Name
+goto :main
+:name
 for /f "tokens=1-3 delims=:" %%a in ('echo %1') do (
-    set tf1=%%a
-    set tf2=%%b
-    set tf3=%%c
+    set hh=00%%a
+    set mm=00%%b
+    set ss=00%%c
 )
-if not defined tf3 (
-    if not defined tf2 (
-        set name=00.00.%tf1%
-        set stamp=00:00:%tf1%
-    ) else (
-        set name=00.%tf1%.%tf2%
-        set stamp=00:%tf1%:%tf2%
-    )
-) else (
-    set name=%tf1%.%tf2%.%tf3%
-    set stamp=%tf1%:%tf2%:%tf3%
-)
+set hh=%hh:~-2%
+set mm=%hh:~-2%
+set ss=%ss:~-2%
+set name=%hh%.%mm%.%ss%
+set stamp=%hh%:%mm%:%ss%
 exit /b
