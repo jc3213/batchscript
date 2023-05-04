@@ -5,17 +5,18 @@ for /f "tokens=3 delims= " %%a in ('curl https://www.foobar2000.org/download --s
 if %Processor_Architecture% equ AMD64 set arc=-x64
 if %Processor_Architecture% equ ARM64 set arc=-arm64ec
 set app=foobar2000%arc%_%ver%.exe
+set dir=%~dp0foobar2000%arc%_%ver%
 set url=https://www.foobar2000.org/files/%app%
-curl %url% --location --output %app%.exe
+curl %url% --location --output %app%
 echo.
 echo.
-echo Make portable - %~dp0%app%
-"%zip%" x "%~dp0%app%.exe" -y -x!$PLUGINSDIR -x!$R0 -x!uninstall.exe -o"%~dp0%app%"
+echo Portable folder - %dir%
+"%zip%" x %app% -y -x!$PLUGINSDIR -x!$R0 -x!uninstall.exe -o"%dir%"
 type nul > %app%\portable_mode_enabled
 echo.
 echo.
 del /s /q %app%.exe
 echo.
 echo.
+echo Done!
 timeout /t 5
-exit
