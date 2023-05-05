@@ -3,7 +3,6 @@
 
 ### Foobar2000 Portable
 - Download `foobar_portable.cmd`
-- Follow the prompt
 - It will automatically download foobar2000 installer and make it portable
 
 ### iTunes AAC Libs Extractor
