@@ -8,7 +8,8 @@ echo 2. Manage diagnostic
 echo 3. Manage maintenance
 echo 4. Manage anti-virus
 echo 5. Manage system update
-echo 6. Manage CPU microcode
+echo 6. Manage accebility
+echo 7. Manage CPU microcode
 echo ==================================================================
 set /p main=^> 
 if [%main%] equ [1] goto :powerp
@@ -16,7 +17,8 @@ if [%main%] equ [2] goto :wndiag
 if [%main%] equ [3] goto :wnmain
 if [%main%] equ [4] goto :antivr
 if [%main%] equ [5] goto :update
-if [%main%] equ [6] goto :cpumic
+if [%main%] equ [6] goto :accbly
+if [%main%] equ [7] goto :cpumic
 goto :back
 :powerp
 cls
@@ -253,6 +255,27 @@ echo.
 sc config "wuauserv" start=demand
 sc start "wuauserv"
 goto :clear
+:accbly
+cls
+title Manage Windows Accebility
+echo ==================================================================
+echo 1. Context Menu as Windows 10
+echo 2. Context Menu as Windows 11
+echo 0. Back to main menu
+echo ==================================================================
+set /p acc=^> 
+if [%acc%] equ [1] goto :ctxoff
+if [%acc%] equ [2] goto :ctxmon
+if [%acc%] equ [0] goto :back
+goto :accbly
+:ctxoff
+echo.
+reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /ve /d "" /f
+goto :clear
+:ctxmon
+echo.
+reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
+goto :clear
 :cpumic
 cls
 title Manage CPU Microcode
@@ -267,6 +290,7 @@ if [%cpu%] equ [2] goto :cpubak
 if [%cpu%] equ [0] goto :back
 goto :cpumic
 :cpurem
+echo.
 pushd %SystemRoot%\System32
 powershell -Command "Compress-Archive -Force -Path 'mcupdate_AuthenticAMD.dll','mcupdate_GenuineIntel.dll' -DestinationPath '%backup%'"
 cmd /c takeown /f mcupdate_AuthenticAMD.dll && icacls mcupdate_AuthenticAMD.dll /grant Administrators:F
@@ -275,6 +299,7 @@ del "mcupdate_AuthenticAMD.dll" "mcupdate_GenuineIntel.dll" /f /q
 goto :clear
 :cpubak
 if not exist "%backup%" goto :back
+echo.
 powershell -Command "Expand-Archive -Force -Path '%backup%' -DestinationPath '%SystemRoot%\System32'"
 goto :clear
 :clear
