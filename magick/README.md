@@ -6,7 +6,7 @@
     - See [Usage](#Usage)
 
 ## Usage
-- Crop with Area
+- Crop with area
     - Read [ImageMagick Geometry](https://imagemagick.org/script/command-line-processing.php#geometry)
     - Sample: 400x200+20+80
         - Width: 400px
