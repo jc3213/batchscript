@@ -1,33 +1,31 @@
 @echo off
 cd /d %1 || exit
-setlocal enabledelayedexpansion
-set /a seek=1
-for /f "tokens=*" %%a in ('dir /b /a-d') do (call :Menu "%%a")
-:Menu
+for /f "tokens=*" %%a in ('dir /b /a-d') do (call :main "%%a")
+:main
 echo %~1
-echo ===========================================================
-:Option
-if %1 equ "" goto :MenuEnd
-for /f "tokens=1* delims=-_.() " %%a in (%1) do (call :Text "%%a" "%%b")
-:MenuEnd
-echo ===========================================================
-:Input
-set /p index=^> 
+echo ============================================================
+:menu
+for /f "tokens=1* delims=-_.() " %%a in (%1) do (call :item "%%a" "%%b")
+:item
+set /a index+=1
+echo %~1| findstr /r "^[0-9][0-9]*$" >nul && set better=** || set better=
+echo %index%            ^>^>            %~1        %better%
+if %2 equ "" goto :mend
+call :menu %2
+:mend
+echo ============================================================
+:input
+set /p act=^> 
 echo.
-echo %index%| findstr /r "^[1-9][0-9]*$" >nul || goto :Input
-for /f "tokens=*" %%a in ('dir /b /a-d') do (call :Rename "%%a")
+if %act% gtr %index% goto :input
+for /f "tokens=*" %%a in ('dir /b /a-d') do (call :rename "%%a")
 timeout /t 5
 exit
-:Text
-echo %~1| findstr /r "^[0-9][0-9]*$" >nul && set better=** || set better=
-echo %seek%            ^>^>            %~1        %better%
-set /a seek+=1
-call :Option %2
-:Rename
-for /f "tokens=%index% delims=-_.() " %%a in (%1) do (call :Filename %1 "%%a")
+:rename
+for /f "tokens=%act% delims=-_.() " %%a in (%1) do (call :exec %1 "%%a")
 exit /b
-:Filename
-set name=0000%~2
+:exec
+set name=000%~2
 set name=%name:~-4%%~x1
 echo %~1        %~2        %name%
 ren %1 %name%
