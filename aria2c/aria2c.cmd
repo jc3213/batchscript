@@ -7,7 +7,6 @@ if [%1] equ [/u] goto :Unregister
 bin\aria2c.exe --conf=aria2c.conf
 :register
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /t "REG_SZ" /d "mshta vbscript:CreateObject(\"Shell.Application\").ShellExecute(\"cmd.exe\",\"/c pushd \"\"%~dp0\\"\" ^&^& bin\aria2c.exe --conf=aria2c.conf\",\"\",\"\",0)(window.close)" /f
-pause
 :nowindow
 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c pushd ""%~dp0"" && bin\aria2c.exe --conf=aria2c.conf","","",0)(window.close)
 exit
