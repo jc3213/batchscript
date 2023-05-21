@@ -1,7 +1,7 @@
 @echo off
 pushd %~dp0
 if not exist aria2c.session type nul > aria2c.session
-if [%1] equ [/h] goto :nowindow
+if [%1] equ [/s] goto :nowindow
 if [%1] equ [/r] goto :register
 if [%1] equ [/u] goto :Unregister
 bin\aria2c.exe --conf=aria2c.conf
