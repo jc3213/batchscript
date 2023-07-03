@@ -25,16 +25,14 @@ set fn0=%name%
 set ts0=%stamp%
 set out1=%~dp1%~n1_%fn0%_1%~x1
 set out2=%~dp1%~n1_%fn0%_2%~x1
-ffmpeg.exe -i "%1" -to %ss% -c copy %out1%
-ffmpeg.exe -i "%1" -ss %ss% -c copy %out2%
+ffmpeg.exe -loglevel error -i "%1" -to %ss% -c copy %out1%
+ffmpeg.exe -loglevel error -i "%1" -ss %ss% -c copy %out2%
 echo.
 echo.
-echo =======================================================================
 echo [Mode]        Split video by timestamp
 echo [Timestamp]   %ts0%
 echo [Output]      %out1%
 echo [Output]      %out2%
-echo =======================================================================
 goto :Clear
 :period
 call :name %ss%
@@ -44,14 +42,12 @@ call :name %to%
 set fn2=%name%
 set ts2=%stamp%
 set out0=%~dp1%~n1_%fn1%-%fn2%%~x1
-ffmpeg.exe -i "%1" -ss %ss% -to %to% -c copy %out0%
+ffmpeg.exe -loglevel error -i "%1" -ss %ss% -to %to% -c copy %out0%
 echo.
 echo.
-echo =======================================================================
 echo [Mode]        Cut video during periods
 echo [Period]      %ts1%-%ts2%
 echo [Output]      %out0%
-echo =======================================================================
 echo.
 :Clear
 set clip=
@@ -62,17 +58,36 @@ set to=
 echo.
 echo.
 echo.
-echo.
 goto :main
 :name
-for /f "tokens=1-3 delims=:" %%a in ('echo %1') do (
-    set hh=00%%a
-    set mm=00%%b
-    set ss=00%%c
+for /f "tokens=1,2 delims=." %%a in ('echo %1') do (
+    set full=%%a
+    set msec=%%b
 )
-set hh=%hh:~-2%
-set mm=%hh:~-2%
-set ss=%ss:~-2%
-set name=%hh%.%mm%.%ss%
-set stamp=%hh%:%mm%:%ss%
+for /f "tokens=1-3 delims=:" %%a in ('echo %full%') do (
+    set hor=00%%a
+    set min=00%%b
+    set sec=00%%c
+)
+if %sec% equ 00 (
+    if %min% equ 00 (
+        set hor=00
+        set min=00
+        set sec=%hor:~-2%
+    ) else (
+        set hor=00
+        set min=%hor:~-2%
+        set sec=%min:~-2%
+    )
+) else (
+    set hor=%hor:~-2%
+    set min=%min:~-2%
+    set sec=%sec:~-2%
+)
+set name=%hor%-%min%-%sec%
+set stamp=%hor%:%min%:%sec%
+if defined msec (
+    set name=%name%_%msec%
+    set stamp=%stamp%.%msec%
+)
 exit /b
