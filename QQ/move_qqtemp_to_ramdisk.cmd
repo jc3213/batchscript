@@ -1,6 +1,12 @@
 @echo off
+net session >nul 2>&1 && goto :main
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c pushd ""%~dp0"" && ""%~s0","","runas",1)(window.close)
+exit
+:main
 for /f %%a in ('wmic logicaldisk where "VolumeName='ramdisk'" get Caption ^| find ":"') do (set ramdisk=%%a\Temp)
 if not defined ramdisk goto :exit
+for /f "tokens=2 delims==" %%a in ('wmic process where name^="qq.exe" get executablepath /value') do (set app=%%a)
+if defined app taskkill /f /im qq.exe
 set profile=%Public%\Documents\Tencent\QQ\UserDataInfo.ini
 if not exist "%profile%" goto :document
 for /f "tokens=1,2 delims==" %%a in ('type %profile%') do (
@@ -14,10 +20,14 @@ goto :exit
 cd /d %path%
 if %errorlevel% equ 0 goto :process
 :document
-cd /d %Userprofile%\Documents\Tencent Files
+cd /d %Userprofile%\Documents
+md "Tencent Files" 2>nul
+cd "Tencent Files"
 :process
 for /d %%a in (*) do (call :profile "%%a")
-cd /d %AppData%\Tencent
+cd /d %appdata%
+md Tencent 2>nul
+cd Tencent
 rd /s /q Logs 2>nul
 rd /s /q QQTempSys 2>nul
 rd /s /q QQ\Temp 2>nul
@@ -28,9 +38,9 @@ mklink /d QQ\webkit_cache %ramdisk%
 md QQ\Temp
 icacls QQ\Temp /deny Everyone:(F)
 cd Users
-for /d %%a in (*) do (call :AppData "%%a")
+for /d %%a in (*) do (call :appdata "%%a")
 goto :exit
-:AppData
+:appdata
 cd %1
 rd /s /q QQ\WinTemp 2>nul
 mklink /d QQ\WinTemp %ramdisk%
@@ -56,4 +66,5 @@ mklink /d OfflinePackage %ramdisk%
 cd..
 exit /b
 :exit
+if defined app start "" "%app%"
 timeout /t 5
