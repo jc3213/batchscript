@@ -10,7 +10,7 @@
 - It will automatically download iTunes installer and extract all necessary `.dll`s
 
 ### Manga Utilities
-- Drag and drop any compressed files or folder over `manga_utilities.cmd`
+- Drag and drop any compressed files or folder over `zip_for_manga.cmd`
     - It will compress folder into `.zip` file
     - It will decompress any **compressed file** and recompress it into `.zip` file
     - You can choose whether to remove the original / temporary files
