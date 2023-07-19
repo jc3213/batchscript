@@ -3,13 +3,13 @@ set backup=%~dp0microcode_backup.zip
 :main
 title Windows Management Tweaks
 echo ==================================================================
-echo 1. Manage power plan
-echo 2. Manage diagnostic
-echo 3. Manage maintenance
-echo 4. Manage anti-virus
-echo 5. Manage system update
-echo 6. Manage accebility
-echo 7. Manage CPU microcode
+echo 1. Power Plan
+echo 2. Diagnostic
+echo 3. Maintenance
+echo 4. Defender Anti-virus
+echo 5. System Update
+echo 6. Accessibility
+echo 7. CPU Microcode
 echo ==================================================================
 set /p main=^> 
 if [%main%] equ [1] goto :powerp
@@ -137,7 +137,7 @@ sc start "SysMain"
 goto :clear
 :antivr
 cls
-title Manage Microsoft Defender
+title Manage Microsoft Defender Anti-virus
 echo ==================================================================
 echo 1. Disable context menu
 echo 2. Restore context menu
