@@ -1,5 +1,6 @@
 @echo off
 :main
+cls
 title Microsoft Edge Tweaks
 echo ==================================================================
 echo 1. Bing discovery button
@@ -14,7 +15,7 @@ if [%main%] equ [2] goto :search
 if [%main%] equ [3] goto :alttab
 if [%main%] equ [4] goto :profile
 if [%main%] equ [5] goto :caches
-goto :back
+goto :main
 :bingbn
 cls
 title Tweak Discovery Button
@@ -23,19 +24,18 @@ echo 1. Disable discovery button
 echo 2. Restore discovery button
 echo 0. Back to main menu
 echo ==================================================================
-set /p btn=^> 
-if [%btn%] equ [1] goto :btnoff
-if [%btn%] equ [2] goto :btnbak
-if [%btn%] equ [0] goto :back
+set /p act=^> 
+echo.
+if [%act%] equ [1] goto :btnoff
+if [%act%] equ [2] goto :btnbak
+if [%act%] equ [0] goto :back
 goto :bingbn
 :btnoff
-echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled"  /t "REG_DWORD" /d "0x00000000" /f
-goto :clear
+goto :done
 :btnbak
-echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled" /f
-goto :clear
+goto :done
 :search
 cls
 title Tweak Desktop Search Bar
@@ -44,19 +44,18 @@ echo 1. Disable desktop search bar
 echo 2. Restore desktop search bar
 echo 0. Back to main menu
 echo ==================================================================
-set /p bar=^> 
-if [%bar%] equ [1] goto :baroff
-if [%bar%] equ [2] goto :barbak
-if [%bar%] equ [0] goto :back
+set /p act=^> 
+echo.
+if [%act%] equ [1] goto :baroff
+if [%act%] equ [2] goto :barbak
+if [%act%] equ [0] goto :back
 goto :search
 :baroff
-echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed"  /t "REG_DWORD" /d "0x00000000" /f
-goto :clear
+goto :done
 :barbak
-echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed" /f
-goto :clear
+goto :done
 :alttab
 cls
 title Change Alt + Tab Behavior
@@ -65,19 +64,18 @@ echo 1. Switch only via windows
 echo 2. Restore default behavior
 echo 0. Back to main menu
 echo ==================================================================
-set /p alt=^> 
-if [%alt%] equ [1] goto :altoff
-if [%alt%] equ [2] goto :altbak
-if [%alt%] equ [0] goto :back
+set /p act=^> 
+echo.
+if [%act%] equ [1] goto :altoff
+if [%act%] equ [2] goto :altbak
+if [%act%] equ [0] goto :back
 goto :alttab
 :altoff
-echo.
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /t "REG_DWORD" /d "0x00000003" /f
-goto :clear
+goto :done
 :altbak
-echo.
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingAltTabFilter" /f
-goto :clear
+goto :done
 :profile
 cls
 title Manage User Profile
@@ -87,36 +85,34 @@ echo 2. User defined folder
 echo 3. Restore default folder
 echo 0. Back to main menu
 echo ==================================================================
-set /p pro=^> 
-if [%pro%] equ [1] goto :prodoc
-if [%pro%] equ [2] goto :prodef
-if [%pro%] equ [3] goto :probak
-if [%pro%] equ [0] goto :back
+set /p act=^> 
+echo.
+if [%act%] equ [1] goto :prodoc
+if [%act%] equ [2] goto :prodef
+if [%act%] equ [3] goto :probak
+if [%act%] equ [0] goto :back
 goto :profile
 :prodoc
-echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%UserProfile%\Documents\EdgeUserData" /f
-goto :clear
+goto :done
 :probak
-echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
-goto :clear
+goto :done
 :prodef
 cls
 echo ==================================================================
 echo Sample: D:\EdgeUserData
 echo ==================================================================
-set /p pdir=^> 
-if exist "%pdir%" goto :prodir
+set /p fod=^> 
 echo.
-echo %pdir% is not a valid path
-set pro=
-set pdir=
+if exist "%fod%" goto :prodir
+echo %fod% is not a valid path
+set act=
+set fod=
 goto :profile
 :prodir
-echo.
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%pdir%" /f
-goto :clear
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%fod%" /f
+goto :done
 @echo off
 :caches
 cls
@@ -127,52 +123,43 @@ echo 2. User defined folder
 echo 3. Restore default folder
 echo 0. Back to main menu
 echo ==================================================================
-set /p csh=^> 
-if [%csh%] equ [1] goto :cshram
-if [%csh%] equ [2] goto :cshdef
-if [%csh%] equ [3] goto :cshbak
-if [%csh%] equ [0] goto :back
+set /p act=^> 
+echo.
+if [%act%] equ [1] goto :cshram
+if [%act%] equ [2] goto :cshdef
+if [%act%] equ [3] goto :cshbak
+if [%act%] equ [0] goto :back
 goto :caches
 :cshram
 for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set Ramdisk=%%a\Temp)
 if exist "%Ramdisk%" goto :cshset
 echo No RAMDISK detected!
-goto :clear
+goto :done
 :cshset
-echo.
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%Ramdisk%" /f
-goto :clear
+goto :done
 :cshbak
-echo.
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /f
-goto :clear
+goto :done
 :cshdef
-echo.
 echo ==================================================================
 echo Sample: R:\Temp
 echo ==================================================================
-set /p cdir=^> 
-if exist "%cdir%" goto :cshdir
+set /p fod=^> 
 echo.
-echo %cdir% is not a valid path
-set csh=
-set cdir=
+if exist "%fod%" goto :cshdir
+echo %fod% is not a valid path
+set act=
+set fod=
 goto :caches
 :cshdir
-echo.
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%cdir%" /f
-goto :clear
-:clear
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%fod%" /f
+goto :done
+:done
 echo.
 pause
 :back
 set main=
-set btn=
-set bar=
-set alt=
-set pro=
-set pdir=
-set csh=
-set cdir=
-cls
+set act=
+set fod=
 goto :main
