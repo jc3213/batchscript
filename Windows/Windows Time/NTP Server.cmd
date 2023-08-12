@@ -1,4 +1,8 @@
 @echo off
+net session >nul 2>&1 && goto :admin
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","%~dp0","runas",1)(window.close)
+exit
+:admin
 if [%1] equ [/r] goto :update
 :main
 cls
@@ -23,8 +27,8 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0"
 reg add "HKLM\SYSTEM\ControlSet001\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%ntp%,0x9" /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t "REG_SZ" /d "%ntp%,0x9" /f
 :update
-taskkill /f /im "explorer.exe"
-net start W32Time 2>nul
+taskkill /f /im "explorer.exe" >nul
+net start W32Time 1>nul 2>&1
 :retry
 for /f "tokens=4 delims=. " %%a in ('w32tm /resync') do (set done=%%a)
 if [%done%] neq [successfully] goto :retry
