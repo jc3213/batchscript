@@ -1,9 +1,11 @@
 @echo off
 set backup=%~dp0microcode_backup.zip
+set ppmenu="Windows Power Plan.cmd"
 :main
+cls
 title Windows Management Tweaks
 echo ==================================================================
-echo 1. Power Plan
+if exist %ppmenu% echo 1. Power Plan
 echo 2. System Update
 echo 3. Defender Anti-virus
 echo 4. Diagnostic ^& Maintenance
@@ -18,49 +20,7 @@ if [%main%] equ [4] goto :diaman
 if [%main%] equ [5] goto :acsbly
 goto :back
 :powerp
-cls
-title Manage Power Plan
-echo ==================================================================
-echo 1. Disable hibernation
-echo 2. Restore hbernation
-echo 3. Disable disk idle timeout
-echo 4. Restore disk idle timeout
-echo 5. Better heterogeneous thread policy
-echo 6. Restore heterogeneous thread policy
-echo 0. Back to main menu
-echo ==================================================================
-set /p act=^> 
-echo.
-if [%act%] equ [1] goto :pwhoff
-if [%act%] equ [2] goto :powhon
-if [%act%] equ [3] goto :pwdoff
-if [%act%] equ [4] goto :powdon
-if [%act%] equ [5] goto :hperon
-if [%act%] equ [6] goto :hproff
-if [%act%] equ [0] goto :back
-goto :powerp
-:pwhoff
-powercfg /hibernate off
-goto :done
-:powhon
-powercfg /hibernate on
-goto :done
-:pwdoff
-powercfg /change disk-timeout-ac 0
-powercfg /change disk-timeout-dc 0
-goto :done
-:powdon
-powercfg /change disk-timeout-ac 20
-powercfg /change disk-timeout-dc 20
-goto :done
-:hperon
-powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY 2
-powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY 2
-goto :done
-:hproff
-powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY 5
-powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY 5
-goto :done
+if exist %ppmenu% call %ppmenu% "%~s0"
 :update
 cls
 title Manage Windows Update
