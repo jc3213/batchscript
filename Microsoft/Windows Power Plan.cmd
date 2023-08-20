@@ -6,9 +6,9 @@ title Manage Windows Power Plan
 echo ==================================================================
 echo 1. Manage Hibernation
 echo 2. Manage Disk Idle Timeout
-echo 3. Manage Heterogeneous Thread Policy
-echo 4. Manage Processor Maximum P-state
-echo 5. Manage Processor Minimum P-state
+echo 3. Manage Processor Maximum P-state
+echo 4. Manage Processor Minimum P-state
+echo 5. Manage Heterogeneous Thread Policy
 if exist %main% echo *. Back to main menu
 echo ==================================================================
 set /p ppact=^> 
@@ -54,24 +54,6 @@ powercfg /change disk-timeout-dc %1
 goto :return
 :ppmenu3
 cls
-title Heterogeneous Thread Policy - Power Plan
-echo ==================================================================
-echo 0. Default (Automatic)
-echo 1. Prefer performant processors
-echo *. Return to upper menu
-echo ==================================================================
-set /p ppsub=^> 
-if [%ppsub%] equ [0] call :ppm3app 5
-if [%ppsub%] equ [1] call :ppm3app 2
-if [%ppsub%] equ [*] goto :return
-goto :ppmenu3
-:ppm3app
-powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY %1
-powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY %1
-powercfg /setactive scheme_current
-goto :return
-:ppmenu4
-cls
 title Processor Maximum P-state - Power Plan
 echo ==================================================================
 echo Minimum: 50
@@ -81,7 +63,7 @@ set /p ppsub=^>
 echo %ppsub%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
 if %errorlevel% equ 1 set ppsub=100
 call :ppcstate PROCTHROTTLEMAX %ppsub%
-:ppmenu5
+:ppmenu4
 cls
 title Processor Minimum P-state - Power Plan
 echo ==================================================================
@@ -92,6 +74,24 @@ set /p ppsub=^>
 echo %ppsub%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
 if %errorlevel% equ 1 set ppsub=0
 call :ppcstate PROCTHROTTLEMIN %ppsub%
+:ppmenu5
+cls
+title Heterogeneous Thread Policy - Power Plan
+echo ==================================================================
+echo 0. Default (Automatic)
+echo 1. Prefer performant processors
+echo *. Return to upper menu
+echo ==================================================================
+set /p ppsub=^> 
+if [%ppsub%] equ [0] call :ppm5app 5
+if [%ppsub%] equ [1] call :ppm5app 2
+if [%ppsub%] equ [*] goto :return
+goto :ppmenu5
+:ppm5app
+powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY %1
+powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY %1
+powercfg /setactive scheme_current
+goto :return
 :ppcstate
 powercfg /setacvalueindex scheme_current sub_processor %1 %2
 powercfg /setactive scheme_current
