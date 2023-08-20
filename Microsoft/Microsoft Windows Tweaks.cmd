@@ -1,17 +1,18 @@
 @echo off
 net session >nul 2>&1 && goto :admin
-mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","%~dp0","runas",1)(window.close)
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","","runas",1)(window.close)
 exit
 :admin
 pushd %~dp0
 set backup=microcode_backup.zip
 set ppmenu="Windows Power Plan.cmd"
+set wumenu="Windows Update.cmd"
 :main
 cls
 title Windows Management Tweaks
 echo ==================================================================
 if exist %ppmenu% echo 1. Power Plan
-echo 2. System Update
+if exist %wumenu% echo 2. System Update
 echo 3. Defender Anti-virus
 echo 4. Diagnostic ^& Maintenance
 echo 5. Accessibility
@@ -26,48 +27,10 @@ if [%main%] equ [5] goto :acsbly
 goto :back
 :powerp
 if exist %ppmenu% call %ppmenu% "%~s0"
+goto :main
 :update
-cls
-title Manage Windows Update
-echo ==================================================================
-echo 1. Disable auto update
-echo 2. Restore auto update
-echo 3. Disable drivers auto update
-echo 4. Restore drivers auto update
-echo 5. Disable wuauserv service
-echo 6. Restore wuauserv service
-echo 0. Back to main menu
-echo ==================================================================
-set /p act=^> 
-echo.
-if [%act%] equ [1] goto :autoff
-if [%act%] equ [2] goto :autoon
-if [%act%] equ [3] goto :drvoff
-if [%act%] equ [4] goto :drivon
-if [%act%] equ [5] goto :wusoff
-if [%act%] equ [6] goto :wusvon
-if [%act%] equ [0] goto :back
-goto :update
-:autoff
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t "REG_DWORD" /d "0x00000001" /f
-goto :done
-:autoon
-reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /f
-goto :done
-:drvoff
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t "REG_DWORD" /d "0x00000001" /f
-goto :done
-:drivon
-reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /f
-goto :done
-:wusoff
-sc stop "wuauserv"
-sc config "wuauserv" start=disabled
-goto :done
-:wusvon
-sc config "wuauserv" start=demand
-sc start "wuauserv"
-goto :done
+if exist %wumenu% call %wumenu% "%~s0"
+goto :main
 :antivr
 cls
 title Manage Microsoft Defender Anti-virus
