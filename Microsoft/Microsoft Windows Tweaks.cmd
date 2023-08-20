@@ -3,10 +3,9 @@ net session >nul 2>&1 && goto :admin
 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","","runas",1)(window.close)
 exit
 :admin
-pushd %~dp0
-set backup=microcode_backup.zip
-set ppmenu="Windows Power Plan.cmd"
-set wumenu="Windows Update.cmd"
+set ppmenu="%~dp0Windows Power Plan.cmd"
+set wumenu="%~dp0Windows Update.cmd"
+set avmenu="%~dp0Windows Advanced Tweaks.cmd"
 :main
 cls
 title Windows Management Tweaks
@@ -15,7 +14,7 @@ if exist %ppmenu% echo 1. Power Plan
 if exist %wumenu% echo 2. System Update
 echo 3. Defender Anti-virus
 echo 4. Diagnostic ^& Maintenance
-echo 5. Accessibility
+if exist %avmenu% echo 5. Advanced Tweaks
 echo ==================================================================
 set /p main=^> 
 echo.
@@ -162,40 +161,8 @@ sc config "SysMain" start=auto
 sc start "SysMain"
 goto :done
 :acsbly
-cls
-title Manage Windows Accebility
-echo ==================================================================
-echo 1. Context Menu as Windows 10
-echo 2. Context Menu as Windows 11
-echo 3. Disable CPU microcode
-echo 4. Restore CPU microcode
-echo 0. Back to main menu
-echo ==================================================================
-set /p act=^> 
-echo.
-if [%act%] equ [1] goto :ctxoff
-if [%act%] equ [2] goto :ctxmon
-if [%act%] equ [3] goto :cpurem
-if [%act%] equ [4] goto :cpubak
-if [%act%] equ [0] goto :back
-goto :acsbly
-:ctxoff
-reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /ve /d "" /f
-goto :done
-:ctxmon
-reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
-goto :done
-:cpurem
-pushd %SystemRoot%\System32
-powershell -Command "Compress-Archive -Force -Path 'mcupdate_AuthenticAMD.dll','mcupdate_GenuineIntel.dll' -DestinationPath '%backup%'"
-takeown /f mcupdate_AuthenticAMD.dll && icacls mcupdate_AuthenticAMD.dll /grant Administrators:F
-takeown /f mcupdate_GenuineIntel.dll && icacls mcupdate_GenuineIntel.dll /grant Administrators:F
-del "mcupdate_AuthenticAMD.dll" "mcupdate_GenuineIntel.dll" /f /q
-goto :done
-:cpubak
-if not exist "%backup%" goto :back
-powershell -Command "Expand-Archive -Force -Path '%backup%' -DestinationPath '%SystemRoot%\System32'"
-goto :done
+if exist %avmenu% call %avmenu% "%~s0"
+goto :main
 :done
 pause
 :back
