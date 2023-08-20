@@ -1,5 +1,10 @@
 @echo off
-set backup=%~dp0microcode_backup.zip
+net session >nul 2>&1 && goto :admin
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","%~dp0","runas",1)(window.close)
+exit
+:admin
+pushd %~dp0
+set backup=microcode_backup.zip
 set ppmenu="Windows Power Plan.cmd"
 :main
 cls

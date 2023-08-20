@@ -1,4 +1,5 @@
 @echo off
+set main="%~1"
 :powerplan
 cls
 title Manage Windows Power Plan
@@ -8,7 +9,7 @@ echo 2. Manage Disk Idle Timeout
 echo 3. Manage Heterogeneous Thread Policy
 echo 4. Manage Processor Maximum P-state
 echo 5. Manage Processor Minimum P-state
-if exist "%~1" echo *. Back to main menu
+if exist %main% echo *. Back to main menu
 echo ==================================================================
 set /p ppact=^> 
 if [%ppact%] equ [1] goto :ppmenu1
@@ -27,15 +28,12 @@ echo 1. Enable
 echo *. Return to upper menu
 echo ==================================================================
 set /p ppsub=^> 
-if [%ppsub%] equ [0] goto :ppm1off
-if [%ppsub%] equ [1] goto :ppm1on
+if [%ppsub%] equ [0] call :ppm1app off
+if [%ppsub%] equ [1] call :ppm1app on
 if [%ppsub%] equ [*] goto :return
 goto :ppmenu1
-:ppm1on
-powercfg /hibernate on
-goto :return
-:ppm1off
-powercfg /hibernate off
+:ppm1app
+powercfg /hibernate %1
 goto :return
 :ppmenu2
 cls
@@ -46,17 +44,13 @@ echo 1. Default (20 minutes)
 echo *. Return to upper menu
 echo ==================================================================
 set /p ppsub=^> 
-if [%ppsub%] equ [0] goto :ppm2off
-if [%ppsub%] equ [1] goto :ppm2on
+if [%ppsub%] equ [0] call :ppm2app 0
+if [%ppsub%] equ [1] call :ppm2app 20
 if [%ppsub%] equ [*] goto :return
 goto :ppmenu2
-:ppm2on
-powercfg /change disk-timeout-ac 20
-powercfg /change disk-timeout-dc 20
-goto :return
-:ppm2off
-powercfg /change disk-timeout-ac 0
-powercfg /change disk-timeout-dc 0
+:ppm2app
+powercfg /change disk-timeout-ac %1
+powercfg /change disk-timeout-dc %1
 goto :return
 :ppmenu3
 cls
@@ -67,18 +61,13 @@ echo 1. Prefer performant processors
 echo *. Return to upper menu
 echo ==================================================================
 set /p ppsub=^> 
-if [%ppsub%] equ [0] goto :ppm3off
-if [%ppsub%] equ [1] goto :ppm3on
+if [%ppsub%] equ [0] call :ppm3app 5
+if [%ppsub%] equ [1] call :ppm3app 2
 if [%ppsub%] equ [*] goto :return
 goto :ppmenu3
-:ppm3on
-powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY 2
-powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY 2
-powercfg /setactive scheme_current
-goto :return
-:ppm3off
-powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY 5
-powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY 5
+:ppm3app
+powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY %1
+powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY %1
 powercfg /setactive scheme_current
 goto :return
 :ppmenu4
@@ -91,9 +80,7 @@ echo ==================================================================
 set /p ppsub=^> 
 echo %ppsub%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
 if %errorlevel% equ 1 set ppsub=100
-powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX %ppsub%
-powercfg /setactive scheme_current
-goto :return
+call :ppcstate PROCTHROTTLEMAX %ppsub%
 :ppmenu5
 cls
 title Processor Minimum P-state - Power Plan
@@ -104,11 +91,13 @@ echo ==================================================================
 set /p ppsub=^> 
 echo %ppsub%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
 if %errorlevel% equ 1 set ppsub=0
-powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN %ppsub%
+call :ppcstate PROCTHROTTLEMIN %ppsub%
+:ppcstate
+powercfg /setacvalueindex scheme_current sub_processor %1 %2
 powercfg /setactive scheme_current
 goto :return
 :mainmenu
-if exist "%~1" call "%~1"
+if exist %main% call %main%
 :return
 set ppact=
 set ppsub=
