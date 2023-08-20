@@ -7,7 +7,7 @@ echo ==================================================================
 echo 1. Manage Auto Update
 echo 2. Manage Driver Auto Update
 echo 3. Manage Windows Update Service (wuauserv)
-if exist %main% echo +. Return Main Menu
+if exist %main% echo +. Return to  Main Menu
 echo ==================================================================
 set /p wuact=^> 
 if [%wuact%] equ [1] goto :wumenu1
@@ -21,7 +21,7 @@ title Auto Update - Windows Update
 echo ==================================================================
 echo 0. Disable
 echo 1. Enable (Default)
-echo +. Return Upper Menu
+echo +. Return to Upper Menu
 echo ==================================================================
 set /p wusub=^> 
 if [%wusub%] equ [0] goto :wum1off
@@ -40,7 +40,7 @@ title Driver Auto Update - Windows Update
 echo ==================================================================
 echo 0. Disable
 echo 1. Enable (Default)
-echo +. Return Upper Menu
+echo +. Return to Upper Menu
 echo ==================================================================
 set /p wusub=^> 
 if [%wusub%] equ [0] goto :wum2off
@@ -59,7 +59,7 @@ title Windows Update Service - Windows Update
 echo ==================================================================
 echo 0. Disable
 echo 1. Enable (Default)
-echo +. Return Upper Menu
+echo +. Return to Upper Menu
 echo ==================================================================
 set /p wusub=^> 
 if [%wusub%] equ [0] goto :wum3off
