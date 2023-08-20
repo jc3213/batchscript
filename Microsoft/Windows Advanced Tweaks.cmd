@@ -11,14 +11,14 @@ echo 1. Windows Picture Viewer
 echo 2. Move Temporary Files to Ramdisk
 echo 3. Context Menu (Windows 11)
 echo 4. CPU Microcode Update
-if exist %main% echo *. Back to main menu
+if exist %main% echo +. Return Main Menu
 echo ==================================================================
 set /p avact=^> 
 if [%avact%] equ [1] goto :avmenu1
 if [%avact%] equ [2] goto :avmenu2
 if [%avact%] equ [3] goto :avmenu3
 if [%avact%] equ [4] goto :avmenu4
-if [%avact%] equ [*] goto :mainmenu
+if [%avact%] equ [+] goto :mainmenu
 goto :advanced
 :avmenu1
 cls
@@ -97,12 +97,12 @@ title Context Menu (Windows 11) - Advanced Tweaks
 echo ==================================================================
 echo 0. Modern Mode (Default)
 echo 1. Legacy Mode
-echo *. Return to upper menu
+echo +. Return Upper Menu
 echo ==================================================================
 set /p avsub=^> 
 if [%avsub%] equ [0] goto :avm3off
 if [%avsub%] equ [1] goto :avm3on
-if [%avsub%] equ [*] goto :return
+if [%avsub%] equ [+] goto :return
 goto :avmenu3
 :avm3off
 reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
@@ -116,12 +116,12 @@ title CPU Microcode Update - Advanced Tweaks
 echo ==================================================================
 echo 0. Restore from Backup
 echo 1. Remove and Backup
-echo *. Return to upper menu
+echo +. Return Upper Menu
 echo ==================================================================
 set /p avsub=^> 
 if [%avsub%] equ [0] goto :avm4off
 if [%avsub%] equ [1] goto :avm4on
-if [%avsub%] equ [*] goto :return
+if [%avsub%] equ [+] goto :return
 goto :avmenu4
 :avm4off
 if not exist %microbk% goto :return
