@@ -1,7 +1,8 @@
 @echo off
 :input
 echo ====================================================
-echo Please enter the disk label for user profile
+echo Pleas enter the disk label
+echo For example, D or D: or D:\
 echo ====================================================
 set /p label=^>
 set drive=%label:~0,1%:
