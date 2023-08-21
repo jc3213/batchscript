@@ -1,6 +1,6 @@
 @echo off
 set main="%~1"
-::winpower
+:winpower
 cls
 title Manage Windows Power Plan
 echo ==================================================================
@@ -18,7 +18,7 @@ if [%ppact%] equ [3] goto :ppmenu3
 if [%ppact%] equ [4] goto :ppmenu4
 if [%ppact%] equ [5] goto :ppmenu5
 if [%ppact%] equ [+] goto :mainmenu
-goto ::winpower
+goto :winpower
 :ppmenu1
 cls
 title Hibernation - Power Plan
@@ -98,9 +98,9 @@ powercfg /setactive scheme_current
 goto :return
 :mainmenu
 if exist %main% call %main%
-goto ::winpower
+goto :winpower
 :return
 set ppact=
 set ppsub=
 timeout /t 5
-goto ::winpower
+goto :winpower
