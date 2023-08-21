@@ -7,7 +7,7 @@ echo ==================================================================
 echo 1. Manage Auto Update
 echo 2. Manage Driver Auto Update
 echo 3. Manage Windows Update Service (wuauserv)
-if exist %main% echo +. Return to  Main Menu
+if exist %main% echo +. Return to Main Menu
 echo ==================================================================
 set /p wuact=^> 
 if [%wuact%] equ [1] goto :wumenu1
@@ -76,7 +76,9 @@ sc start "wuauserv"
 goto :return
 :mainmenu
 if exist %main% call %main%
+goto :winupdate
 :return
 set wuact=
 set wusub=
+timeout /t 5
 goto :winupdate

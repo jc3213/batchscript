@@ -1,6 +1,6 @@
 @echo off
 set main="%~1"
-:powerplan
+::winpower
 cls
 title Manage Windows Power Plan
 echo ==================================================================
@@ -9,7 +9,7 @@ echo 2. Manage Disk Idle Timeout
 echo 3. Manage Processor Maximum P-state
 echo 4. Manage Processor Minimum P-state
 echo 5. Manage Heterogeneous Thread Policy
-if exist %main% echo +. Return to  Main Menu
+if exist %main% echo +. Return to Main Menu
 echo ==================================================================
 set /p ppact=^> 
 if [%ppact%] equ [1] goto :ppmenu1
@@ -18,7 +18,7 @@ if [%ppact%] equ [3] goto :ppmenu3
 if [%ppact%] equ [4] goto :ppmenu4
 if [%ppact%] equ [5] goto :ppmenu5
 if [%ppact%] equ [+] goto :mainmenu
-goto :powerplan
+goto ::winpower
 :ppmenu1
 cls
 title Hibernation - Power Plan
@@ -98,7 +98,9 @@ powercfg /setactive scheme_current
 goto :return
 :mainmenu
 if exist %main% call %main%
+goto ::winpower
 :return
 set ppact=
 set ppsub=
-goto :powerplan
+timeout /t 5
+goto ::winpower

@@ -1,6 +1,6 @@
 @echo off
 set main="%~1"
-:defender
+:antivirus
 cls
 title Manage Windows Defender
 echo ==================================================================
@@ -8,7 +8,7 @@ echo 1. Manage Context Menu
 echo 2. Manage System Tray Icon
 echo 3. Manage Scheduled Scan
 echo 4. Manage Real-time Protection
-if exist %main% echo +. Return to  Main Menu
+if exist %main% echo +. Return to Main Menu
 echo ==================================================================
 set /p deact=^> 
 if [%deact%] equ [1] goto :demenu1
@@ -16,7 +16,7 @@ if [%deact%] equ [2] goto :demenu2
 if [%deact%] equ [3] goto :demenu3
 if [%deact%] equ [4] goto :demenu4
 if [%deact%] equ [+] goto :mainmenu
-goto :defender
+goto :antivirus
 :demenu1
 cls
 title Context Menu - Windows Defender
@@ -111,7 +111,9 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DW
 goto :return
 :mainmenu
 if exist %main% call %main%
+goto :antivirus
 :return
 set deact=
 set desub=
-goto :defender
+timeout /t 5
+goto :antivirus

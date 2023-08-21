@@ -11,7 +11,7 @@ echo 1. Windows Picture Viewer
 echo 2. Move Temporary Files to Ramdisk
 echo 3. Context Menu (Windows 11)
 echo 4. CPU Microcode Update
-if exist %main% echo +. Return to  Main Menu
+if exist %main% echo +. Return to Main Menu
 echo ==================================================================
 set /p avact=^> 
 if [%avact%] equ [1] goto :avmenu1
@@ -135,7 +135,9 @@ del "%amdcpu%" "%intlcpu%" /f /q
 goto :return
 :mainmenu
 if exist %main% call %main%
+goto :advanced
 :return
 set avact=
 set avsub=
+timeout /t 5
 goto :advanced

@@ -9,7 +9,7 @@ echo 2. Desktop Search Bar
 echo 3. Alt + Tab Behavior
 echo 4. User Profile Directory
 echo 5. Browser Caches Directory
-if exist %main% echo +. Return to  Main Menu
+if exist %main% echo +. Return to Main Menu
 echo ==================================================================
 set /p egact=^> 
 if [%egact%] equ [1] goto :egmenu1
@@ -63,7 +63,7 @@ title Manage Alt + Tab Behavior - Microsoft Edge
 echo ==================================================================
 echo 0. Default
 echo 1. Switch only via windows
-echo +. Return to  Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p egsub=^> 
 if [%egsub%] equ [0] goto :egm3off
@@ -83,7 +83,7 @@ echo ==================================================================
 echo 0. Default
 echo 1. Move to Documents
 echo 2. Move to User Directory
-echo +. Return to  Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p egsub=^> 
 if [%egsub%] equ [0] goto :egm4off
@@ -112,7 +112,7 @@ echo ==================================================================
 echo 0. Default
 echo 1. Move to RAMDISK
 echo 2. Move to User Directory
-echo +. Return to  Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p egsub=^> 
 if [%egsub%] equ [0] goto :egm5off
@@ -139,8 +139,10 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d
 goto :return
 :mainmenu
 if exist %main% call %main%
+goto :msedge
 :return
 set egact=
 set egsub=
 set egdir=
+timeout /t 5
 goto :msedge
