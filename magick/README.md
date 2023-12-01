@@ -27,3 +27,7 @@
     - Image Quality: 1-100
     - Default: 90
     - For `png`, it is compress ratio, which is 1/10 of quality value
+- Darken images
+    - Minimum color level: 0-100
+    - Default: 30
+    - The larger number, the darker image
