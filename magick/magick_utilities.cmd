@@ -2,16 +2,19 @@
 title ImageMagick Utilities
 set imagick=%~dp0bin\magick.exe
 :Main
+cls
 echo ============================================================
 echo 1. Crop with area
 echo 2. Cut off border
 echo 3. Convert images
+echo 4. Darken images
 echo ============================================================
-set /p act=^> 
-if [%act%] equ [1] goto :Crop
-if [%act%] equ [2] goto :Shave
-if [%act%] equ [3] goto :Conv
-cls && goto :Main
+set /p op=^> 
+if [%op%] equ [1] goto :Crop
+if [%op%] equ [2] goto :Shave
+if [%op%] equ [3] goto :Conv
+if [%op%] equ [4] goto :Dark
+goto :Main
 :Crop
 call :Area
 for %%a in (%*) do (call :Process %%a crop)
@@ -23,6 +26,10 @@ goto :Exit
 :Conv
 call :Format
 for %%a in (%*) do (call :Convert %%a)
+goto :Exit
+:Dark
+call :Level
+for %%a in (%*) do (call :Darker %%a)
 goto :Exit
 :Area
 echo.
@@ -84,6 +91,29 @@ exit /b
 :ConvertFolder
 md "%~dp1conv_%~nx1" 2>nul
 for %%a in (*) do ("%imagick%" "%%a" -quality %qu% "%~dp1conv_%~nx1\%%~na.%format%")
+cd..
+exit /b
+:Level
+echo.
+echo.
+echo ============================================================
+echo Set minimum color level: 0-100
+echo Default: 30
+echo ============================================================
+set /p lv=^> 
+echo %lv%| findstr /r "^[1-9]$ ^[1-9][0-9]$ ^100$" >nul || set lv=30
+echo.
+echo.
+echo ImageMagick is darkening images...
+exit /b
+:Darker
+cd /d %1 2>nul
+if %errorlevel% equ 0 goto :DarkerFolder
+"%imagick%" %1 -level %lv%%%,100%% "%~dp1dark_%~nx1"
+exit /b
+:DarkerFolder
+md "%~dp1dark_%~nx1" 2>nul
+for %%a in (*) do ("%imagick%" "%%a" -level %lv%%%,100%% "%~dp1dark_%~nx1\%%~nxa")
 cd..
 exit /b
 :Exit
