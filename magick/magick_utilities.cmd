@@ -29,7 +29,7 @@ for %%a in (%*) do (call :Convert %%a)
 goto :Exit
 :Dark
 call :Level
-for %%a in (%*) do (call :Darker %%a)
+for %%a in (%*) do (call :Darken %%a)
 goto :Exit
 :Area
 echo.
@@ -106,12 +106,12 @@ echo.
 echo.
 echo ImageMagick is darkening images...
 exit /b
-:Darker
+:Darken
 cd /d %1 2>nul
-if %errorlevel% equ 0 goto :DarkerFolder
+if %errorlevel% equ 0 goto :DarkenFolder
 "%imagick%" %1 -level %lv%%%,100%% "%~dp1dark_%~nx1"
 exit /b
-:DarkerFolder
+:DarkenFolder
 md "%~dp1dark_%~nx1" 2>nul
 for %%a in (*) do ("%imagick%" "%%a" -level %lv%%%,100%% "%~dp1dark_%~nx1\%%~nxa")
 cd..
