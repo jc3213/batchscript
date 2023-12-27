@@ -2,7 +2,6 @@
 title Real-ESRGAN Utilities
 set realesrgan=%~dp0bin\realesrgan-ncnn-vulkan.exe
 :main
-cls
 echo ============================================================
 echo 1. Real-ESRGAN Plus
 echo 2. Real-ESRGAN Plus Anime
@@ -15,12 +14,12 @@ if [%act%] equ [3] goto :realesrvideov3
 goto :main
 :realesrplus
 set model=realesrgan-x4plus
-set extra=x4plus
+set name=(Real-ESRGAN_x4plus)
 set multi=4x
 goto :format
 :realesranime
 set model=realesrgan-x4plus-anime
-set extra=x4plus-anime
+set name=(Real-ESRGAN_x4plus-anime)
 set multi=4x
 goto :format
 :realesrvideov3
@@ -39,9 +38,9 @@ if defined sub goto :submodelv3
 goto :realesrvideov3
 :submodelv3
 set model=realesr-animevideov3
-set param=-s %sub%
-set extra=animevideo-x%sub%
+set name=(Real-ESRGAN_animevideov3-x%sub%)
 set multi=%sub%x
+set extra=-s %sub%
 :format
 echo.
 echo.
@@ -61,10 +60,10 @@ echo.
 echo Real-ESRGAN is processing with model: "%model%"
 echo Multiplier: %multi%
 echo.
-for %%a in (%*) do (call :worker "%%a")
+for %%a in (%*) do (call :worker %%a)
 timeout /t 5
 exit
 :worker
 echo.
 echo Processing: "%~1"
-%realesrgan% -i %1 -o "%~dpn1_%extra%.%format%" -n %model% %param% 1>nul 2>&1
+%realesrgan% -i %1 -o "%~dpn1 %name%.%format%" -n %model% %extra% 1>nul 2>&1
