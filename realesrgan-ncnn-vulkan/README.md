@@ -3,7 +3,7 @@
 - Download and install latest [realesrgan-ncnn-vulkan](https://github.com/xinntao/Real-ESRGAN/releases)
     - C:\cli\realesrgan-ncnn-vulkan.cmd
     - C:\cli\bin\realesrgan-ncnn-vulkan.exe
-    - C:\cli\bin\models\*
+    - C:\cli\bin\models\\*
 - Drag and drop image files over `realesrgan-ncnn-vulkan.cmd`
     - See [Usage](#Usage)
 
