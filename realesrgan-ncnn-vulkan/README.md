@@ -5,9 +5,9 @@
     - C:\cli\bin\realesrgan-ncnn-vulkan.exe
     - C:\cli\bin\models\\*
 - Drag and drop image files over `realesrgan-ncnn-vulkan.cmd`
-    - See [Usage](#Usage)
+    - See [Settings](#Settings)
 
-## Usage
+## Settings
 - Model
     - realesrgan-x4plus
     - realesrgan-x4plus-anime
