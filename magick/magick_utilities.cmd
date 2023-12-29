@@ -17,19 +17,19 @@ if [%op%] equ [4] goto :Dark
 goto :Main
 :Crop
 call :Area
-for %%a in (%*) do (call :Process %%a crop)
+for %%a in (%*) do (call :Process "%%~a" crop)
 goto :Exit
 :Shave
 call :Area
-for %%a in (%*) do (call :Process %%a shave)
+for %%a in (%*) do (call :Process "%%~a" shave)
 goto :Exit
 :Conv
 call :Format
-for %%a in (%*) do (call :Convert %%a)
+for %%a in (%*) do (call :Convert "%%~a")
 goto :Exit
 :Dark
 call :Level
-for %%a in (%*) do (call :Darken %%a)
+for %%a in (%*) do (call :Darken "%%~a")
 goto :Exit
 :Area
 echo.
@@ -54,8 +54,7 @@ if %errorlevel% equ 0 goto :ProcessFolder
 exit /b
 :ProcessFolder
 md "%~dp1cutted_%~nx1" 2>nul
-for %%a in (*) do ("%imagick%" convert "%%a" -%2 %area% "%~dp1cutted_%~nx1\%%a")
-cd..
+for %%a in (*) do ("%imagick%" convert "%%~a" -%2 %area% "%~dp1cutted_%~nx1\%%~nxa")
 exit /b
 :Format
 echo.
@@ -90,8 +89,7 @@ if %errorlevel% equ 0 goto :ConvertFolder
 exit /b
 :ConvertFolder
 md "%~dp1conv_%~nx1" 2>nul
-for %%a in (*) do ("%imagick%" "%%a" -quality %qu% "%~dp1conv_%~nx1\%%~na.%format%")
-cd..
+for %%a in (*) do ("%imagick%" "%%~a" -quality %qu% "%~dp1conv_%~nx1\%%~na.%format%")
 exit /b
 :Level
 echo.
@@ -113,8 +111,7 @@ if %errorlevel% equ 0 goto :DarkenFolder
 exit /b
 :DarkenFolder
 md "%~dp1dark_%~nx1" 2>nul
-for %%a in (*) do ("%imagick%" "%%a" -level %lv%%%,100%% "%~dp1dark_%~nx1\%%~nxa")
-cd..
+for %%a in (*) do ("%imagick%" "%%~a" -level %lv%%%,100%% "%~dp1dark_%~nx1\%%~nxa")
 exit /b
 :Exit
 echo.
