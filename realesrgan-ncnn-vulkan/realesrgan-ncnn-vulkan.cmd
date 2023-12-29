@@ -2,6 +2,7 @@
 title Real-ESRGAN Utilities
 set realesrgan=%~dp0bin\realesrgan-ncnn-vulkan.exe
 :main
+cls
 echo ============================================================
 echo 1. Real-ESRGAN Plus
 echo 2. Real-ESRGAN Plus Anime
@@ -60,10 +61,25 @@ echo.
 echo Real-ESRGAN is processing with model: "%model%"
 echo Multiplier: %multi%
 echo.
-for %%a in (%*) do (call :worker %%a)
+for %%a in (%*) do (call :worker "%%~a")
 timeout /t 5
 exit
 :worker
+cd /d %1 2>nul
+if %errorlevel% equ 0 goto :folder
 echo.
 echo Processing: "%~1"
-%realesrgan% -i %1 -o "%~dpn1 %name%.%format%" -n %model% %extra% 1>nul 2>&1
+"%realesrgan%" -i %1 -o "%~dpn1 %name%.%format%" -n %model% %extra% 1>nul 2>&1
+echo Output: "%~dpn1 %name%.%format%"
+exit /b
+:subworker
+echo.
+echo Processing: "%~dpnx1"
+"%realesrgan%" -i "%~dpnx1" -o "%folder%\%~n1.%format%" -n %model% %extra% 1>nul 2>&1
+echo Output: "%folder%\%~n1.%format%"
+exit /b
+:folder
+set folder=%~1 %extra%
+md "%folder%" 2>nul
+for %%a in (*) do (call :subworker "%%~a")
+exit /b
