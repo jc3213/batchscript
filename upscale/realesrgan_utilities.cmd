@@ -27,9 +27,9 @@ goto :format
 echo.
 echo.
 echo ============================================================
-echo 1. x2
-echo 2. x3
-echo 3. x4
+echo 1. Scale 2x
+echo 2. Scale 3x
+echo 3. Scale 4x
 echo ============================================================
 set /p op=^> 
 if [%op%] equ [1] set scale=2
