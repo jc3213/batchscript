@@ -4,26 +4,26 @@ set waifu2x=%~dp0bin\waifu2x-ncnn-vulkan.exe
 :main
 cls
 echo ============================================================
-echo 1. CU-Net
-echo 2. Up-convert Anime Style Art with RGB
-echo 3. Up-convert Photo
+echo 1. Waifu2x CUnet
+echo 2. Waifu2x Up-convert RGB
+echo 3. Waifu2x Up-convert Photo
 echo ============================================================
 set /p act=^> 
 if [%act%] equ [1] goto :cunet
-if [%act%] equ [2] goto :upanime
+if [%act%] equ [2] goto :uprgb
 if [%act%] equ [3] goto :upphoto
 goto :main
 :cunet
 set model=models-cunet
-set name=CU-Net
+set name=cunet
 goto :scale
-:upanime
+:uprgb
 set model=models-upconv_7_anime_style_art_rgb
-set name=Up-convert Anime Style Art with RGB
+set name=upconv_7_anime_style_art_rgb
 goto :scale
 :upphoto
-set model=models-upconv_7_anime_style_art_rgb
-set name=Up-convert Photo
+set model=models-upconv_7_photo
+set name=upconv_7_photo
 :scale
 echo.
 echo.
