@@ -10,7 +10,7 @@
     - C:\cli\bin\models-cunet\\*
     - C:\cli\bin\models-upconv_7_anime_style_art_rgb\\*
     - C:\cli\bin\models-upconv_7_photo\\*
-- Drag and drop image files or folder over `waifu2x-ncnn-vulkan.cmd` or `realesrgan-ncnn-vulkan.cmd`
+- Drag and drop image files or folder over `waifu2x_utilities.cmd` or `realesrgan_utilities.cmd`
     - Read [Real-ESRGAN Settings](#Real-ESRGAN-Settings)
     - Read [Waifu2x Settings](#Waifu2x-Settings)
 
