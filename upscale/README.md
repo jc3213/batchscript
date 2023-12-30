@@ -18,7 +18,7 @@
 - Model
     - realesrgan-x4plus
     - realesrgan-x4plus-anime
-    - realesrgan-animevideov3
+    - realesr-animevideov3
 - Multiplier
     - 2x
         - *only for realesr-animevideov3*
