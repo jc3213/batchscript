@@ -15,40 +15,44 @@
     - Read [Waifu2x Settings](#Waifu2x-Settings)
 
 ## Real-ESRGAN Settings
-- Model
+- Model (model)
     - realesrgan-x4plus
     - realesrgan-x4plus-anime
     - realesr-animevideov3
-- Multiplier
+- Multiplier (scale)
     - 2x
         - *only for realesr-animevideov3*
     - 3x
         - *only for realesr-animevideov3*
     - 4x
-- Output Format
+- Output Format (format)
     - jpg
     - png
     - webp
+- Output Result
+    - `${name} (Real-ESRGAN)(${model})(${scale}).${format}`
 
 ## Waifu2x Settings
-- Model
+- Model (model)
     - models-cunet
     - models-upconv_7_anime_style_art_rgb
     - models-upconv_7_photo
-- Multiplier
+- Multiplier (scale)
     - 2x
     - 4x
     - 8x
-- Denoise Level
+- Denoise Level (noise)
     - 0
         - *Disable*
     - 1
     - 2
     - 3
-- TTA Mode
+- TTA Mode (tta)
     - 1
         - *Enable*
-- Output Format
+- Output Format (format)
     - jpg
     - png
     - webp
+- Output Result
+    - `${name} (Waifu2x)(${model})(${scale})(${noise})(${tta})?.(${format})`
