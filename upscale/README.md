@@ -40,12 +40,14 @@
     - 4x
     - 8x
 - Denoise Level
-    - 0 *Disable*
+    - 0
+        - *Disable*
     - 1
     - 2
     - 3
 - TTA Mode
-    - 1 *Enable*
+    - 1
+        - *Enable*
 - Output Format
     - jpg
     - png
