@@ -15,13 +15,13 @@ if [%act%] equ [3] goto :realesrvideov3
 goto :main
 :realesrplus
 set model=realesrgan-x4plus
-set name=(Real-ESRGAN_x4plus)
-set multi=4x
+set name=x4plus
+set scale=4
 goto :format
 :realesranime
 set model=realesrgan-x4plus-anime
-set name=(Real-ESRGAN_x4plus-anime)
-set multi=4x
+set name=x4plus-anime
+set scale=4
 goto :format
 :realesrvideov3
 echo.
@@ -32,16 +32,15 @@ echo 2. x3
 echo 3. x4
 echo ============================================================
 set /p op=^> 
-if [%op%] equ [1] set sub=2
-if [%op%] equ [2] set sub=3
-if [%op%] equ [3] set sub=4
-if defined sub goto :submodelv3
+if [%op%] equ [1] set scale=2
+if [%op%] equ [2] set scale=3
+if [%op%] equ [3] set scale=4
+if defined scale goto :submodelv3
 goto :realesrvideov3
 :submodelv3
 set model=realesr-animevideov3
-set name=(Real-ESRGAN_animevideov3-x%sub%)
-set multi=%sub%x
-set extra=-s %sub%
+set name=animevideov3
+set extra=-s %scale%
 :format
 echo.
 echo.
@@ -59,7 +58,7 @@ if not defined format goto :format
 echo.
 echo.
 echo Real-ESRGAN is processing with model: "%model%"
-echo Multiplier: %multi%
+echo Multiplier: %scale%x
 echo.
 for %%a in (%*) do (call :worker "%%~a")
 timeout /t 5
@@ -69,8 +68,8 @@ cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 echo.
 echo Processing: "%~1"
-"%realesrgan%" -i %1 -o "%~dpn1 %name%.%format%" -n %model% %extra% 1>nul 2>&1
-echo Output: "%~dpn1 %name%.%format%"
+"%realesrgan%" -i %1 -o "%~dpn1 (Real-ESRGAN)(%name%)(%scale%x).%format%" -n %model% %extra% 1>nul 2>&1
+echo Output: "%~dpn1 (Real-ESRGAN)(%name%)(%scale%x).%format%"
 exit /b
 :subworker
 echo.
@@ -79,7 +78,7 @@ echo Processing: "%~dpnx1"
 echo Output: "%folder%\%~n1.%format%"
 exit /b
 :folder
-set folder=%~1 %extra%
+set folder=%~1 (Real-ESRGAN)(%name%)(%scale%x)
 md "%folder%" 2>nul
 for %%a in (*) do (call :subworker "%%~a")
 exit /b
