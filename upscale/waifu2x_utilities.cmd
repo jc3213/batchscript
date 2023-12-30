@@ -8,10 +8,10 @@ echo 1. Waifu2x CUnet
 echo 2. Waifu2x Up-convert RGB
 echo 3. Waifu2x Up-convert Photo
 echo ============================================================
-set /p act=^> 
-if [%act%] equ [1] goto :cunet
-if [%act%] equ [2] goto :uprgb
-if [%act%] equ [3] goto :upphoto
+set /p md=^> 
+if [%md%] equ [1] goto :cunet
+if [%md%] equ [2] goto :uprgb
+if [%md%] equ [3] goto :upphoto
 goto :main
 :cunet
 set model=models-cunet
@@ -61,9 +61,11 @@ echo ============================================================
 echo 1. Enable TTA Mode
 echo ============================================================
 set /p tm=^> 
+set enable=Disabled
 if [%tm%] neq [1] goto :format
 set tta=-x
 set mode=(TTA)
+set enable=Enabled
 :format
 echo.
 echo.
@@ -81,9 +83,9 @@ if not defined format goto :format
 echo.
 echo.
 echo Waifu2x is processing with model: "%name%"
-echo Multiplier: %scale%x
-echo Denoise Lv: %noise%
-if defined mode echo TTA Mode: Enabled
+echo Multiplier : %scale%x
+echo Denoise    : Lv.%noise%
+echo TTA Mode   : %enable%
 echo.
 for %%a in (%*) do (call :worker "%%~a")
 timeout /t 5
@@ -92,15 +94,15 @@ exit
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 echo.
-echo Processing: "%~1"
+echo Processing : "%~1"
 "%waifu2x%" -i %1 -o "%~dpn1 (waifu2x)(%name%)(%scale%x)(lv%noise%)%mode%.%format%" -m %model% -n %noise% -s %scale% %tta% 1>nul 2>&1
-echo Output: "%~dpn1 (waifu2x)(%name%)(%scale%x)(lv%noise%)%mode%.%format%"
+echo Output     : "%~dpn1 (waifu2x)(%name%)(%scale%x)(lv%noise%)%mode%.%format%"
 exit /b
 :subworker
 echo.
-echo Processing: "%~dpnx1"
+echo Processing : "%~dpnx1"
 "%waifu2x%" -i "%~dpnx1" -o "%folder%\%~n1.%format%" -m %model% -n %noise% -s %scale% %tta% 1>nul 2>&1
-echo Output: "%folder%\%~n1.%format%"
+echo Output     : "%folder%\%~n1.%format%"
 exit /b
 :folder
 set folder=%~1 (waifu2x)(%name%)(%scale%x)(lv%noise%)%mode%

@@ -8,22 +8,22 @@ echo 1. Real-ESRGAN Plus
 echo 2. Real-ESRGAN Plus Anime
 echo 3. Real-ESRGAN Anime Video v3
 echo ============================================================
-set /p act=^> 
-if [%act%] equ [1] goto :realesrplus
-if [%act%] equ [2] goto :realesranime
-if [%act%] equ [3] goto :realesrvideov3
+set /p md=^> 
+if [%md%] equ [1] goto :plusx4
+if [%md%] equ [2] goto :x4anime
+if [%md%] equ [3] goto :videoanime
 goto :main
-:realesrplus
+:plusx4
 set model=realesrgan-x4plus
 set name=x4plus
 set scale=4
 goto :format
-:realesranime
+:x4anime
 set model=realesrgan-x4plus-anime
 set name=x4plus-anime
 set scale=4
 goto :format
-:realesrvideov3
+:videoanime
 echo.
 echo.
 echo ============================================================
@@ -31,13 +31,11 @@ echo 1. Scale 2x
 echo 2. Scale 3x
 echo 3. Scale 4x
 echo ============================================================
-set /p op=^> 
-if [%op%] equ [1] set scale=2
-if [%op%] equ [2] set scale=3
-if [%op%] equ [3] set scale=4
-if defined scale goto :submodelv3
-goto :realesrvideov3
-:submodelv3
+set /p sc=^> 
+if [%sc%] equ [1] set scale=2
+if [%sc%] equ [2] set scale=3
+if [%sc%] equ [3] set scale=4
+if not defined scale goto :videoanime
 set model=realesr-animevideov3
 set name=animevideov3
 set extra=-s %scale%
@@ -58,7 +56,7 @@ if not defined format goto :format
 echo.
 echo.
 echo Real-ESRGAN is processing with model: "%model%"
-echo Multiplier: %scale%x
+echo Multiplier : %scale%x
 echo.
 for %%a in (%*) do (call :worker "%%~a")
 timeout /t 5
@@ -67,15 +65,15 @@ exit
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 echo.
-echo Processing: "%~1"
+echo Processing : "%~1"
 "%realesrgan%" -i %1 -o "%~dpn1 (Real-ESRGAN)(%name%)(%scale%x).%format%" -n %model% %extra% 1>nul 2>&1
-echo Output: "%~dpn1 (Real-ESRGAN)(%name%)(%scale%x).%format%"
+echo Output     : "%~dpn1 (Real-ESRGAN)(%name%)(%scale%x).%format%"
 exit /b
 :subworker
 echo.
-echo Processing: "%~dpnx1"
+echo Processing : "%~dpnx1"
 "%realesrgan%" -i "%~dpnx1" -o "%folder%\%~n1.%format%" -n %model% %extra% 1>nul 2>&1
-echo Output: "%folder%\%~n1.%format%"
+echo Output     : "%folder%\%~n1.%format%"
 exit /b
 :folder
 set folder=%~1 (Real-ESRGAN)(%name%)(%scale%x)
