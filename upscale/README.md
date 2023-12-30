@@ -1,10 +1,10 @@
 # First of all
 
-- Download and install latest [realesrgan-ncnn-vulkan](https://github.com/xinntao/Real-ESRGAN/releases)
+- Download and unpack latest [realesrgan-ncnn-vulkan](https://github.com/xinntao/Real-ESRGAN/releases)
     - C:\cli\realesrgan_utilities.cmd
     - C:\cli\bin\realesrgan-ncnn-vulkan.exe
     - C:\cli\bin\models\\*
-- Download and install latest [waifu2x-ncnn-vulkan](https://github.com/nihui/waifu2x-ncnn-vulkan/releases)
+- Download and unpack latest [waifu2x-ncnn-vulkan](https://github.com/nihui/waifu2x-ncnn-vulkan/releases)
     - C:\cli\waifu2x_utilities.cmd
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
     - C:\cli\bin\models-cunet\\*
