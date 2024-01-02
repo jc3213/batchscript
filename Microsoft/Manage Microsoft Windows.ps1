@@ -1,3 +1,176 @@
+function Manage-WindowsPowerPlan {
+    Clear-Host
+    Write-Host "Manage Microsoft Edge"
+    Write-Host "==============================================================="
+    Write-Host "1. Manage System Hibernation"
+    Write-Host "2. Manage Disk Idle Timeout"
+    Write-Host "3. Manage Processor Maximum P-state"
+    Write-Host "4. Manage Processor Minimum P-state"
+    Write-Host "5. Manage Heterogeneous Thread Policy"
+    Write-Host "+. Return to main menu"
+    Write-Host "==============================================================="
+    $msedge = Read-Host ">"
+
+    switch ($msedge) {
+        "1" {
+            Windows-PowerHibernation
+        }
+        "2" {
+            Windows-DiskIdleTimeout
+        }
+        "3" {
+            Windows-MaximumPState
+        }
+        "4" {
+            Windows-MinimumPState
+        }
+        "5" {
+            Windows-HeterogeneousThread
+        }
+        "+" {
+        }
+        default {
+            Manage-WindowsPowerPlan
+        }
+    }
+}
+
+function Windows-PowerHibernation {
+    Clear-Host
+    Write-Host "System Hibernation - Power Plan"
+    Write-Host "=================================================================="
+    Write-Host "0. Disable"
+    Write-Host "1. Enable"
+    Write-Host "+. Return to Upper Menu"
+    Write-Host "=================================================================="
+    $power_hibern = Read-Host ">"
+
+    switch ($power_hibern) {
+        "0" {
+            powercfg /hibernate off
+        }
+        "1" {
+            powercfg /hibernate on
+        }
+        "+" {
+            Manage-WindowsPowerPlan
+        }
+        default {
+            Windows-PowerHibernation
+        }
+    }
+}
+
+function Windows-DiskIdleTimeout {
+    Clear-Host
+    Write-Host "Disk Idle Timeout - Power Plan"
+    Write-Host "=================================================================="
+    Write-Host "0. Never"
+    Write-Host "1. Default (20 minutes)"
+    Write-Host "+. Return to Upper Menu"
+    Write-Host "=================================================================="
+    $power_diskout = Read-Host ">"
+
+    switch ($power_diskout) {
+        "0" {
+            powercfg /change disk-timeout-ac 0
+            powercfg /change disk-timeout-dc 0
+        }
+        "1" {
+            powercfg /change disk-timeout-ac 20
+            powercfg /change disk-timeout-dc 20
+        }
+        "+" {
+            Manage-WindowsPowerPlan
+        }
+        default {
+            Windows-DiskIdleTimeout
+        }
+    }
+}
+
+function ppm2app {
+    param($value)
+    powercfg /change disk-timeout-ac $value
+    powercfg /change disk-timeout-dc $value
+}
+
+
+function Windows-MaximumPState {
+    Clear-Host
+    Write-Host "Processor Maximum P-state - Power Plan"
+    Write-Host "=================================================================="
+    Write-Host "Minimum: 50"
+    Write-Host "Maximum: 100 (Default)"
+    Write-Host "=================================================================="
+    $power_cpumax = Read-Host ">"
+
+    if ($power_cpumax -match "^[5-9][0-9]$|^100$") {
+        $CPU_max=$power_cpumax
+    } else {
+        $CPU_max="100"
+    }
+
+    powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX $CPU_max
+    powercfg /setactive scheme_current
+}
+
+function Windows-MinimumPState {
+    Clear-Host
+    Write-Host "Processor Minimum P-state - Power Plan"
+    Write-Host "=================================================================="
+    Write-Host "Minimum: 0 (Default)"
+    Write-Host "Maximum: 100"
+    Write-Host "=================================================================="
+    $power_cpumin = Read-Host ">"
+
+    if ($power_cpumin -match "^[0-9]$|^[1-9][0-9]$|^100$") {
+        $CPU_min=$power_cpumin
+    } else {
+        $CPU_min="0"
+    }
+
+    powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN $CPU_min
+    powercfg /setactive scheme_current
+}
+
+function ppcstate {
+    param($value1, $value2)
+    powercfg /setacvalueindex scheme_current sub_processor $value1 $value2
+    powercfg /setactive scheme_current
+}
+
+
+function Windows-HeterogeneousThread {
+    Clear-Host
+    Write-Host "Heterogeneous Thread Policy - Power Plan"
+    Write-Host "=================================================================="
+    Write-Host "0. Default (Automatic)"
+    Write-Host "1. Prefer performant processors"
+    Write-Host "+. Return to Upper Menu"
+    Write-Host "=================================================================="
+    $power_hetero = Read-Host ">"
+
+    switch ($power_hetero) {
+        "0" {
+            powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY 5
+            powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY 5
+            powercfg /setactive scheme_current
+        }
+        "1" {
+            powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY 2
+            powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY 2
+            powercfg /setactive scheme_current
+        }
+        "+" {
+            Manage-WindowsPowerPlan
+        }
+        default {
+            Windows-HeterogeneousThread
+        }
+    }
+}
+
 function Manage-MicrosoftEdge {
     Clear-Host
     Write-Host "Manage Microsoft Edge"
@@ -352,7 +525,7 @@ while ($true) {
     
     switch($main) {
         "1" {
-            
+            Manage-WindowsPowerPlan
         }
         "2" {
             
