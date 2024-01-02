@@ -138,7 +138,6 @@ function MSEdge-BrowserCachesDirectory {
     }
 }
 
-
 function Manage-MicrosoftEdge {
     Clear-Host
     Write-Host "Manage Microsoft Edge"
