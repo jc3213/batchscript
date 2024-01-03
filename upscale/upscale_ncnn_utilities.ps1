@@ -141,14 +141,14 @@ while ($true) {
             Set-Denoise
             Waifu-2x
         }
-        "4" {
+        "5" {
             $script:name = "(waifu2x)(upconv_7_anime_style_art_rgb)"
             $script:params = "-m models-upconv_7_anime_style_art_rgb"
             Set-Scale
             Set-Denoise
             Waifu-2x
         }
-        "4" {
+        "6" {
             $script:name = "(waifu2x)(upconv_7_photo)"
             $script:params = "-m models-upconv_7_photo"
             Set-Scale
