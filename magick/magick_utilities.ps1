@@ -71,6 +71,7 @@ function Get-Files {
 }
 
 function Get-Imagick ($params, $extra, $method) {
+    Get-Files
     foreach ($file in $global:files) {
         Write-Host "`n`nImagick is processing: `"$file`""
         $folder = Split-Path -Path $file -Parent
@@ -80,7 +81,7 @@ function Get-Imagick ($params, $extra, $method) {
             $name = Split-Path -Path $file -Leaf
         }
         $output = "$extra`_$name"
-        Start-Process -FilePath $imagick -ArgumentList "$method `"$file`" $params `"$folder\$output`"" -NoNewWindow -Wait
+        Start-Process -FilePath $imagick -ArgumentList "$method `"$file`" $params `"$folder\$output`"" -Wait -WindowStyle Hidden
         Write-Host "Output file: `"$output`""
     }
     Pause
@@ -98,23 +99,19 @@ while ($true) {
     switch ($type) {
         "1" {
             Set-Area
-            Get-Files
             Get-Imagick "-crop $global:area" "cutted" "convert"
         }
         "2" {
             Set-Area
-            Get-Files
             Get-Imagick "-shave $global:area" "cutted" "convert"
         }
         "3" {
             Set-Format
             Set-Quality
-            Get-Files
             Get-Imagick "-quality $global:quality" "output"
         }
         "4" {
             Set-Darken
-            Get-Files
             Get-Imagick "-level $global:level" "darken"
         }
     }
