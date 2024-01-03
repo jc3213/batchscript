@@ -89,13 +89,6 @@ function Windows-DiskIdleTimeout {
     }
 }
 
-function ppm2app {
-    param($value)
-    powercfg /change disk-timeout-ac $value
-    powercfg /change disk-timeout-dc $value
-}
-
-
 function Windows-MaximumPState {
     Clear-Host
     Write-Host "Processor Maximum P-state - Power Plan"
@@ -133,13 +126,6 @@ function Windows-MinimumPState {
     powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN $CPU_min
     powercfg /setactive scheme_current
 }
-
-function ppcstate {
-    param($value1, $value2)
-    powercfg /setacvalueindex scheme_current sub_processor $value1 $value2
-    powercfg /setactive scheme_current
-}
-
 
 function Windows-HeterogeneousThread {
     Clear-Host
