@@ -339,10 +339,14 @@ function WinMain-DiskDefragment {
 
     switch ($main_defrag) {
         "0" {
-            schtasks /change /disable /tn "\Microsoft\Windows\Defrag\ScheduledDefrag"
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Defrag\ScheduledDefrag"
+            $task.Settings.Enabled = $false
+            Set-ScheduledTask -InputObject $task
         }
         "1" {
-            schtasks /change /enable /tn "\Microsoft\Windows\Defrag\ScheduledDefrag"
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Defrag\ScheduledDefrag"
+            $task.Settings.Enabled = $true
+            Set-ScheduledTask -InputObject $task
         }
         "+" {
             Manage-WindowsMaintenance
@@ -365,8 +369,12 @@ function WinMain-Diagnostic {
 
     switch ($main_diag) {
         "0" {
-            schtasks /change /disable /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
-            schtasks /change /disable /tn "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
+            $task.Settings.Enabled = $false
+            Set-ScheduledTask -InputObject $task
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
+            $task.Settings.Enabled = $false
+            Set-ScheduledTask -InputObject $task
             Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
             Stop-Service -Name "DiagTrack" -Force
             Set-Service -Name "DiagTrack" -StartupType Disabled
@@ -374,8 +382,12 @@ function WinMain-Diagnostic {
             Set-Service -Name "DPS" -StartupType Disabled
         }
         "1" {
-            schtasks /change /enable /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
-            schtasks /change /enable /tn "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
+            $task.Settings.Enabled = $true
+            Set-ScheduledTask -InputObject $task
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
+            $task.Settings.Enabled = $true
+            Set-ScheduledTask -InputObject $task
             Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry"
             Set-Service -Name "DiagTrack" -StartupType Automatic
             Start-Service -Name "DiagTrack"
@@ -527,6 +539,7 @@ function WinAccess-CpuMicrocodeUpdate {
 
     $amd = Join-Path -Path $env:WINDIR -ChildPath "System32\mcupdate_GenuineIntel.dll"
     $intel = Join-Path -Path $env:WINDIR -ChildPath "System32\mcupdate_AuthenticAMD.dll"
+    $admin = New-Object System.Security.Principal.NTAccount("Administrators")
     $mcbk = Join-Path -Path $PSScriptRoot -ChildPath "microcode_backup.zip"
 
     switch ($avsub) {
@@ -534,10 +547,12 @@ function WinAccess-CpuMicrocodeUpdate {
             Expand-Archive -Force -Path $mcbk -DestinationPath "$env:WINDIR\System32"
         }
         "1" {
-            takeown /f $amd
-            icacls $amd /grant "Administrators:F"
-            takeown /f $intel
-            icacls $intel /grant "Administrators:F"
+            $acl = Get-Acl -Path $amd
+            $acl.SetOwner($admin)
+            Set-Acl -Path $amd -AclObject $acl
+            $acl = Get-Acl -Path $intel
+            $acl.SetOwner($admin)
+            Set-Acl -Path $intel -AclObject $acl
             Compress-Archive -Force -Path $amd, $intel -DestinationPath $mcbk
             Remove-Item -Path $amd, $intel -Force
         }
@@ -814,10 +829,14 @@ function MSDefender-ScheduledScan {
 
     switch ($defender_autoscan) {
         "0" {
-            schtasks /change /disable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
+            $task.Settings.Enabled = $false
+            Set-ScheduledTask -InputObject $task
         }
         "1" {
-            schtasks /change /enable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
+            $task = Get-ScheduledTask -TaskName "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
+            $task.Settings.Enabled = $true
+            Set-ScheduledTask -InputObject $task
         }
         "+" {
             Manage-MicrosoftDefender
