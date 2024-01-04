@@ -27,7 +27,7 @@ function Get-Files ($bool) {
     }
 
     $restart = Get-Restart
-    if ($restart -ne "y") {
+    if ($restart -ne "n") {
         Get-Files "$bool"
     }
 }
@@ -47,16 +47,16 @@ function Get-Directory ($bool) {
     }
     
     $restart = Get-Restart
-    if ($restart -ne "y") {
+    if ($restart -ne "n") {
         Get-Directory "$bool"
     }
 }
 
 function Get-Restart {
-    Write-Host "`n`nGo back and restart the utilities?"
+    Write-Host "`n`nContinue with the same settings?"
     Write-Host "=================================================================="
-    Write-Host "Yes [y]"
-    Write-Host "No [n] (Default)"
+    Write-Host "Yes [y] (Default)"
+    Write-Host "No [n]"
     Write-Host "=================================================================="
     return Read-Host ">"
 }
