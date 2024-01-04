@@ -5,8 +5,8 @@
     - C:\cli\bin\realesrgan-ncnn-vulkan.exe
     - C:\cli\bin\models\\*
 - Download and unpack latest [waifu2x-ncnn-vulkan](https://github.com/nihui/waifu2x-ncnn-vulkan/releases)
-    - C:\cli\upscale_ncnn_utilities.cmd
-    - C:\cli\upscale_ncnn_utilities.ps1
+    - C:\cli\[upscale_ncnn_utilities.cmd](https://raw.githubusercontent.com/jc3213/batchscript/main/upscale/upscale_ncnn_utilities.cmd)
+    - C:\cli\[upscale_ncnn_utilities.ps1](https://raw.githubusercontent.com/jc3213/batchscript/main/upscale/upscale_ncnn_utilities.ps1)
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
     - C:\cli\bin\models-cunet\\*
     - C:\cli\bin\models-upconv_7_anime_style_art_rgb\\*
