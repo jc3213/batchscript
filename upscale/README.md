@@ -46,4 +46,4 @@
     - png
     - webp
 - Output Result
-    - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.(${format})`
+    - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.${format}`
