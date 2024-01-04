@@ -1,16 +1,16 @@
 # First of all
 
 - Download and unpack latest [realesrgan-ncnn-vulkan](https://github.com/xinntao/Real-ESRGAN/releases)
-    - C:\cli\realesrgan_utilities.cmd
+    - C:\cli\upscale_ncnn_utilities.cmd
     - C:\cli\bin\realesrgan-ncnn-vulkan.exe
     - C:\cli\bin\models\\*
 - Download and unpack latest [waifu2x-ncnn-vulkan](https://github.com/nihui/waifu2x-ncnn-vulkan/releases)
-    - C:\cli\waifu2x_utilities.cmd
+    - C:\cli\upscale_ncnn_utilities.cmd
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
     - C:\cli\bin\models-cunet\\*
     - C:\cli\bin\models-upconv_7_anime_style_art_rgb\\*
     - C:\cli\bin\models-upconv_7_photo\\*
-- Drag and drop image files or folder over `waifu2x_utilities.cmd` or `realesrgan_utilities.cmd`
+- Drag and drop image files or folder over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
     - Read [Real-ESRGAN Settings](#Real-ESRGAN-Settings)
     - Read [Waifu2x Settings](#Waifu2x-Settings)
