@@ -12,43 +12,29 @@
     - C:\cli\bin\models-upconv_7_photo\\*
 - Drag and drop image files or folder over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
-- Read [Real-ESRGAN Settings](#Real-ESRGAN-Settings)
-- Read [Waifu2x Settings](#Waifu2x-Settings)
+- Read [Settings](#Settings)
 
 ## Real-ESRGAN Settings
 - Model (model)
     - realesrgan-x4plus
     - realesrgan-x4plus-anime
     - realesr-animevideov3
-- Multiplier (scale)
-    - 2x
-        - *only for realesr-animevideov3*
-    - 3x
-        - *only for realesr-animevideov3*
-    - 4x
-- Output Format (format)
-    - jpg
-    - png
-    - webp
-- Output Result
-    - `${name} (Real-ESRGAN)(${model})(${scale}).${format}`
-
-## Waifu2x Settings
-- Model (model)
     - models-cunet
     - models-upconv_7_anime_style_art_rgb
     - models-upconv_7_photo
 - Multiplier (scale)
+    - *not available for `realesrgan-x4plus` and `realesrgan-x4plus-anime`*
     - 2x
     - 4x
-    - 8x
 - Denoise Level (noise)
+    - *not available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
     - 0
         - *Disable*
     - 1
     - 2
     - 3
 - TTA Mode (tta)
+    - *not available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
     - 1
         - *Enable*
 - Output Format (format)
@@ -56,4 +42,4 @@
     - png
     - webp
 - Output Result
-    - `${name} (Waifu2x)(${model})(${scale})(${noise})(${tta})?.(${format})`
+    - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.(${format})`
