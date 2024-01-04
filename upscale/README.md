@@ -12,8 +12,8 @@
     - C:\cli\bin\models-upconv_7_photo\\*
 - Drag and drop image files or folder over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
-    - Read [Real-ESRGAN Settings](#Real-ESRGAN-Settings)
-    - Read [Waifu2x Settings](#Waifu2x-Settings)
+- Read [Real-ESRGAN Settings](#Real-ESRGAN-Settings)
+- Read [Waifu2x Settings](#Waifu2x-Settings)
 
 ## Real-ESRGAN Settings
 - Model (model)
