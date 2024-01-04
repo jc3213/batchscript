@@ -22,6 +22,11 @@
     - models-cunet
     - models-upconv_7_anime_style_art_rgb
     - models-upconv_7_photo
+- Method Name (ncnn)
+    - Real-ESRGAN
+        - *available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
+    - Waifu2x
+        - available for `models-cunet`, `models-upconv_7_anime_style_art_rgb`, and `models-upconv_7_photo`*
 - Multiplier (scale)
     - *not available for `realesrgan-x4plus` and `realesrgan-x4plus-anime`*
     - 2x
