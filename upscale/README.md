@@ -1,10 +1,6 @@
 # First of all
 
-- Download and unpack latest [realesrgan-ncnn-vulkan](https://github.com/xinntao/Real-ESRGAN/releases)
-    - C:\cli\upscale_ncnn_utilities.cmd
-    - C:\cli\bin\realesrgan-ncnn-vulkan.exe
-    - C:\cli\bin\models\\*
-- Download and unpack latest [waifu2x-ncnn-vulkan](https://github.com/nihui/waifu2x-ncnn-vulkan/releases)
+- Download and unpack latest [realesrgan-ncnn-vulkan](https://github.com/xinntao/Real-ESRGAN/releases) and [waifu2x-ncnn-vulkan](https://github.com/nihui/waifu2x-ncnn-vulkan/releases)
     - C:\cli\\[upscale_ncnn_utilities.cmd](https://raw.githubusercontent.com/jc3213/batchscript/main/upscale/upscale_ncnn_utilities.cmd)
     - C:\cli\\[upscale_ncnn_utilities.ps1](https://raw.githubusercontent.com/jc3213/batchscript/main/upscale/upscale_ncnn_utilities.ps1)
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
