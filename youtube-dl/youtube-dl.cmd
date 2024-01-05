@@ -1,136 +1,95 @@
 @echo off
 title Youtube-DL Utilities
-pushd %~dp0bin
-:switch
-if [%2] equ [] goto :Wizard
-if %~1 equ -f set preset=%~2
-if %~1 equ -o set folder=%~2
-if %~1 equ -p set proxy=%~2
-if %~1 equ -h set history=%~2
-shift
-goto :switch
-:Wizard
-if defined preset goto :%preset%
+set youtube=%~dp0bin\youtube-dl.exe
+set aria2c=%~dp0bin\aria2c.exe
 :quality
 echo Select video quality
 echo ========================================================================================
-echo 1. Best Quality
+echo 1. Best Quality [Default]
 echo 2. Best Quality @1080p
 echo 3. Best Quality @2K
 echo 4. Best Quality @4K
 echo 5. Only Audio
 echo 6. Only Audio (AAC)
 echo ========================================================================================
-set /p fm=^> 
-echo.
-echo.
-if [%fm%] equ [1] goto :best
-if [%fm%] equ [2] goto :1080p
-if [%fm%] equ [3] goto :1440p
-if [%fm%] equ [4] goto :2160p
-if [%fm%] equ [5] goto :audio
-if [%fm%] equ [6] goto :aac
-goto :quality
-:aac
-echo Selected Quality: Best Audio Only (AAC)
-set format=--format "bestaudio[acodec~='^(aac|mp4a)']"
-goto :folder
-:audio
-echo Selected Quality: Best Audio Only
-set format=--format "bestaudio"
-goto :folder
-:1080p
-echo Selected Quality: Best Video ^& Audio @1080p
-set format=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
-goto :folder
-:1440p
-echo Selected Quality: Best Video ^& Audio @2K
-set format=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
-goto :folder
-:2160p
-echo Selected Quality: Best Video ^& Audio @4K
-set format=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
-goto :folder
-:best
-echo Selected Quality: Best Video ^& Audio
-set format=--format "bestvideo+bestaudio/best"
+set /p format=^> 
+if [%format%] equ [2] set params=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
+if [%format%] equ [3] set params=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
+if [%format%] equ [4] set params=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
+if [%format%] equ [5] set params=--format "bestaudio"
+if [%format%] equ [6] set params=--format "bestaudio[acodec~='^(aac|mp4a)']"
+if defined params goto :folder
+set format=1
+set params=--format "bestvideo+bestaudio/best"
 :folder
-if defined folder goto :path
 echo.
 echo.
 echo Set download folder
 echo ========================================================================================
-echo %~dp0youtube-dl (Default)
+echo %~dp0Youtube-DL [Default]
 echo ========================================================================================
 set /p folder=^> 
-if not defined folder set folder=%~dp0youtube-dl
-:path
-echo.
-echo.
-echo Download Folder: %folder%
-set output=--output "%folder%\%%(title)s.%%(ext)s"
+if defined folder goto :history
+set folder=%~dp0Youtube-dl
+set params=%params% --output "%folder%\%%(title)s.%%(ext)s"
 :history
+echo.
+echo.
+echo Save download history?
+echo ========================================================================================
+echo Sample: %~dp0Youtube-DL.txt
+echo Keep EMPTY to avoid saving download history
+echo ========================================================================================
+set /p history=^> 
 if not defined history goto :proxy
-echo.
-echo.
-echo Download History: %history%
-set archive=--download-archive "%history%"
+set params=%params% --download-archive "%history%"
 :proxy
-if not defined proxy goto :server
 echo.
 echo.
-echo Use proxy server?
-echo ========================================================================================
-echo 1. %proxy%
-echo 2. Other
-echo ========================================================================================
-set /p px=^> 
-if [%px%] equ [1] goto :prxsvr
-if [%px%] equ [2] goto :server
-goto :subtitle
-:server
-echo.
-echo.
-set proxy=
 echo Set proxy server
 echo ========================================================================================
 echo Sample: 127.0.0.1:1080
-echo Keep EMPTY if you don't use a proxy
+echo Keep EMPTY if you don't use a proxy server
 echo ========================================================================================
 set /p proxy=^> 
 if not defined proxy goto :subtitle
-:prxsvr
-echo.
-echo.
-echo Proxy Server: %proxy%
-set server=--proxy "%proxy%"
+for /f "delims=:" %%a in ("%proxy%") do (set test=%%a)
+ping "%test%" >nul 2>nul && set params=%params% --proxy "%proxy%" || set proxy=
 :subtitle
 echo.
 echo.
 echo Download all subtitles?
 echo ========================================================================================
 echo 1. Yes
+echo 0. No [Default]
 echo ========================================================================================
-set /p sub=^> 
-if /i [%sub%] neq [1] goto :aria2c
-echo.
-echo.
-echo Download subtitles: Yes
-set subtitle=--all-subs
+set /p subtitle=^> 
+if /i [%subtitle%] neq [1] goto :aria2c
+set params=%params% --all-subs
 :aria2c
-if not exist aria2c.exe goto :link
 echo.
 echo.
-echo External Downloader: aria2c
-set aria2c=--external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
-:link
+if [%format%] equ [1] echo Selected Quality    :   Best Video ^& Audio
+if [%format%] equ [2] echo Selected Quality    :   Best Video ^& Audio @4K
+if [%format%] equ [3] echo Selected Quality    :   Best Video ^& Audio @2K
+if [%format%] equ [4] echo Selected Quality    :   Best Video ^& Audio @1080p
+if [%format%] equ [5] echo Selected Quality    :   Best Audio Only
+if [%format%] equ [6] echo Selected Quality    :   Best Audio Only (AAC)
+echo Download Folder     :   %folder%
+if defined proxy echo Proxy Server        :   %proxy%
+if defined subtitle echo Download Subtitles  :   Yes
+if defined history echo Download History    :   %history%
+if not exist "%aria2c%" goto :link
+echo External Downloader :   aria2c
+set params=%params% --external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+:dialog
 echo.
 echo.
-set /p url=Video URL: 
-if not defined url goto :link
+set /p uri=Video URI: 
+if not defined uri goto :link
 :download
 echo.
 echo.
-youtube-dl.exe %format% %output% %archive% %server% %aria2c% %subtitle% %url%
-set url=
+"%youtube%" %params% "%uri%"
+set uri=
 goto :link
