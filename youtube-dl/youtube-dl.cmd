@@ -2,7 +2,7 @@
 title Youtube-DL Utilities
 set youtube=%~dp0bin\youtube-dl.exe
 set aria2c=%~dp0bin\aria2c.exe
-:quality
+:format
 echo Select video quality
 echo ========================================================================================
 echo 1. Best Quality [Default]
