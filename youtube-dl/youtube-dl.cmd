@@ -24,14 +24,13 @@ set params=--format "bestvideo+bestaudio/best"
 :folder
 echo.
 echo.
-echo Set download folder
+echo Set download directory
 echo ========================================================================================
 echo %~dp0Youtube-DL [Default]
 echo ========================================================================================
 set /p folder=^> 
 if defined folder goto :history
 set folder=%~dp0Youtube-dl
-set params=%params% --output "%folder%\%%(title)s.%%(ext)s"
 :history
 echo.
 echo.
@@ -42,7 +41,7 @@ echo Keep EMPTY to avoid saving download history
 echo ========================================================================================
 set /p history=^> 
 if not defined history goto :proxy
-set params=%params% --download-archive "%history%"
+set params=%params% --output "%folder%\%%(title)s.%%(ext)s" --download-archive "%history%"
 :proxy
 echo.
 echo.
@@ -76,9 +75,9 @@ if [%format%] equ [4] echo Selected Quality    :   Best Video ^& Audio @1080p
 if [%format%] equ [5] echo Selected Quality    :   Best Audio Only
 if [%format%] equ [6] echo Selected Quality    :   Best Audio Only (AAC)
 echo Download Folder     :   %folder%
+if defined history echo Download History    :   %history%
 if defined proxy echo Proxy Server        :   %proxy%
 if defined subtitle echo Download Subtitles  :   Yes
-if defined history echo Download History    :   %history%
 if not exist "%aria2c%" goto :link
 echo External Downloader :   aria2c
 set params=%params% --external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
