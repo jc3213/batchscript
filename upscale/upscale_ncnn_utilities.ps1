@@ -36,6 +36,7 @@ function Set-Scale {
     }
     $script:name += "($ratio`x)"
     $script:params = " -s $ratio"
+    $script:scale = $ratio
 }
 
 function Set-Denoise {
@@ -50,6 +51,7 @@ function Set-Denoise {
     }
     $script:name += "(Lv.$denoise)"
     $script:params += " -n $denoise"
+    $script:denoise = $denoise
     Set-TTA
 }
 
@@ -81,6 +83,8 @@ function Real-ESRGAN {
 }
 
 function Waifu-2x {
+    Set-Scale
+    Set-Denoise
     Set-Format
     Get-Files
     foreach ($file in $script:files) {
@@ -120,39 +124,33 @@ while ($true) {
     switch ($model) {
         "1" {
             $script:name = "(real-esrgan)(x4plus)(4x)"
-            $script:params = "-m realesrgan-x4plus"
+            $script:params = "-n realesrgan-x4plus"
             Real-ESRGAN
         }
         "2" {
             $script:name = "(real-esrgan))(x4plus-anime)(4x)"
-            $script:params = "-m realesrgan-x4plus-anime"
+            $script:params = "-n realesrgan-x4plus-anime"
             Real-ESRGAN
         }
         "3" {
             $script:name = "(real-esrgan)(animevideov3)"
-            $script:params = "-m realesr-animevideov3"
+            $script:params = "-n realesr-animevideov3"
             Set-Scale
             Real-ESRGAN
         }
         "4" {
             $script:name = "(waifu2x)(cu-net)"
             $script:params = "-m models-cunet"
-            Set-Scale
-            Set-Denoise
             Waifu-2x
         }
         "5" {
             $script:name = "(waifu2x)(upconv_7_anime_style_art_rgb)"
             $script:params = "-m models-upconv_7_anime_style_art_rgb"
-            Set-Scale
-            Set-Denoise
             Waifu-2x
         }
         "6" {
             $script:name = "(waifu2x)(upconv_7_photo)"
             $script:params = "-m models-upconv_7_photo"
-            Set-Scale
-            Set-Denoise
             Waifu-2x
         }
     }
