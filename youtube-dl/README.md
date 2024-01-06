@@ -13,7 +13,7 @@
     - Best video and audio at 1440p (QHD)
     - Best video and audio at 2160p (UHD)
     - Best audio as possible
-    - Best audio as AAC format
+    - Best audio as *AAC* format
 - Download Directory
     - ${CurrentDirectory}\Youtube-DL
         - *Default*
