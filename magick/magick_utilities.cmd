@@ -86,8 +86,6 @@ set /p lv=^>
 echo %lv%| findstr /r "^[1-9]$ ^[1-9][0-9]$ ^100$" >nul || set lv=30
 exit /b
 :process
-echo.
-echo.
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 call :imagick %1 %2
@@ -100,10 +98,12 @@ set folder=
 exit /b
 :imagick
 echo.
+echo.
 echo ImageMagick is processing: %1
 if defined qu (set output=%~n1.%format%) else (set output=%~nx1)
 if defined folder (set output=%folder%\%output%) else (set output=%~dp1%name%%output%)
 "%imagick%" %2 %1 %params% "%output%"
+echo Output file: "%output%"
 exit /b
 :exit
 timeout /t 5
