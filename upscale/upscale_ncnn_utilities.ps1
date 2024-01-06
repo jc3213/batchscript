@@ -43,7 +43,7 @@ function Set-Denoise {
     Write-Host "`n`nDenoise Level"
     Write-Host "`============================================================"
     Write-Host "Denoise Level: 0-3"
-    Write-Host "Default: 0"
+    Write-Host "Default: 0 （Disabled)"
     Write-Host "============================================================"
     $denoise = Read-Host ">"
     if ($denoise -notmatch "^[0-3]$") {
