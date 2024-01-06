@@ -103,7 +103,7 @@ echo.
 echo ImageMagick is processing: %1
 if defined qu (set output=%~n1.%format%) else (set output=%~nx1)
 if defined folder (set output=%folder%\%output%) else (set output=%~dp1%name%%output%)
-if defined qu ("%imagick%" %2 %1 %params% "%~dp1%name%%~n1.%format%") else (%imagick%" %2 %1 %params% "%~dp1%name%%~nx1")
+"%imagick%" %2 %1 %params% "%output%"
 exit /b
 :exit
 timeout /t 5
