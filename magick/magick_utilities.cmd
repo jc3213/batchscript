@@ -17,25 +17,25 @@ if [%op%] equ [4] goto :darken
 goto :menu
 :crop
 call :area
-set name=cropped_
+set name=cropped[%area%]_
 set params=-crop %area%
 for %%a in (%*) do (call :process "%%~a" convert)
 goto :exit
 :shave
 call :area
-set name=cutted_
+set name=cutted[%area%]_
 set params=-shave %area%
 for %%a in (%*) do (call :process "%%~a" convert)
 goto :exit
 :format
 call :output
-set name=output%qu%_
+set name=output[%qu%]_
 set params=-quality %qu%
 for %%a in (%*) do (call :process "%%~a")
 goto :exit
 :darken
 call :level
-set name=darken%lv%_
+set name=darken[%lv%]_
 set params=-level %lv%%%,100%%
 for %%a in (%*) do (call :process "%%~a")
 goto :exit
