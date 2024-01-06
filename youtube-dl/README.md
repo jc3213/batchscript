@@ -4,28 +4,27 @@
     - C:\cli\bin\youtube-dl.exe
     - C:\cli\bin\aria2c.exe *optional*
 - Run `youtube-dl.cmd`
-    - Use [switches](#switches)
 
-## Switches
-- `-f`
-    - Selected video format
-    - `best`
-        - The best possible video and the best audio quality
-    - `2160p`
-        - The best video quality @2160p and the bese audio quality
-    - `1440p`
-        - The best video quality @1440p and the bese audio quality
-    - `1080p`
-        - The best video quality @1080p and the bese audio quality
-    - `audio`
-        - The bese audio quality
-    - `aac`
-        - The bese audio quality @aac codec
-- `-o`
-    - The download folder where videos are saved
-- `-p` 
-    - The proxy server used for youtube-dl
-    - There is a secondary confirmation for using proxy server
-- `-h` 
-    - The download history for youtube-dl
-    - The links in the history will be skipped
+## Options
+- Format
+    - Best Video and Audio as possible
+        - *Default*
+    - Best Video and Autio at 1080p (FHD)
+    - Best Video and Audio at 1440p (QHD)
+    - Best Video and Audio at 2160p (UHD)
+    - Best Audio as possible
+    - Best Audio as AAC format
+- Download Directory
+    - ${CurrentDirectory}\Youtube-DL
+        - *Default*
+- Download History
+    - **EMPTY** value to disable download history
+- Proxy Server
+    - **EMPTY** value to disable proxy server
+- Download Subtitles
+    - All
+    - Disabled
+        - *Default*
+- External Download Tools
+    - [aria2c](https://github.com/aria2/aria2/releases/latest)
+    - C:\cli\bin\aria2c.exe
