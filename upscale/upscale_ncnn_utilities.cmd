@@ -64,13 +64,12 @@ goto :noise
 echo.
 echo.
 echo ============================================================
-echo 1. Scale 2x
+echo 1. Scale 2x [Default]
 echo 2. Scale 4x
 echo ============================================================
 set /p sc=^> 
-if [%sc%] equ [1] set scale=2
 if [%sc%] equ [2] set scale=4
-if not defined scale goto :scale
+if not defined scale set scale=2
 set name=%name%(%scale%x)
 set params=%params% -s %scale%
 exit /b
@@ -78,17 +77,11 @@ exit /b
 echo.
 echo.
 echo ============================================================
-echo 0. Disable Denoise
-echo 1. Denoise Level 1
-echo 2. Denoise Level 2
-echo 3. Denoise Level 3
+echo Denoise Level: 0-3
+echo Default: 0 (Disabled)
 echo ============================================================
-set /p no=^> 
-if [%no%] equ [0] set noise=0
-if [%no%] equ [1] set noise=1
-if [%no%] equ [2] set noise=2
-if [%no%] equ [3] set noise=3
-if not defined noise goto :noise
+set /p noise=^> 
+echo %noise%| findstr /r "^[0-3]$" >nul || set noise=0
 set name=%name%(lv%noise%)
 set params=%params% -n %noise%
 :tta
@@ -106,14 +99,13 @@ echo.
 echo.
 echo ============================================================
 echo 1. jpg
-echo 2. png
+echo 2. png [Default]
 echo 3. webp
 echo ============================================================
 set /p fm=^> 
 if [%fm%] equ [1] set format=jpg
-if [%fm%] equ [2] set format=png
 if [%fm%] equ [3] set format=webp
-if not defined format goto :format
+if not defined format set format=png
 :upscale
 echo.
 echo.
