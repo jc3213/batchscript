@@ -7,13 +7,13 @@
 
 ## Settings
 - Format
-    - Best Video and Audio as possible
+    - Best video and audio as possible
         - *Default*
-    - Best Video and Autio at 1080p (FHD)
-    - Best Video and Audio at 1440p (QHD)
-    - Best Video and Audio at 2160p (UHD)
-    - Best Audio as possible
-    - Best Audio as AAC format
+    - Best video and autio at 1080p (FHD)
+    - Best video and audio at 1440p (QHD)
+    - Best video and audio at 2160p (UHD)
+    - Best audio as possible
+    - Best audio as AAC format
 - Download Directory
     - ${CurrentDirectory}\Youtube-DL
         - *Default*
@@ -21,8 +21,8 @@
     - **EMPTY** value to disable download history
 - Proxy Server
     - **EMPTY** value to disable proxy server
-- Download Subtitles
-    - All
+- Download Subtitle
+    - All subtitles
     - Disabled
         - *Default*
 - External Download Tools
