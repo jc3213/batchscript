@@ -59,11 +59,13 @@ echo ============================================================
 echo 1. jpg
 echo 2. png
 echo 3. avif
+echo 4. webp
 echo ============================================================
 set /p fm=^> 
 if [%fm%] equ [1] set format=jpg
 if [%fm%] equ [2] set format=png
 if [%fm%] equ [3] set format=avif
+if [%fm%] equ [4] set format=webp
 if not defined format goto :Format
 :quality
 echo.
