@@ -5,7 +5,7 @@
     - C:\cli\bin\aria2c.exe *optional*
 - Run `youtube-dl.cmd`
 
-## Options
+## Settings
 - Format
     - Best Video and Audio as possible
         - *Default*
