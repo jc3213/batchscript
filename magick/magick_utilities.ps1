@@ -1,3 +1,4 @@
+Add-Type -AssemblyName System.Windows.Forms
 $imagick = Join-Path $PSScriptRoot "bin\magick.exe"
 
 function Set-Area {
@@ -8,13 +9,17 @@ function Set-Area {
     Write-Host "Sample: 300x100+20+30 (width x height + left + top)"
     Write-Host "Crop image area start from: left 20px to 320px, top: 30px to 130px"
     Write-Host "============================================================"
-    $global:area = Read-Host ">"
+    $area = Read-Host ">"
+    if ($area -eq $null) {
+        Set-Area
+    }
+    $global:area = $area
 }
 
 function Set-Format {
     Write-Host "`n`n============================================================"
     Write-Host "1. jpg"
-    Write-Host "2. png"
+    Write-Host "2. png [Default]"
     Write-Host "3. avif"
     Write-Host "============================================================"
     $format = Read-Host ">"
@@ -22,14 +27,11 @@ function Set-Format {
         "1" {
             $global:format = "jpg"
          }
-        "2" {
-            $global:format = "png"
-        }
         "3" {
             $global:format = "avif"
         }
         default {
-            Set-Format
+            $global:format = "png"
         }
     }
 }
@@ -59,7 +61,6 @@ function Set-Darken {
 }
 
 function Get-Files {
-    Add-Type -AssemblyName System.Windows.Forms
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.Multiselect = $true
     $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
