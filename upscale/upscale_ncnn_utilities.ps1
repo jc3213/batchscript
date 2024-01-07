@@ -1,3 +1,4 @@
+Add-Type -AssemblyName System.Windows.Forms
 $realesrgan = Join-Path $PSScriptRoot "bin\realesrgan-ncnn-vulkan.exe"
 $waifu2x = Join-Path $PSScriptRoot "bin\waifu2x-ncnn-vulkan.exe"
 
@@ -69,20 +70,11 @@ function Set-TTA {
 }
 
 function Get-Files {
-    Add-Type -AssemblyName System.Windows.Forms
-    $dialog = New-Object System.Windows.Forms.OpenFileDialog
-    $dialog.Multiselect = $true
-    $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
-    $result = $dialog.ShowDialog()
 
-    if ($result -eq "OK") {
-        $script:files = $dialog.FileNames
-    }
 }
 
 function Real-ESRGAN {
     Set-Format
-    Get-Files
     Upscale-Output
 }
 
@@ -90,7 +82,6 @@ function Waifu-2x {
     Set-Scale
     Set-Denoise
     Set-Format
-    Get-Files
     Upscale-Output
 }
 
@@ -98,7 +89,17 @@ function Upscale-Output {
     Write-Host "`n`nUpscaler     :   $script:worker"
     Write-Host "Model        :   $script:model"
     Write-Host "Scale Ratio  :   $script:scale`x"
-    foreach ($file in $script:files) {
+
+    $dialog = New-Object System.Windows.Forms.OpenFileDialog
+    $dialog.Multiselect = $true
+    $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
+    $result = $dialog.ShowDialog()
+
+    if ($result -ne "OK") {
+        return
+    }
+
+    foreach ($file in $dialog.FileNames) {
         Write-Host "`n`nProcessing: `"$file`""
         $folder = Split-Path -Path $file -Parent
         $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + " $script:name.$script:format"
