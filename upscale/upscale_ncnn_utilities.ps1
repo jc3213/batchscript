@@ -111,6 +111,7 @@ function Upscale-Output {
 
 while ($true) {
     Clear-Host
+    Write-Host "Upscale Model"
     Write-Host "============================================================"
     Write-Host "1. Real-ESRGAN Plus"
     Write-Host "2. Real-ESRGAN Plus Anime"
