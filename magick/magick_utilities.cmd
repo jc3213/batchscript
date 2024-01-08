@@ -18,29 +18,29 @@ if [%op%] equ [5] goto :resize
 goto :menu
 :crop
 call :area
-set name=cropped[%area%]
+set name=[cropped][%area%]
 set params=-crop %area%
 set method=convert
 goto :main
 :shave
 call :area
-set name=cutted[%area%]
+set name=[cutted][%area%]
 set params=-shave %area%
 set method=convert
 goto :main
 :format
 call :output
-set name=output[%qu%]
+set name=[output][%qu%]
 set params=-quality %qu%
 goto :main
 :darken
 call :level
-set name=darken[%lv%]
+set name=[darken][%lv%]
 set params=-level %lv%%%,100%%
 goto :main
 :resize
 call :size
-set name=resize[%size%]_
+set name=[resize][%size%]
 set params=-resize %size%
 set method=convert
 goto :main
