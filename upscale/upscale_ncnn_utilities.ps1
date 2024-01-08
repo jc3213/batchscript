@@ -2,9 +2,51 @@ Add-Type -AssemblyName System.Windows.Forms
 $realesrgan = Join-Path $PSScriptRoot "bin\realesrgan-ncnn-vulkan.exe"
 $waifu2x = Join-Path $PSScriptRoot "bin\waifu2x-ncnn-vulkan.exe"
 
-function Set-Format {
-    Write-Host "`n`nOutput Format"
+function Set-Scale {
+    Write-Host "`n`n============================================================"
+    Write-Host "1. Scale 2x (Default)"
+    Write-Host "2. Scale 4x"
     Write-Host "============================================================"
+    $scale = Read-Host ">"
+    if ($scale -eq "2") {
+        $ratio = "4"
+    } else {
+        $ratio = "2"
+    }
+    $script:name += "($ratio`x)"
+    $script:params = " -s $ratio"
+    $script:scale = $ratio
+}
+
+function Set-Denoise {
+    Write-Host "`n`n============================================================"
+    Write-Host "Denoise Level: 0-3"
+    Write-Host "Default: 0 (Disabled)"
+    Write-Host "============================================================"
+    $denoise = Read-Host ">"
+    if ($denoise -notmatch "^[0-3]$") {
+        $denoise = "0"
+    }
+    $script:name += "(Lv.$denoise)"
+    $script:params += " -n $denoise"
+    $script:denoise = $denoise
+    Set-TTA
+}
+
+function Set-TTA {
+    Write-Host "`n`n============================================================"
+    Write-Host "1. Enable TTA Mode"
+    Write-Host "============================================================"
+    $tta = Read-Host ">"
+    if ($tta -eq "1") {
+        $script:name += "(TTA)"
+        $script:params += " -x"
+        $script:tta = $true
+    }
+}
+
+function Set-Format {
+    Write-Host "`n`n============================================================"
     Write-Host "1. jpg"
     Write-Host "2. png (Default)"
     Write-Host "3. webp"
@@ -21,68 +63,6 @@ function Set-Format {
             $script:format = "png"
         }
     }
-}
-
-function Set-Scale {
-    Write-Host "`n`nScale Ratio"
-    Write-Host "`============================================================"
-    Write-Host "1. 2x (Default)"
-    Write-Host "2. 4x"
-    Write-Host "============================================================"
-    $scale = Read-Host ">"
-    if ($scale -eq "2") {
-        $ratio = "4"
-    } else {
-        $ratio = "2"
-    }
-    $script:name += "($ratio`x)"
-    $script:params = " -s $ratio"
-    $script:scale = $ratio
-}
-
-function Set-Denoise {
-    Write-Host "`n`nDenoise Level"
-    Write-Host "`============================================================"
-    Write-Host "Denoise Level: 0-3"
-    Write-Host "Default: 0 (Disabled)"
-    Write-Host "============================================================"
-    $denoise = Read-Host ">"
-    if ($denoise -notmatch "^[0-3]$") {
-        $denoise = "0"
-    }
-    $script:name += "(Lv.$denoise)"
-    $script:params += " -n $denoise"
-    $script:denoise = $denoise
-    Set-TTA
-}
-
-function Set-TTA {
-    Write-Host "`n`nTTA Mode"
-    Write-Host "`============================================================"
-    Write-Host "1. Enable"
-    Write-Host "============================================================"
-    $tta = Read-Host ">"
-    if ($tta -eq "1") {
-        $script:name += "(TTA)"
-        $script:params += " -x"
-        $script:tta = $true
-    }
-}
-
-function Get-Files {
-
-}
-
-function Real-ESRGAN {
-    Set-Format
-    Upscale-Output
-}
-
-function Waifu-2x {
-    Set-Scale
-    Set-Denoise
-    Set-Format
-    Upscale-Output
 }
 
 function Upscale-Output {
@@ -117,9 +97,20 @@ function Upscale-Output {
     Pause
 }
 
+function Real-ESRGAN {
+    Set-Format
+    Upscale-Output
+}
+
+function Waifu-2x {
+    Set-Scale
+    Set-Denoise
+    Set-Format
+    Upscale-Output
+}
+
 while ($true) {
     Clear-Host
-    Write-Host "Upscale Model"
     Write-Host "============================================================"
     Write-Host "1. Real-ESRGAN Plus"
     Write-Host "2. Real-ESRGAN Plus Anime"
