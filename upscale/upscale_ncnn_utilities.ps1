@@ -8,11 +8,13 @@ function Set-Scale {
     Write-Host "2. Scale 4x"
     Write-Host "============================================================"
     $scale = Read-Host ">"
+
     if ($scale -eq "2") {
         $ratio = "4"
     } else {
         $ratio = "2"
     }
+
     $script:name += "($ratio`x)"
     $script:params = " -s $ratio"
     $script:scale = $ratio
@@ -24,9 +26,11 @@ function Set-Denoise {
     Write-Host "Default: 0 (Disabled)"
     Write-Host "============================================================"
     $denoise = Read-Host ">"
+
     if ($denoise -notmatch "^[0-3]$") {
         $denoise = "0"
     }
+
     $script:name += "(Lv.$denoise)"
     $script:params += " -n $denoise"
     $script:denoise = $denoise
@@ -38,6 +42,7 @@ function Set-TTA {
     Write-Host "1. Enable TTA Mode"
     Write-Host "============================================================"
     $tta = Read-Host ">"
+
     if ($tta -eq "1") {
         $script:name += "(TTA)"
         $script:params += " -x"
@@ -52,6 +57,7 @@ function Set-Format {
     Write-Host "3. webp"
     Write-Host "============================================================"
     $format = Read-Host ">"
+
     switch ($format) {
         "1" {
             $script:format = "jpg"
@@ -122,6 +128,7 @@ while ($true) {
     Write-Host "6. Waifu2x Up-convert Photo"
     Write-Host "============================================================"
     $model = Read-Host ">"
+
     switch ($model) {
         "1" {
             $script:app = $realesrgan
