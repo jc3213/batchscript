@@ -132,8 +132,9 @@ while ($true) {
     Write-Host "4. Darken images"
     Write-Host "5. Resize images"
     Write-Host "============================================================"
-    $type = Read-Host ">"
-    switch ($type) {
+    $magick = Read-Host ">"
+
+    switch ($magick) {
         "1" {
             Set-Area "crop"
             Run-Imagick
