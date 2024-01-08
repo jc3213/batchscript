@@ -44,7 +44,7 @@ function Set-Denoise {
     Write-Host "`n`nDenoise Level"
     Write-Host "`============================================================"
     Write-Host "Denoise Level: 0-3"
-    Write-Host "Default: 0 （Disabled)"
+    Write-Host "Default: 0 (Disabled)"
     Write-Host "============================================================"
     $denoise = Read-Host ">"
     if ($denoise -notmatch "^[0-3]$") {
@@ -87,7 +87,7 @@ function Waifu-2x {
 
 function Upscale-Output {
     Clear-Host
-    Write-Host "`n`nUpscaler     :   $script:worker"
+    Write-Host "Upscaler     :   $script:worker"
     Write-Host "Model        :   $script:model"
     Write-Host "Scale Ratio  :   $script:scale`x"
     if ($script:denoise) {
