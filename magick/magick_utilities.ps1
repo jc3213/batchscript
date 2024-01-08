@@ -17,7 +17,7 @@ function Set-Area ($action) {
         Set-Area
     }
 
-    $script:name = "cropped[$area]_"
+    $script:name = "[cropped][$area]"
     $script:params = "-$action $area"
     $script:method = "convert"
 }
@@ -27,6 +27,7 @@ function Set-Format {
     Write-Host "1. jpg"
     Write-Host "2. png [Default]"
     Write-Host "3. avif"
+    Write-Host "4. webp"
     Write-Host "============================================================"
     $format = Read-Host ">"
 
@@ -36,6 +37,9 @@ function Set-Format {
          }
         "3" {
             $script:format = "avif"
+        }
+        "4" {
+            $script:format = "webp"
         }
         default {
             $script:format = "png"
@@ -54,7 +58,7 @@ function Set-Quality {
         $quality = 90
     }
 
-    $script:name = "output[$quality]_"
+    $script:name = "[output][$script:format][$quality]"
     $script:params = "-quality $quality"
 }
 
@@ -69,7 +73,7 @@ function Set-Darken {
         $darken = "30"
     }
 
-    $script:name = "darken[$darken]_"
+    $script:name = "[darken][$darken]"
     $script:params = "-level $darken%,100%"
     
 }
@@ -89,7 +93,7 @@ function Set-Resize {
         Set-Resize
     }
 
-    $script:name = "resize[$resize]_"
+    $script:name = "[resize][$resize]"
     $script:params = "-resize $resize"
     $script:method = "convert"
 }
@@ -108,11 +112,11 @@ function Run-Imagick {
         Write-Host "`n`nImagick is processing: `"$file`""
         $folder = Split-Path -Path $file -Parent
         if ($script:format) {
-            $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + ".$script:format"
+            $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + "$script:format"
         } else {
             $name = Split-Path -Path $file -Leaf
         }
-        $output = "$script:name`_$name"
+        $output = "$script:name $name"
         Start-Process -FilePath $imagick -ArgumentList "$script:method `"$file`" $script:params `"$folder\$output`"" -Wait -WindowStyle Hidden
         Write-Host "Output file: `"$output`""
     }
