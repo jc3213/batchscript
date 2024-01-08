@@ -67,6 +67,7 @@ function Set-Format {
 
 function Upscale-Output {
     Clear-Host
+    Write-Host "============================================================"
     Write-Host "Upscaler     :   $script:worker"
     Write-Host "Model        :   $script:model"
     Write-Host "Scale Ratio  :   $script:scale`x"
@@ -76,6 +77,7 @@ function Upscale-Output {
     if ($script:tta) {
         Write-Host "TTA Mode     :   Enabled"
     }
+    Write-Host "============================================================"
 
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.Multiselect = $true
