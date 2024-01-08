@@ -18,24 +18,24 @@ if [%op%] equ [5] goto :resize
 goto :menu
 :crop
 call :area
-set name=cropped[%area%]_
+set name=cropped[%area%]
 set params=-crop %area%
 set method=convert
 goto :main
 :shave
 call :area
-set name=cutted[%area%]_
+set name=cutted[%area%]
 set params=-shave %area%
 set method=convert
 goto :main
 :format
 call :output
-set name=output[%qu%]_
+set name=output[%qu%]
 set params=-quality %qu%
 goto :main
 :darken
 call :level
-set name=darken[%lv%]_
+set name=darken[%lv%]
 set params=-level %lv%%%,100%%
 goto :main
 :resize
@@ -64,14 +64,15 @@ echo.
 echo.
 echo ============================================================
 echo 1. jpg
-echo 2. png
+echo 2. png [Default]
 echo 3. avif
+echo 4. webp
 echo ============================================================
 set /p fm=^> 
-if [%fm%] equ [1] set format=jpg
-if [%fm%] equ [2] set format=png
-if [%fm%] equ [3] set format=avif
-if not defined format goto :Format
+if [%fm%] equ [1] set format=.jpg
+if [%fm%] equ [3] set format=.avif
+if [%fm%] equ [4] set format=.webp
+if not defined format set format=.png
 :quality
 echo.
 echo.
@@ -106,24 +107,26 @@ echo ============================================================
 set /p size=^> 
 if not defined size goto :size
 exit /b
-:process
+:imagick
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-call :imagick %1 %2
+if not defined format set format=%~x1
+set output=%~dpn1 %name%%format%
+call :appx %1
 exit /b
 :folder
-set folder=%~dp1%name%%~nx1
+set folder=%~1 %name%
 md "%folder%" 2>nul
-for %%a in (*) do (call :imagick "%%~a")
-set folder=
+for %%a in (*) do (call :files "%%~a")
 exit /b
-:imagick
+:files
+if not defined format set format=%~x1
+set output=%folder%\%~n1%format%
+:appx
 echo.
 echo.
-echo ImageMagick is processing: %1
-if defined qu (set output=%~n1.%format%) else (set output=%~nx1)
-if defined folder (set output=%folder%\%output%) else (set output=%~dp1%name%%output%)
-"%~dp0bin\magick.exe" %method% %1 %params% "%output%"
+echo ImageMagick is processing: %~dpnx1
+"%~dp0bin\magick.exe" %method% "%~1" %params% "%output%"
 echo Output file: "%output%"
 exit /b
 :main
