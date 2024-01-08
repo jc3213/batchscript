@@ -86,9 +86,16 @@ function Waifu-2x {
 }
 
 function Upscale-Output {
+    Clear-Host
     Write-Host "`n`nUpscaler     :   $script:worker"
     Write-Host "Model        :   $script:model"
     Write-Host "Scale Ratio  :   $script:scale`x"
+    if ($script:denoise) {
+        Write-Host "Denoise      :   Lv.$script:denoise"
+    }
+    if ($script:tta) {
+        Write-Host "TTA Mode     :   Enabled"
+    }
 
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.Multiselect = $true
