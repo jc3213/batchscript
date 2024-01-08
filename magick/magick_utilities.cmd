@@ -6,39 +6,45 @@ cls
 echo ============================================================
 echo 1. Crop with area
 echo 2. Cut off border
-echo 3. Convert images
+echo 3. Convert format
 echo 4. Darken images
+echo 5. Resize images
 echo ============================================================
 set /p op=^> 
 if [%op%] equ [1] goto :crop
 if [%op%] equ [2] goto :shave
 if [%op%] equ [3] goto :format
 if [%op%] equ [4] goto :darken
+if [%op%] equ [5] goto :resize
 goto :menu
 :crop
 call :area
 set name=cropped[%area%]_
 set params=-crop %area%
-for %%a in (%*) do (call :process "%%~a" convert)
-goto :exit
+set method=convert
+goto :main
 :shave
 call :area
 set name=cutted[%area%]_
 set params=-shave %area%
-for %%a in (%*) do (call :process "%%~a" convert)
-goto :exit
+set method=convert
+goto :main
 :format
 call :output
 set name=output[%qu%]_
 set params=-quality %qu%
-for %%a in (%*) do (call :process "%%~a")
-goto :exit
+goto :main
 :darken
 call :level
 set name=darken[%lv%]_
 set params=-level %lv%%%,100%%
-for %%a in (%*) do (call :process "%%~a")
-goto :exit
+goto :main
+:resize
+call :size
+set name=resize[%size%]_
+set params=-resize %size%
+set method=convert
+goto :main
 :area
 echo.
 echo.
@@ -59,13 +65,11 @@ echo ============================================================
 echo 1. jpg
 echo 2. png
 echo 3. avif
-echo 4. webp
 echo ============================================================
 set /p fm=^> 
 if [%fm%] equ [1] set format=jpg
 if [%fm%] equ [2] set format=png
 if [%fm%] equ [3] set format=avif
-if [%fm%] equ [4] set format=webp
 if not defined format goto :Format
 :quality
 echo.
@@ -87,6 +91,20 @@ echo ============================================================
 set /p lv=^> 
 echo %lv%| findstr /r "^[1-9]$ ^[1-9][0-9]$ ^100$" >nul || set lv=30
 exit /b
+:size
+echo.
+echo.
+echo ============================================================
+echo Sample: 300x100 (width x height)
+echo Resize image to width 300px and height 100px
+echo Sample: 500x (width), or x400 (height)
+echo Resize image and keep aspect ratio
+echo Sample: 50%%%%
+echo Resize image to 50% of its size
+echo ============================================================
+set /p size=^> 
+if not defined size goto :size
+exit /b
 :process
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
@@ -95,7 +113,7 @@ exit /b
 :folder
 set folder=%~dp1%name%%~nx1
 md "%folder%" 2>nul
-for %%a in (*) do (call :imagick "%%~a" %2)
+for %%a in (*) do (call :imagick "%%~a")
 set folder=
 exit /b
 :imagick
@@ -104,8 +122,9 @@ echo.
 echo ImageMagick is processing: %1
 if defined qu (set output=%~n1.%format%) else (set output=%~nx1)
 if defined folder (set output=%folder%\%output%) else (set output=%~dp1%name%%output%)
-"%imagick%" %2 %1 %params% "%output%"
+"%imagick%" %method% %1 %params% "%output%"
 echo Output file: "%output%"
 exit /b
-:exit
+:main
+for %%a in (%*) do (call :process "%%~a")
 timeout /t 5
