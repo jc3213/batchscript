@@ -54,6 +54,8 @@ echo Sample: 300x100 (width x height)
 echo Cut left and right: 300px(width), cut top and bottom: 100px(height)
 echo Sample: 300x100+20+30 (width x height + left + top)
 echo Crop image area start from: left 20px to 320px, top 30px to 130px
+echo Sample: 200x100%%%%+50 (width x height + left)
+echo Crop image area start from: left 50px to 250px, top: 100%%
 echo ============================================================
 set /p area=^> 
 if not defined area goto :area
