@@ -1,19 +1,25 @@
 Add-Type -AssemblyName System.Windows.Forms
 $imagick = Join-Path $PSScriptRoot "bin\magick.exe"
 
-function Set-Area {
+function Set-Area ($action) {
     Write-Host "`n`n============================================================"
     Write-Host "https://imagemagick.org/script/command-line-processing.php#geometry"
     Write-Host "Sample: 300x100 (width x height)"
     Write-Host "Cut left and right: 300px(width), cut top and bottom: 100px(height)"
     Write-Host "Sample: 300x100+20+30 (width x height + left + top)"
     Write-Host "Crop image area start from: left 20px to 320px, top: 30px to 130px"
+    Write-Host "Sample: 200x100%+50 (width x height + left)"
+    Write-Host "Crop image area start from: left 50px to 250px, top: 100%"
     Write-Host "============================================================"
     $area = Read-Host ">"
+
     if ($area -eq $null) {
         Set-Area
     }
-    $global:area = $area
+
+    $script:name = "cropped[$area]_"
+    $script:params = "-$action $area"
+    $script:method = "convert"
 }
 
 function Set-Format {
@@ -23,15 +29,16 @@ function Set-Format {
     Write-Host "3. avif"
     Write-Host "============================================================"
     $format = Read-Host ">"
+
     switch ($format) {
         "1" {
-            $global:format = "jpg"
+            $script:format = "jpg"
          }
         "3" {
-            $global:format = "avif"
+            $script:format = "avif"
         }
         default {
-            $global:format = "png"
+            $script:format = "png"
         }
     }
 }
@@ -42,10 +49,13 @@ function Set-Quality {
     Write-Host "Default: 90"
     Write-Host "============================================================"
     $quality = Read-Host ">"
+
     if ($quality -notmatch "^[1-9]$|^[1-9][0-9]$|^100$") {
         $quality = 90
     }
-    $global:quality = $quality
+
+    $script:name = "output[$quality]_"
+    $script:params = "-quality $quality"
 }
 
 function Set-Darken {
@@ -54,35 +64,56 @@ function Set-Darken {
     Write-Host "Default: 30"
     Write-Host "============================================================"
     $darken = Read-Host ">"
+
     if ($darken -notmatch "^[1-9]$|^[1-9][0-9]$|^100$") {
         $darken = "30"
     }
-    $global:level = $darken + "%,100%"
+
+    $script:name = "darken[$darken]_"
+    $script:params = "-level $darken%,100%"
+    
 }
 
-function Get-Files {
+function Set-Resize {
+    Write-Host "`n`n============================================================"
+    Write-Host "Sample: 300x100 (width x height)"
+    Write-Host "Resize image to width 300px and height 100px"
+    Write-Host "Sample: 500x (width), or x400 (height)"
+    Write-Host "Resize image and keep aspect ratio"
+    Write-Host "Sample: 50%"
+    Write-Host "Resize image to 50% of its size"
+    Write-Host "============================================================"
+    $resize = Read-Host ">"
+
+    if ($resize-eq $null) {
+        Set-Resize
+    }
+
+    $script:name = "resize[$resize]_"
+    $script:params = "-resize $resize"
+    $script:method = "convert"
+}
+
+function Run-Imagick {
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.Multiselect = $true
     $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
     $result = $dialog.ShowDialog()
 
-    if ($result -eq "OK") {
-        $global:files = $dialog.FileNames
+    if ($result -ne "OK") {
+        return
     }
-}
 
-function Get-Imagick ($params, $extra, $method) {
-    Get-Files
-    foreach ($file in $global:files) {
+    foreach ($file in $dialog.FileNames) {
         Write-Host "`n`nImagick is processing: `"$file`""
         $folder = Split-Path -Path $file -Parent
-        if ($global:format) {
-            $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + ".$global:format"
+        if ($script:format) {
+            $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + ".$script:format"
         } else {
             $name = Split-Path -Path $file -Leaf
         }
-        $output = "$extra`_$name"
-        Start-Process -FilePath $imagick -ArgumentList "$method `"$file`" $params `"$folder\$output`"" -Wait -WindowStyle Hidden
+        $output = "$script:name`_$name"
+        Start-Process -FilePath $imagick -ArgumentList "$script:method `"$file`" $script:params `"$folder\$output`"" -Wait -WindowStyle Hidden
         Write-Host "Output file: `"$output`""
     }
     Pause
@@ -93,27 +124,32 @@ while ($true) {
     Write-Host "============================================================"
     Write-Host "1. Crop with area"
     Write-Host "2. Cut off border"
-    Write-Host "3. Convert images"
+    Write-Host "3. Convert format"
     Write-Host "4. Darken images"
+    Write-Host "5. Resize images"
     Write-Host "============================================================"
     $type = Read-Host ">"
     switch ($type) {
         "1" {
-            Set-Area
-            Get-Imagick "-crop $global:area" "cutted" "convert"
+            Set-Area "crop"
+            Run-Imagick
         }
         "2" {
-            Set-Area
-            Get-Imagick "-shave $global:area" "cutted" "convert"
+            Set-Area "shave"
+            Run-Imagick
         }
         "3" {
             Set-Format
             Set-Quality
-            Get-Imagick "-quality $global:quality" "output"
+            Run-Imagick
         }
         "4" {
             Set-Darken
-            Get-Imagick "-level $global:level" "darken"
+            Run-Imagick
+        }
+        "5" {
+            Set-Resize
+            Run-Imagick
         }
     }
 }
