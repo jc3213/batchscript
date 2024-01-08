@@ -41,23 +41,23 @@ call :scale
 goto :format
 :cunet
 set app=waifu2x
-set model=models-cunet
+set model=cunet
 set name=(Waifu2x)(cunet)
-set params=-m %model%
+set params=-m models-%model%
 call :scale
 goto :noise
 :uprgb
 set app=waifu2x
-set model=models-upconv_7_anime_style_art_rgb
+set model=upconv_7_anime_style_art_rgb
 set name=(Waifu2x)(upconv_7_anime_style_art_rgb)
-set params=-m %model%
+set params=-m models-%model%
 call :scale
 goto :noise
 :upphoto
 set app=waifu2x
-set model=models-upconv_7_photo
+set model=upconv_7_photo
 set name=(Waifu2x)(upconv_7_photo)
-set params=-m %model%
+set params=-m models-%model%
 call :scale
 goto :noise
 :scale
@@ -107,8 +107,7 @@ if [%fm%] equ [1] set format=jpg
 if [%fm%] equ [3] set format=webp
 if not defined format set format=png
 :upscale
-echo.
-echo.
+cls
 for /f "delims=()" %%a in ("%name%") do (set worker=%%a)
 echo Upscaler     :   %worker%
 echo Model        :   %model%
