@@ -30,7 +30,7 @@ set method=convert
 goto :main
 :format
 call :output
-set name=[output][%qu%]
+set name=[output][%format:~1%][%qu%]
 set params=-quality %qu%
 goto :main
 :darken
@@ -130,5 +130,5 @@ echo ImageMagick is processing: %~dpnx1
 echo Output file: "%output%"
 exit /b
 :main
-for %%a in (%*) do (call :process "%%~a")
+for %%a in (%*) do (call :imagick "%%~a")
 timeout /t 5
