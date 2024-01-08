@@ -1,6 +1,6 @@
 @echo off
 title Images Upscale Utilities
-:main
+:menu
 cls
 echo ============================================================
 echo 1. Real-ESRGAN Plus
@@ -17,7 +17,7 @@ if [%md%] equ [3] goto :videoanime
 if [%md%] equ [4] goto :cunet
 if [%md%] equ [5] goto :uprgb
 if [%md%] equ [6] goto :upphoto
-goto :main
+goto :menu
 :plusx4
 set app=realesrgan
 set model=realesrgan-x4plus
@@ -106,7 +106,7 @@ set /p fm=^>
 if [%fm%] equ [1] set format=jpg
 if [%fm%] equ [3] set format=webp
 if not defined format set format=png
-:upscale
+:main
 cls
 echo ============================================================
 for /f "delims=()" %%a in ("%name%") do (set worker=%%a)
@@ -116,10 +116,10 @@ echo Scale Ratio  :   %scale%x
 if defined noise echo Denoise      :   Lv.%noise%
 if [%tta%] equ [1] echo TTA Mode     :   Enabled
 echo ============================================================
-for %%a in (%*) do (call :worker "%%~a")
+for %%a in (%*) do (call :upscale "%%~a")
 timeout /t 5
 exit
-:worker
+:upscale
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 set output=%~dpn1 %name%.%format%
