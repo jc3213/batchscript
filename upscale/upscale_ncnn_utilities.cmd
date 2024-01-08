@@ -108,12 +108,14 @@ if [%fm%] equ [3] set format=webp
 if not defined format set format=png
 :upscale
 cls
+echo ============================================================
 for /f "delims=()" %%a in ("%name%") do (set worker=%%a)
 echo Upscaler     :   %worker%
 echo Model        :   %model%
 echo Scale Ratio  :   %scale%x
 if defined noise echo Denoise      :   Lv.%noise%
 if [%tta%] equ [1] echo TTA Mode     :   Enabled
+echo ============================================================
 for %%a in (%*) do (call :worker "%%~a")
 timeout /t 5
 exit
