@@ -1,6 +1,5 @@
 @echo off
 title ImageMagick Utilities
-set imagick=%~dp0bin\magick.exe
 :menu
 cls
 echo ============================================================
@@ -124,7 +123,7 @@ echo.
 echo ImageMagick is processing: %1
 if defined qu (set output=%~n1.%format%) else (set output=%~nx1)
 if defined folder (set output=%folder%\%output%) else (set output=%~dp1%name%%output%)
-"%imagick%" %method% %1 %params% "%output%"
+"%~dp0bin\magick.exe" %method% %1 %params% "%output%"
 echo Output file: "%output%"
 exit /b
 :main
