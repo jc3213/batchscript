@@ -65,9 +65,10 @@ cd..
 exit /b
 :link
 for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (
-    if "%%a %%b"=="Symbolic Link" (rmdir "%~1") else (rd /s /q "%~1")
+    if "%%a %%b" neq "Symbolic Link" set params=/s /q
 )
-mklink /d %1 %ramdisk
+rd %params% %1 2>nul
+mklink /d %1 %ramdisk%
 exit /b
 :exit
 if defined app start "" "%app%"
