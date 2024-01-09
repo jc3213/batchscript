@@ -3,7 +3,7 @@
     - C:\cli\youtube-dl.cmd
     - C:\cli\bin\youtube-dl.exe
     - C:\cli\bin\aria2c.exe *optional*
-- Run `youtube-dl.cmd`
+- Run `youtube-dl.cmd` or `youtube-dl.ps1`
 
 ## Settings
 - Format
