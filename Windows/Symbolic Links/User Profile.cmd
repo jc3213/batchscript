@@ -21,4 +21,4 @@ for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbo
     if "%%a %%b" neq "Symbolic Link" set params=/s /q
 )
 rd %params% %1 2>nul
-mklink /d %1 %ramdisk%
+mklink /d %1 "%drive%\Home\%~nx1"
