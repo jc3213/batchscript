@@ -1,6 +1,7 @@
 ## First of all
 - Download the latest [youtube-dl](https://yt-dl.org/latest/youtube-dl.exe)
     - C:\cli\youtube-dl.cmd
+    - C:\cli\youtube-dl.ps1
     - C:\cli\bin\youtube-dl.exe
     - C:\cli\bin\aria2c.exe *optional*
 - Run `youtube-dl.cmd` or `youtube-dl.ps1`
