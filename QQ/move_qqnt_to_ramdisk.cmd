@@ -55,7 +55,9 @@ call :link "%1\global\nt_temp"
 call :link "%1\global\nt_data\log"
 exit /b
 :link
-rd /s /q %1 2>nul
+for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (
+    if "%%a %%b"=="Symbolic Link" (rmdir "%~1") else (rd /s /q "%~1")
+)
 mklink /d %1 %ramdisk%
 exit /b
 :exit
