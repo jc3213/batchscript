@@ -33,13 +33,10 @@ cd /d %user%
 for /d %%a in (*) do (call :profile "%%a")
 if not exist "%tenc%" md "%tenc%"
 cd /d %tenc%
-rd /s /q Logs 2>nul
-rd /s /q QQTempSys 2>nul
+call :link Logs
+call :link QQTempSys
+call :link QQ\webkit_cache
 rd /s /q QQ\Temp 2>nul
-rd /s /q QQ\webkit_cache 2>nul
-mklink /d Logs %ramdisk%
-mklink /d QQTempSys %ramdisk%
-mklink /d QQ\webkit_cache %ramdisk%
 if /i [%act%] equ [y] (
     md QQ\Temp
     icacls QQ\Temp /deny Everyone:(F)
@@ -51,28 +48,24 @@ for /d %%a in (*) do (call :appdata "%%a")
 goto :exit
 :appdata
 cd %1
-rd /s /q QQ\WinTemp 2>nul
-mklink /d QQ\WinTemp %ramdisk%
+call :link QQ\WinTemp
 cd..
 exit /b
 :profile
 cd %1
-rd /s /q Audio 2>nul
-rd /s /q FileRecv 2>nul
-rd /s /q Image 2>nul
-rd /s /q Video 2>nul
-mklink /d Audio %ramdisk%
-mklink /d FileRecv %ramdisk%
-mklink /d Image %ramdisk%
-mklink /d Video %ramdisk%
+call :link Audio
+call :link FileRecv
+call :link Image
+call :link Video
 if %1 equ "All Users" cd.. && exit /B
-rd /s /q Ads 2>nul
-rd /s /q AppWebCache 2>nul
-rd /s /q OfflinePackage 2>nul
-mklink /d Ads %ramdisk%
-mklink /d AppWebCache %ramdisk%
-mklink /d OfflinePackage %ramdisk%
+call :link Ads
+call :link AppWebCache
+call :link OfflinePackage
 cd..
+exit /b
+:link
+rd /s /q %1 2>nul
+mklink /d %1 %ramdisk
 exit /b
 :exit
 if defined app start "" "%app%"
