@@ -14,8 +14,6 @@ call :link "%appdata%\QQ\DawnCache"
 call :link "%appdata%\QQ\dynamic_package"
 call :link "%appdata%\QQ\GPUCache"
 call :link "%appdata%\QQ\GPUCache"
-call :link "%appdata%\QQ\log"
-call :link "%appdata%\QQ\logs"
 call :link "%appdata%\QQ\packages"
 call :link "%appdata%\QQ\Partitions"
 call :link "%appdata%\QQ\qqgame"
@@ -45,19 +43,17 @@ if [%~1] equ [nt_qq] goto :global
 call :link "%1\nt_qq\nt_temp"
 call :link "%1\nt_qq\nt_data\Emoji"
 call :link "%1\nt_qq\nt_data\File"
-call :link "%1\nt_qq\nt_data\log"
-call :link "%1\nt_qq\nt_data\log-cache"
 call :link "%1\nt_qq\nt_data\Pic"
 call :link "%1\nt_qq\nt_data\Video"
 exit /b
 :global
 call :link "%1\global\nt_temp"
-call :link "%1\global\nt_data\log"
 exit /b
 :link
 for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (
-    if "%%a %%b"=="Symbolic Link" (rmdir "%~1") else (rd /s /q "%~1")
+    if "%%a %%b" neq "Symbolic Link" set params=/s /q
 )
+rd %params% %1 2>nul
 mklink /d %1 %ramdisk%
 exit /b
 :exit
