@@ -9,7 +9,7 @@
     - C:\cli\bin\models-cunet\\*
     - C:\cli\bin\models-upconv_7_anime_style_art_rgb\\*
     - C:\cli\bin\models-upconv_7_photo\\*
-- Drag and drop image files or folder over `upscale_ncnn_utilities.cmd`
+- Drag and drop image files or directories over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
 - Read [Settings](#Settings)
 
@@ -25,8 +25,8 @@
     - Real-ESRGAN
         - *available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
     - Waifu2x
-        - available for `models-cunet`, `models-upconv_7_anime_style_art_rgb`, and `models-upconv_7_photo`*
-- Multiplier (scale)
+        - *available for `models-cunet`, `models-upconv_7_anime_style_art_rgb`, and `models-upconv_7_photo`*
+- Scale Ratio (scale)
     - *not available for `realesrgan-x4plus` and `realesrgan-x4plus-anime`*
     - 2x
     - 4x
