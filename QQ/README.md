@@ -3,5 +3,5 @@
 - Create a new ramdisk
     - Set volume name `Ramdisk`
     - Create sub folder `Temp`
-## How to use
-- Run `move_qqtemp_to_ramdisk.cmd` with administrative privileges
+- Run `move_qqtemp_to_ramdisk.cmd` for legacy QQ
+- Run `move_qqnt_to_ramdisk.cmd` for QQ NT
