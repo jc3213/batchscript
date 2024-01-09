@@ -31,15 +31,15 @@ function Set-History {
     $result = $dialog.ShowDialog()
 
     if ($result -eq "OK") {
-        $script:params += "--download-archive `"$dialog.FileName`""
+        $script:params += " --download-archive `"" + $dialog.FileName + "`""
         $script:history = $dialog.FileName
+        $regexp = "^([a-zA-Z]:)?(\\?[^<>:|?!*&#`"/]+)\.txt$"
     }
-
-    $regexp = "^([a-zA-Z]:)?(\\?[^<>:|?!*&#`"/]+)\.txt$"
 }
 
 function Set-Proxy {
-    Write-Host "`n`n============================================================"
+    Write-Host "`n`nProxy Server"
+    Write-Host "============================================================"
     Write-Host "Sample: 127.0.0.1:1080"
     Write-Host "Keep EMPTY if you don't use a proxy server"
     Write-Host "============================================================"
@@ -52,7 +52,8 @@ function Set-Proxy {
 }
 
 function Set-Subtitle {
-    Write-Host "`n`n============================================================"
+    Write-Host "`n`nDownload Subtitle"
+    Write-Host "============================================================"
     Write-Host "1. Yes"
     Write-Host "0. No [Default]"
     Write-Host "============================================================"
@@ -91,7 +92,7 @@ function Youtube-Download {
         Write-Host "External Downloader :   aria2c"
     }
     Write-Host "============================================================"
-    $uri = Read-Host "Video Uri:"
+    $uri = Read-Host "Video Uri"
     $app = Join-Path $PSScriptRoot "bin\youtube-dl.exe"
 
     switch ($uri) {
@@ -101,40 +102,6 @@ function Youtube-Download {
     }
 
     Youtube-Download
-}
-
-function Upscale-Output {
-    Clear-Host
-    Write-Host "============================================================"
-    Write-Host "Upscaler     :   $script:worker"
-    Write-Host "Model        :   $script:model"
-    Write-Host "Scale Ratio  :   $script:scale`x"
-    if ($script:denoise) {
-        Write-Host "Denoise      :   Lv.$script:denoise"
-    }
-    if ($script:tta) {
-        Write-Host "TTA Mode     :   Enabled"
-    }
-    Write-Host "============================================================"
-
-    $dialog = New-Object System.Windows.Forms.OpenFileDialog
-    $dialog.Multiselect = $true
-    $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
-    $result = $dialog.ShowDialog()
-
-    if ($result -ne "OK") {
-        return
-    }
-
-    foreach ($file in $dialog.FileNames) {
-        Write-Host "`n`nProcessing: `"$file`""
-        $folder = Split-Path -Path $file -Parent
-        $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + " $script:name.$script:format"
-        $output = "$folder$name"
-        Start-Process -FilePath $script:app -ArgumentList "-i `"$file`" -o `"$output`" $script:params" -Wait -WindowStyle Hidden
-        Write-Host "Output file: `"$output`""
-    }
-    Pause
 }
 
 while ($true) {
@@ -162,22 +129,18 @@ while ($true) {
         "4" {
             $script:quality = "Best Video & Audio @2160p"
             $script:params = "--format `"bestvideo[height<=2160]+bestaudio/best[height<=2160]`""
-
         }
         "5" {
             $script:quality = "Best Audio Only"
             $script:params = "--format `"bestaudio`""
-
         }
         "6" {
             $script:quality = "Best Audio Only (AAC)"
             $script:params = "--format `"bestaudio[acodec~='(aac|mp4a)']`""
-
         }
         default {
             $script:quality = "Best Video & Audio"
             $script:params = "--format `"bestvideo+bestaudio/best`""
-
         }
     }
 
