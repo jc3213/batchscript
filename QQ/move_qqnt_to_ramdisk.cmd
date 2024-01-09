@@ -18,6 +18,7 @@ call :link "%appdata%\QQ\log"
 call :link "%appdata%\QQ\logs"
 call :link "%appdata%\QQ\packages"
 call :link "%appdata%\QQ\Partitions"
+call :link "%appdata%\QQ\qqgame"
 :profile
 set data=%public%\Documents\Tencent\QQ\UserDataInfo.ini
 set user=%userprofile%\Documents\Tencent Files
