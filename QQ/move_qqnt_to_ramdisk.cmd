@@ -55,7 +55,7 @@ call :link "%1\global\nt_temp"
 call :link "%1\global\nt_data\log"
 exit /b
 :link
-rd /s /q %1
+rd /s /q %1 2>nul
 mklink /d %1 %ramdisk%
 exit /b
 :exit
