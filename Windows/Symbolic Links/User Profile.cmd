@@ -7,25 +7,18 @@ echo ====================================================
 set /p label=^>
 set drive=%label:~0,1%:
 if not exist %drive% cls && goto :input
-rd /s /q "%UserProfile%\Desktop" 2>nul
-rd /s /q "%UserProfile%\Documents" 2>nul
-rd /s /q "%UserProfile%\Downloads" 2>nul
-rd /s /q "%UserProfile%\Music" 2>nul
-rd /s /q "%UserProfile%\Pictures" 2>nul
-rd /s /q "%UserProfile%\Saved Games" 2>nul
-rd /s /q "%UserProfile%\Videos" 2>nul
-md "%drive%\Home\Desktop" 2>nul
-md "%drive%\Home\Documents" 2>nul
-md "%drive%\Home\Downloads" 2>nul
-md "%drive%\Home\Music" 2>nul
-md "%drive%\Home\Pictures" 2>nul
-md "%drive%\Home\Saved Games" 2>nul
-md "%drive%\Home\Videos" 2>nul
-mklink /d "%UserProfile%\Desktop" "%drive%\Home\Desktop"
-mklink /d "%UserProfile%\Documents" "%drive%\Home\Documents"
-mklink /d "%UserProfile%\Downloads" "%drive%\Home\Downloads"
-mklink /d "%UserProfile%\Music" "%drive%\Home\Music"
-mklink /d "%UserProfile%\Pictures" "%drive%\Home\Pictures"
-mklink /d "%UserProfile%\Saved Games" "%drive%\Home\Saved Games"
-mklink /d "%UserProfile%\Videos" "%drive%\Home\Videos"
+call :link "%UserProfile%\Desktop"
+call :link "%UserProfile%\Documents"
+call :link "%UserProfile%\Downloads"
+call :link "%UserProfile%\Music"
+call :link "%UserProfile%\Pictures"
+call :link "%UserProfile%\Saved Games"
+call :link "%UserProfile%\Videos"
 timeout /t 5
+goto :eof
+:link
+for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (
+    if "%%a %%b" neq "Symbolic Link" set params=/s /q
+)
+rd %params% %1 2>nul
+mklink /d %1 %ramdisk%
