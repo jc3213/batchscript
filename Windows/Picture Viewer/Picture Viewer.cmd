@@ -3,8 +3,8 @@ set viewasso="bmp Bitmap" "dib Bitmap" "gif Gif" "jfif JFIF" "jpe Jpeg" "jpeg Jp
 for %%a in (%viewasso%) do (for /f "tokens=1-2 delims= " %%i in (%%a) do (call :miscm1asso %%i %%j))
 set viewcomm="Bitmap imageres 70" "JFIF imageres 72" "Jpeg imageres 72" "Png imageres 71" "Tiff imageres 122" "Wdp wmphoto -400"
 for %%a in (%viewcomm%) do (for /f "tokens=1-3 delims= " %%i in (%%a) do (call :miscm1comm %%i %%j %%k))
-set viewicon="Bitmap 6" "JFIF 5" "Jpeg 5" "Png 7" "Tiff 8"
-for %%a in (%viewicon%) do (for /f "tokens=1-2 delims= " %%i in (%%a) do (call :miscm1name %%i %%j))
+set viewname="Bitmap 6" "JFIF 5" "Jpeg 5" "Png 7" "Tiff 8"
+for %%a in (%viewname%) do (for /f "tokens=1-2 delims= " %%i in (%%a) do (call :miscm1name %%i %%j))
 for %%a in (JFIF Jpeg Wdp) do (call :miscm1edit %%a)
 for %%a in (JFIF Jpeg Tiff Wdp) do (call :miscm1open %%a)
 timeout /5
