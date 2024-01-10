@@ -1,6 +1,6 @@
 @echo off
 set main="%~1"
-:msedge
+:msedgemenu
 cls
 title Manage Microsoft Edge
 echo ==================================================================
@@ -11,15 +11,15 @@ echo 4. User Profile Directory
 echo 5. Browser Caches Directory
 if exist %main% echo +. Return to Main Menu
 echo ==================================================================
-set /p egact=^> 
-if [%egact%] equ [1] goto :egmenu1
-if [%egact%] equ [2] goto :egmenu2
-if [%egact%] equ [3] goto :egmenu3
-if [%egact%] equ [4] goto :egmenu4
-if [%egact%] equ [5] goto :egmenu5
-if [%egact%] equ [+] goto :mainmenu
-goto :msedge
-:egmenu1
+set /p edgemain=^> 
+if [%edgemain%] equ [1] goto :edgemenu1
+if [%edgemain%] equ [2] goto :edgemenu2
+if [%edgemain%] equ [3] goto :edgemenu3
+if [%edgemain%] equ [4] goto :edgemenu4
+if [%edgemain%] equ [5] goto :edgemenu5
+if [%edgemain%] equ [+] goto :mainmenu
+goto :msedgemenu
+:edgemenu1
 cls
 title Manage Bing Discovery Button - Microsoft Edge
 echo ==================================================================
@@ -27,18 +27,18 @@ echo 0. Hide
 echo 1. Show (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p egsub=^> 
-if [%egsub%] equ [0] goto :edm1off
-if [%egsub%] equ [1] goto :edm1on
-if [%egsub%] equ [+] goto :return
-goto :egmenu1
-:edm1off
+set /p edgesub=^> 
+if [%edgesub%] equ [0] goto :edgem1off
+if [%edgesub%] equ [1] goto :edgem1on
+if [%edgesub%] equ [+] goto :return
+goto :edgemenu1
+:edgem1off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled"  /t "REG_DWORD" /d "0x00000000" /f
 goto :return
-:edm1on
+:edgem1on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled" /f
 goto :return
-:egmenu2
+:edgemenu2
 cls
 title Manage Desktop Search Bar - Microsoft Edge
 echo ==================================================================
@@ -46,18 +46,18 @@ echo 0. Hide
 echo 1. Show (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p egsub=^> 
-if [%egsub%] equ [0] goto :egm2off
-if [%egsub%] equ [1] goto :egm2on
-if [%egsub%] equ [+] goto :return
-goto :egmenu2
-:egm2off
+set /p edgesub=^> 
+if [%edgesub%] equ [0] goto :edgem2off
+if [%edgesub%] equ [1] goto :edgem2on
+if [%edgesub%] equ [+] goto :return
+goto :edgemenu2
+:edgem2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed"  /t "REG_DWORD" /d "0x00000000" /f
 goto :return
-:egm2on
+:edgem2on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed" /f
 goto :return
-:egmenu3
+:edgemenu3
 cls
 title Manage Alt + Tab Behavior - Microsoft Edge
 echo ==================================================================
@@ -65,84 +65,76 @@ echo 0. Default
 echo 1. Switch only via windows
 echo +. Return to Main Menu
 echo ==================================================================
-set /p egsub=^> 
-if [%egsub%] equ [0] goto :egm3off
-if [%egsub%] equ [1] goto :egm3on
-if [%egsub%] equ [+] goto :return
-goto :egmenu3
-:egm3off
+set /p edgesub=^> 
+if [%edgesub%] equ [0] goto :edgem3off
+if [%edgesub%] equ [1] goto :edgem3on
+if [%edgesub%] equ [+] goto :return
+goto :edgemenu3
+:edgem3off
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingegmenu3Filter" /f
 goto :return
-:egm3on
+:edgem3on
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingegmenu3Filter" /t "REG_DWORD" /d "0x00000003" /f
 goto :return
-:egmenu4
+:edgemenu4
 cls
 title Manage User Profile Directory - Microsoft Edge
 echo ==================================================================
-echo 0. Default
+echo 0. Default Directory
 echo 1. Move to Documents
 echo 2. Move to User Directory
 echo +. Return to Main Menu
 echo ==================================================================
-set /p egsub=^> 
-if [%egsub%] equ [0] goto :egm4off
-if [%egsub%] equ [1] call :egm4app "%UserProfile%\Documents\EdgeUserData"
-if [%egsub%] equ [2] goto :egm4sel
-if [%egsub%] equ [+] goto :return
-goto :egmenu4
-:egm4off
+set /p edgesub=^> 
+if [%edgesub%] equ [0] goto :edgem4off
+if [%edgesub%] equ [1] goto :edgem4on
+if [%edgesub%] equ [2] goto :edgem4sel
+if [%edgesub%] equ [+] goto :return
+goto :edgemenu4
+:edgem4off
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
 goto :return
-:egm4sel
-cls
-echo ==================================================================
-echo Sample: D:\EdgeUserData
-echo ==================================================================
-set /p egdir=^> 
-if exist "%egdir%" call :egm4app "%egdir%"
-goto :egmenu4
-:egm4app
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%~1" /f
+:edgem4on
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%userprofile%\Documents\EdgeUserData" /f
 goto :return
-:egmenu5
+:edgem4sel
+for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgedir=%%a)
+if not defined edgedir goto :edgemenu4
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%edgedir%" /f
+goto :return
+:edgemenu5
 cls
 title Manage Browser Caches Directory - Microsoft Edge
 echo ==================================================================
-echo 0. Default
+echo 0. Default Directory
 echo 1. Move to RAMDISK
 echo 2. Move to User Directory
 echo +. Return to Main Menu
 echo ==================================================================
-set /p egsub=^> 
-if [%egsub%] equ [0] goto :egm5off
-if [%egsub%] equ [1] goto :egm5on
-if [%egsub%] equ [2] goto :egm5sel
-if [%egsub%] equ [+] goto :return
-goto :egmenu5
-:egm5off
+set /p edgesub=^> 
+if [%edgesub%] equ [0] goto :edgem5off
+if [%edgesub%] equ [1] goto :edgem5on
+if [%edgesub%] equ [2] goto :edgem5sel
+if [%edgesub%] equ [+] goto :return
+goto :edgemenu5
+:edgem5off
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /f
 goto :return
-:egm5on
+:edgem5on
 for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set ramdisk=%%a\Temp)
-if exist "%ramdisk%" call :egm5app "%ramdisk%"
-:egm5sel
-cls
-echo ==================================================================
-echo Sample: R:\Temp
-echo ==================================================================
-set /p egdir=^> 
-if exist "%egdir%" call :egm5app "%egdir%"
-goto :egmenu5
-:egm5app
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%~1" /f
+if not exist "%ramdisk%" goto :edgemenu5
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%ramdisk%" /f
+:edgem5sel
+for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgedir=%%a)
+if not defined edgedir goto :edgemenu5
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%edgedir%" /f
 goto :return
 :mainmenu
 if exist %main% call %main%
-goto :msedge
+goto :msedgemenu
 :return
-set egact=
-set egsub=
-set egdir=
+set edgemain=
+set edgesub=
+set edgedir=
 timeout /t 5
-goto :msedge
+goto :msedgemenu
