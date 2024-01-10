@@ -1,3 +1,5 @@
+Add-Type -AssemblyName System.Windows.Forms
+
 function Manage-WindowsPowerPlan {
     Clear-Host
     Write-Host "Manage Microsoft Edge"
@@ -472,7 +474,7 @@ function WinAccess-TemporayToRamdisk {
     $ramdisk = Get-WmiObject -Query "SELECT Caption FROM Win32_LogicalDisk WHERE VolumeName='RAMDISK'" | Select-Object -ExpandProperty Caption
     $ramdisk = Join-Path -Path $ramdisk -ChildPath "Temp"
 
-    if (Test-Path -Path $ramdisk) {
+    if (Test-Path $ramdisk) {
         Remove-Item -Path "$env:LOCALAPPDATA\Temp" -Recurse -Force
         Remove-Item -Path "$env:WINDIR\Temp" -Recurse -Force
 
@@ -695,9 +697,10 @@ function MSEdge-UserProfileDirectory {
             Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Edge" -Name "UserDataDir" -Value "$env:UserProfile\Documents\EdgeUserData"
         }
         "2" {
-            Write-Host "`n`nSample: D:\EdgeUserData"
-            $edge_path = Read-Host ">"
-            if (Test-Path $edge_path) {
+            $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
+            $result = $dialog.ShowDialog()
+            if ($result -eq "OK") {
+                $edge_path = $dialog.SelectedPath
                 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Edge" -Name "UserDataDir" -Value $edge_path
             } else {
                 MSEdge-UserProfileDirectory
@@ -736,9 +739,10 @@ function MSEdge-BrowserCachesDirectory {
             }
         }
         "2" {
-            Write-Host "`n`nSample: D:\EdgeUserData"
-            $edge_path = Read-Host ">"
-            if (Test-Path $edge_path) {
+            $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
+            $result = $dialog.ShowDialog()
+            if ($result -eq "OK") {
+                $edge_path = $dialog.SelectedPath
                 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Edge" -Name "DiskCacheDir" -Value $edge_path
             } else {
                 MSEdge-BrowserCachesDirectory
