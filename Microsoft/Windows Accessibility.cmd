@@ -1,97 +1,89 @@
 @echo off
-set main="%~1"
 set amdcpu=%systemroot%\System32\mcupdate_GenuineIntel.dll
 set intlcpu=%systemroot%\System32\mcupdate_AuthenticAMD.dll
-set microbk="%~dp0microcode_backup.zip"
-:advanced
+set cpuback="%~dp0microcode_backup.zip"
+:miscmain
 cls
 title Windows Accessibility
 echo ==================================================================
 echo 1. Windows Picture Viewer
 echo 2. Move Temporary Files to Ramdisk
-echo 3. Context Menu (Windows 11)
-echo 4. CPU Microcode Update
-if exist %main% echo +. Return to Main Menu
+echo 3. Move User Profile Data
+echo 4. Context Menu (Windows 11)
+echo 5. CPU Microcode Update
+if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p avact=^> 
-if [%avact%] equ [1] goto :avmenu1
-if [%avact%] equ [2] goto :avmenu2
-if [%avact%] equ [3] goto :avmenu3
-if [%avact%] equ [4] goto :avmenu4
-if [%avact%] equ [+] goto :mainmenu
-goto :advanced
-:avmenu1
+set /p miscmain=^> 
+if [%miscmain%] equ [1] goto :miscmenu1
+if [%miscmain%] equ [2] goto :miscmenu2
+if [%miscmain%] equ [3] goto :miscmenu3
+if [%miscmain%] equ [4] goto :miscmenu4
+if [%miscmain%] equ [5] goto :miscmenu5
+if [%miscmain%] equ [+] goto :backmain
+goto :miscmain
+:miscmenu1
 cls
 title Windows Picture Viewer - Windows Accessibility
 echo ==================================================================
 echo Processing...
 echo ==================================================================
-call :avm1app1 bmp Bitmap
-call :avm1app1 dib Bitmap
-call :avm1app1 gif Gif
-call :avm1app1 jfif JFIF
-call :avm1app1 jpe Jpeg
-call :avm1app1 jpeg Jpeg
-call :avm1app1 jpg Jpeg
-call :avm1app1 png Png
-call :avm1app1 tiff Tiff
-call :avm1app1 tif Tiff
-call :avm1app1 wdp Wdp
-call :avm1app2 Bitmap 70
-call :avm1app2 JFIF 72
-call :avm1app2 Jpeg 72
-call :avm1app2 Png 71
-call :avm1app2 Tiff 122
-call :avm1app2 Wdp
-call :avm1app4 Bitmap 6
-call :avm1app4 JFIF 5
-call :avm1app4 Jpeg 5
-call :avm1app4 Png 7
-call :avm1app4 Tiff 8
-call :avm1app5 JFIF
-call :avm1app5 Jpeg
-call :avm1app5 Wdp
-call :avm1app6 JFIF
-call :avm1app6 Jpeg
-call :avm1app6 Tiff
-call :avm1app6 Wdp
-goto :return
-:avm1app1
+set viewasso="bmp Bitmap" "dib Bitmap" "gif Gif" "jfif JFIF" "jpe Jpeg" "jpeg Jpeg" "jpg Jpeg" "png Png" "tiff Tiff" "tif Tiff" "wdp Wdp"
+for %%a in (%viewasso%) do (for /f "tokens=1-2 delims= " %%i in (%%a) do (call :miscm1asso %%i %%j))
+set viewcomm="Bitmap imageres 70" "JFIF imageres 72" "Jpeg imageres 72" "Png imageres 71" "Tiff imageres 122" "Wdp wmphoto -400"
+for %%a in (%viewcomm%) do (for /f "tokens=1-3 delims= " %%i in (%%a) do (call :miscm1comm %%i %%j %%k))
+set viewname="Bitmap 6" "JFIF 5" "Jpeg 5" "Png 7" "Tiff 8"
+for %%a in (%viewname%) do (for /f "tokens=1-2 delims= " %%i in (%%a) do (call :miscm1name %%i %%j))
+for %%a in (JFIF Jpeg Wdp) do (call :miscm1edit %%a)
+for %%a in (JFIF Jpeg Tiff Wdp) do (call :miscm1open %%a)
+goto :miscback
+:miscm1asso
 reg add "HKLM\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations" /v ".%1" /t "REG_SZ" /d "PhotoViewer.FileAssoc.%2" /f
 exit /b
-:avm1app2
+:miscm1comm
 reg add "HKCR\PhotoViewer.FileAssoc.%1" /v "ImageOptionFlags" /t "REG_DWORD" /d "0x00000001" /f
 reg add "HKCR\PhotoViewer.FileAssoc.%1\shell\open\command" /ve /t "REG_EXPAND_SZ" /d "%%SystemRoot%%\System32\rundll32.exe \"%%ProgramFiles%%\Windows Photo Viewer\PhotoViewer.dll\", ImageView_Fullscreen %%1" /f
 reg add "HKCR\PhotoViewer.FileAssoc.%1\shell\open\DropTarget" /v "Clsid" /t "REG_SZ" /d "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}" /f
-if %1 equ Wdp goto :avm1app3
-reg add "HKCR\PhotoViewer.FileAssoc.%1\DefaultIcon" /ve /t "REG_SZ" /d "%%SystemRoot%%\System32\imageres.dll,-%2" /f
+reg add "HKCR\PhotoViewer.FileAssoc.%1\DefaultIcon" /ve /t "REG_SZ" /d "%%SystemRoot%%\System32\%2.dll,%3" /f
 exit /b
-:avm1app3
-reg add "HKCR\PhotoViewer.FileAssoc.Wdp\DefaultIcon" /ve /t "REG_SZ" /d "%%SystemRoot%%\System32\wmphoto.dll,-400" /f
-exit /b
-:avm1app4
+:miscm1name
 reg add "HKCR\PhotoViewer.FileAssoc.%1" /v "FriendlyTypeName" /t "REG_EXPAND_SZ" /d "@%%ProgramFiles%%\Windows Photo Viewer\PhotoViewer.dll,-305%2" /f
 exit /b
-:avm1app5
+:miscm1edit
 reg add "HKCR\PhotoViewer.FileAssoc.%1" /v "EditFlags" /t "REG_DWORD" /d "0x00010000" /f
 exit /b
-:avm1app6
+:miscm1open
 reg add "HKCR\PhotoViewer.FileAssoc.%1\shell\open" /v "MuiVerb" /t "REG_EXPAND_SZ" /d "@%%ProgramFiles%%\Windows Photo Viewer\photoviewer.dll,-3043" /f
 exit /b
-:avmenu2
+:miscmenu2
 cls
 title Move Temporary Files to Ramdisk - Windows Accessibility
 echo ==================================================================
 echo Processing...
 echo ==================================================================
 for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| find ":"') do (set ramdisk=%%a\Temp)
-if not exist "%ramdisk%" goto :return
-rd /s /q "%localappdata%\Temp"
-rd /s /q "%systemroot%\Temp"
-mklink /d "%localappdata%\Temp" "%ramdisk%"
-mklink /d "%systemroot%\Temp" "%ramdisk%"
-goto :return
-:avmenu3
+if not exist "%ramdisk%" goto :miscback
+call :symboforce "%localappdata%\Temp" "%ramdisk%"
+call :symboforce "%systemroot%\Temp" "%ramdisk%"
+goto :miscback
+:miscmenu3
+cls
+title Move User Profile Data - Windows Accessibility
+echo ==================================================================
+echo Pleas enter the disk label
+echo For example, D or D: or D:\
+echo ==================================================================
+set /p miscsub=^> 
+set drive=%miscsub:~0,1%:
+if not exist "%drive%" goto :miscback
+call :symbolink "%UserProfile%\Desktop" "%drive%\Home\Desktop"
+call :symbolink "%UserProfile%\Documents" "%drive%\Home\Documents"
+call :symbolink "%UserProfile%\Downloads" "%drive%\Home\Downloads"
+call :symbolink "%UserProfile%\Music" "%drive%\Home\Music"
+call :symbolink "%UserProfile%\Pictures" "%drive%\Home\Pictures"
+call :symbolink "%UserProfile%\Saved Games" "%drive%\Home\Saved Games"
+call :symbolink "%UserProfile%\Videos" "%drive%\Home\Videos"
+goto :miscback
+:miscmenu4
 cls
 title Context Menu (Windows 11) - Windows Accessibility
 echo ==================================================================
@@ -99,18 +91,18 @@ echo 0. Modern Mode (Default)
 echo 1. Legacy Mode
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p avsub=^> 
-if [%avsub%] equ [0] goto :avm3off
-if [%avsub%] equ [1] goto :avm3on
-if [%avsub%] equ [+] goto :return
-goto :avmenu3
-:avm3off
+set /p miscsub=^> 
+if [%miscsub%] equ [0] goto :miscm4off
+if [%miscsub%] equ [1] goto :miscm4on
+if [%miscsub%] equ [+] goto :miscback
+goto :miscmenu4
+:miscm4off
 reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
-goto :return
-:avm3on
+goto :miscback
+:miscm4on
 reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /ve /d "" /f
-goto :return
-:avmenu4
+goto :miscback
+:miscmenu5
 cls
 title CPU Microcode Update - Windows Accessibility
 echo ==================================================================
@@ -118,26 +110,39 @@ echo 0. Restore from Backup
 echo 1. Remove and Backup
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p avsub=^> 
-if [%avsub%] equ [0] goto :avm4off
-if [%avsub%] equ [1] goto :avm4on
-if [%avsub%] equ [+] goto :return
-goto :avmenu4
-:avm4off
-if not exist %microbk% goto :return
-powershell -Command "Expand-Archive -Force -Path '%microbk%' -DestinationPath '%systemroot%\System32'"
-goto :return
-:avm4on
-takeown /f %amdcpu% && icacls %amdcpu% /grant Administrators:F
-takeown /f %intlcpu% && icacls %intlcpu% /grant Administrators:F
-powershell -Command "Compress-Archive -Force -Path '%amdcpu%','%intlcpu%' -DestinationPath '%microbk%'"
+set /p miscsub=^> 
+if [%miscsub%] equ [0] goto :miscm5off
+if [%miscsub%] equ [1] goto :miscm5on
+if [%miscsub%] equ [+] goto :miscback
+goto :miscmenu5
+:miscm5off
+if not exist "%cpuback%" goto :miscback
+powershell -Command "Expand-Archive -Force -Path '%cpuback%' -DestinationPath '%systemroot%\System32'"
+goto :miscback
+:miscm5on
+takeown /f "%amdcpu%" && "icacls %amdcpu%" /grant Administrators:F
+takeown /f "%intlcpu%" && "icacls %intlcpu%" /grant Administrators:F
+powershell -Command "Compress-Archive -Force -Path '%amdcpu%','%intlcpu%' -DestinationPath '%cpuback%'"
 del "%amdcpu%" "%intlcpu%" /f /q
-goto :return
-:mainmenu
-if exist %main% call %main%
-goto :advanced
-:return
-set avact=
-set avsub=
+goto :miscback
+:symbolink
+for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (call :symbotest %1 %2 "%%a %%b")
+:symbotest
+if "%~3" equ "Symbolic Link" goto :symbotrue
+xcopy /e /i /h %1 %2
+:symboforce
+rd /s /q %1
+goto :symbomake
+:symbotrue
+rd %1
+:symbomake
+mklink /d %1 %2
+exit /b
+:backmain
+if exist "%~1" call "%~1"
+goto :miscmain
+:miscback
+set miscmain=
+set miscsub=
 timeout /t 5
-goto :advanced
+goto :miscmain
