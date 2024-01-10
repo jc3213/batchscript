@@ -1,5 +1,18 @@
 Windows Registry Editor Version 5.00
 
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations]
+".tif"="PhotoViewer.FileAssoc.Tiff"
+".tiff"="PhotoViewer.FileAssoc.Tiff"
+".bmp"="PhotoViewer.FileAssoc.Bitmap"
+".dib"="PhotoViewer.FileAssoc.Bitmap"
+".gif"="PhotoViewer.FileAssoc.Gif"
+".jfif"="PhotoViewer.FileAssoc.JFIF"
+".jpe"="PhotoViewer.FileAssoc.Jpeg"
+".jpeg"="PhotoViewer.FileAssoc.Jpeg"
+".jpg"="PhotoViewer.FileAssoc.Jpeg"
+".png"="PhotoViewer.FileAssoc.Png"
+".wdp"="PhotoViewer.FileAssoc.Wdp"
+
 [HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.Bitmap]
 "FriendlyTypeName"=hex(2):40,00,25,00,50,00,72,00,6f,00,67,00,72,00,61,00,6d,\
   00,46,00,69,00,6c,00,65,00,73,00,25,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
