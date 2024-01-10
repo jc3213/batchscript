@@ -131,6 +131,7 @@ for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%~1" ^| findstr /c:"Symb
 :symbotest
 if "%~3" equ "Symbolic Link" goto :symbotrue
 xcopy /e /i /h %1 %2
+:symboforce
 rd /s /q %1
 goto :symbomake
 :symbotrue
