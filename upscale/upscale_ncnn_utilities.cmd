@@ -1,5 +1,5 @@
 @echo off
-title Images Upscale Utilities
+title Image Upscale Utilities
 :menu
 cls
 echo ============================================================
