@@ -5,10 +5,10 @@ set aria2c=%~dp0bin\aria2c.exe
 :format
 echo Select video quality
 echo ============================================================
-echo 1. Best Video ^& Audio [Default]
-echo 2. Best Video ^& Audio @1080p
-echo 3. Best Video ^& Audio @2K
-echo 4. Best Video ^& Audio @4K
+echo 1. Best Video and Audio [Default]
+echo 2. Best Video and Audio @1080p
+echo 3. Best Video and Audio @2K
+echo 4. Best Video and Audio @4K
 echo 5. Only Audio
 echo 6. Only Audio (AAC)
 echo ============================================================
@@ -19,19 +19,19 @@ if [%format%] equ [4] goto :best2160
 if [%format%] equ [5] goto :audiomax
 if [%format%] equ [6] goto :audioaac
 set params=--format "bestvideo+bestaudio/best"
-set quality=Best Video ^& Audio
+set quality=Best Video and Audio
 goto :folder
 :best1080
 set params=--format "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
-set quality=Best Video ^& Audio @1080p
+set quality=Best Video and Audio @1080p
 goto :folder
 :best1440
 set params=--format "bestvideo[height<=1440]+bestaudio/best[height<=1440]"
-set quality=Best Video ^& Audio @1440p
+set quality=Best Video and Audio @1440p
 goto :folder
 :best2160
 set params=--format "bestvideo[height<=2160]+bestaudio/best[height<=2160]"
-set quality=Best Video ^& Audio @2160p
+set quality=Best Video and Audio @2160p
 goto :folder
 :audiomax
 set params=--format "bestaudio"
@@ -49,7 +49,7 @@ echo %~dp0Youtube-DL [Default]
 echo ============================================================
 set /p folder=^> 
 if defined folder goto :history
-set folder=%~dp0Youtube-dl
+set folder=%~dp0Youtube-DL
 :history
 echo.
 echo.
