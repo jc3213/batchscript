@@ -17,6 +17,13 @@ call :symbolink "%UserProfile%\Videos"
 timeout /t 5
 goto :eof
 :symbolink
-for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (if "%%a %%b" neq "Symbolic Link" set params=/s /q)
-rd %params% %1 2>nul
+for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (call :symbotest %1 %2 "%%a %%b")
+:symbotest
+if "%~3" equ "Symbolic Link" goto :symbotrue
+xcopy /e /i /h %1 %2
+rd /s /q %1
+goto :symbomake
+:symbotrue
+rd %1
+:symbomake
 mklink /d %1 "%drive%\Home\%~n1"
