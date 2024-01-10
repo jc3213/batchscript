@@ -7,7 +7,7 @@ set viewicon="Bitmap 6" "JFIF 5" "Jpeg 5" "Png 7" "Tiff 8"
 for %%a in (%viewicon%) do (for /f "tokens=1-2 delims= " %%i in (%%a) do (call :miscm1icon %%i %%j))
 for %%a in (JFIF Jpeg Wdp) do (call :miscm1edit %%a)
 for %%a in (JFIF Jpeg Tiff Wdp) do (call :miscm1open %%a)
-timeout /5
+timeout /t 5
 exit
 :miscm1asso
 reg add "HKLM\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations" /v ".%1" /t "REG_SZ" /d "PhotoViewer.FileAssoc.%2" /f
