@@ -6,7 +6,7 @@ echo For example, D or D: or D:\
 echo ====================================================
 set /p label=^>
 set drive=%label:~0,1%:
-if not exist %drive% cls && goto :input
+if not exist "%drive%" cls && goto :input
 call :symbolink "%UserProfile%\Desktop"
 call :symbolink "%UserProfile%\Documents"
 call :symbolink "%UserProfile%\Downloads"
