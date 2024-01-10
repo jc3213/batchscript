@@ -11,7 +11,7 @@ set ver=64
 set setup=iTunes%bit%Setup.exe
 set output=iTunes%bit%
 set iTunes=iTunes%bit%.msi
-set unpack=%CD%\_iTunes%bit%
+set unpack=%~dp0_iTunes%bit%
 if exist %setup% goto :unzip
 curl https://www.apple.com/itunes/download/win%ver% --location --output %setup%
 :unzip
