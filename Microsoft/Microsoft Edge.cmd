@@ -10,13 +10,13 @@ echo 4. User Profile Directory
 echo 5. Browser Caches Directory
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p edgemain=^> 
-if [%edgemain%] equ [1] goto :edgemenu1
-if [%edgemain%] equ [2] goto :edgemenu2
-if [%edgemain%] equ [3] goto :edgemenu3
-if [%edgemain%] equ [4] goto :edgemenu4
-if [%edgemain%] equ [5] goto :edgemenu5
-if [%edgemain%] equ [+] goto :backmain
+set /p edgeact=^> 
+if [%edgeact%] equ [1] goto :edgemenu1
+if [%edgeact%] equ [2] goto :edgemenu2
+if [%edgeact%] equ [3] goto :edgemenu3
+if [%edgeact%] equ [4] goto :edgemenu4
+if [%edgeact%] equ [5] goto :edgemenu5
+if [%edgeact%] equ [+] goto :backmain
 goto :edgemain
 :edgemenu1
 cls
@@ -132,7 +132,7 @@ goto :edgeback
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgesub=%%a)
 exit /b
 :edgeback
-set edgemain=
+set edgeact=
 set edgesub=
 timeout /t 5
 goto :edgemain
