@@ -139,11 +139,11 @@ rd %1
 :symbomake
 mklink /d %1 %2
 exit /b
-:backmain
-if exist "%~1" call "%~1"
-goto :miscmain
 :miscback
 set miscmain=
 set miscsub=
 timeout /t 5
+goto :miscmain
+:backmain
+if exist "%~1" call "%~1"
 goto :miscmain
