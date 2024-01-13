@@ -98,8 +98,8 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d
 goto :edgeback
 :edgem4sel
 call :edgefolder
-if not defined edgedir goto :edgemenu4
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%edgedir%" /f
+if not defined edgesub goto :edgemenu4
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%edgesub%" /f
 goto :edgeback
 :edgemenu5
 cls
@@ -125,16 +125,15 @@ if not exist "%ramdisk%" goto :edgemenu5
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%ramdisk%" /f
 :edgem5sel
 call :edgefolder
-if not defined edgedir goto :edgemenu5
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%edgedir%" /f
+if not defined edgesub goto :edgemenu5
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%edgesub%" /f
 goto :edgeback
 :edgefolder
-for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgedir=%%a)
+for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgesub=%%a)
 exit /b
 :edgeback
 set edgemain=
 set edgesub=
-set edgedir=
 timeout /t 5
 goto :edgemain
 :backmain
