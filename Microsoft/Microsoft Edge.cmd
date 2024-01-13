@@ -1,5 +1,5 @@
 @echo off
-:edgemenu
+:edgemain
 cls
 title Manage Microsoft Edge
 echo ==================================================================
@@ -17,7 +17,7 @@ if [%edgemain%] equ [3] goto :edgemenu3
 if [%edgemain%] equ [4] goto :edgemenu4
 if [%edgemain%] equ [5] goto :edgemenu5
 if [%edgemain%] equ [+] goto :backmain
-goto :edgemenu
+goto :edgemain
 :edgemenu1
 cls
 title Manage Bing Discovery Button - Microsoft Edge
@@ -136,7 +136,7 @@ set edgemain=
 set edgesub=
 set edgedir=
 timeout /t 5
-goto :edgemenu
+goto :edgemain
 :backmain
 if exist "%~1" call "%~1"
-goto :edgemenu
+goto :edgemain
