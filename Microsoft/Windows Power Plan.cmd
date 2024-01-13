@@ -1,6 +1,5 @@
 @echo off
-set main="%~1"
-:winpower
+:powermain
 cls
 title Manage Windows Power Plan
 echo ==================================================================
@@ -9,17 +8,17 @@ echo 2. Manage Disk Idle Timeout
 echo 3. Manage Processor Maximum P-state
 echo 4. Manage Processor Minimum P-state
 echo 5. Manage Heterogeneous Thread Policy
-if exist %main% echo +. Return to Main Menu
+if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p ppact=^> 
-if [%ppact%] equ [1] goto :ppmenu1
-if [%ppact%] equ [2] goto :ppmenu2
-if [%ppact%] equ [3] goto :ppmenu3
-if [%ppact%] equ [4] goto :ppmenu4
-if [%ppact%] equ [5] goto :ppmenu5
-if [%ppact%] equ [+] goto :mainmenu
-goto :winpower
-:ppmenu1
+set /p powermain=^> 
+if [%powermain%] equ [1] goto :powermenu1
+if [%powermain%] equ [2] goto :powermenu2
+if [%powermain%] equ [3] goto :powermenu3
+if [%powermain%] equ [4] goto :powermenu4
+if [%powermain%] equ [5] goto :powermenu5
+if [%powermain%] equ [+] goto :backmain
+goto :powermain
+:powermenu1
 cls
 title Hibernation - Power Plan
 echo ==================================================================
@@ -27,15 +26,15 @@ echo 0. Disable
 echo 1. Enable
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p ppsub=^> 
-if [%ppsub%] equ [0] call :ppm1app off
-if [%ppsub%] equ [1] call :ppm1app on
-if [%ppsub%] equ [+] goto :return
-goto :ppmenu1
-:ppm1app
+set /p powersub=^> 
+if [%powersub%] equ [0] call :powerm1app off
+if [%powersub%] equ [1] call :powerm1app on
+if [%powersub%] equ [+] goto :powerback
+goto :powermenu1
+:powerm1app
 powercfg /hibernate %1
-goto :return
-:ppmenu2
+goto :powerback
+:powermenu2
 cls
 title Disk Idle Timeout - Power Plan
 echo ==================================================================
@@ -43,38 +42,38 @@ echo 0. Never
 echo 1. Default (20 minutes)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p ppsub=^> 
-if [%ppsub%] equ [0] call :ppm2app 0
-if [%ppsub%] equ [1] call :ppm2app 20
-if [%ppsub%] equ [+] goto :return
-goto :ppmenu2
-:ppm2app
+set /p powersub=^> 
+if [%powersub%] equ [0] call :powerm2app 0
+if [%powersub%] equ [1] call :powerm2app 20
+if [%powersub%] equ [+] goto :powerback
+goto :powermenu2
+:powerm2app
 powercfg /change disk-timeout-ac %1
 powercfg /change disk-timeout-dc %1
-goto :return
-:ppmenu3
+goto :powerback
+:powermenu3
 cls
 title Processor Maximum P-state - Power Plan
 echo ==================================================================
 echo Minimum: 50
 echo Maximum: 100 (Default)
 echo ==================================================================
-set /p ppsub=^> 
-echo %ppsub%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set ppsub=100
-call :ppcstate PROCTHROTTLEMAX %ppsub%
-:ppmenu4
+set /p powersub=^> 
+echo %powersub%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
+if %errorlevel% equ 1 set powersub=100
+call :powerm34app MAX %powersub%
+:powermenu4
 cls
 title Processor Minimum P-state - Power Plan
 echo ==================================================================
 echo Minimum: 0 (Default)
 echo Maximum: 100
 echo ==================================================================
-set /p ppsub=^> 
-echo %ppsub%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set ppsub=0
-call :ppcstate PROCTHROTTLEMIN %ppsub%
-:ppmenu5
+set /p powersub=^> 
+echo %powersub%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
+if %errorlevel% equ 1 set powersub=0
+call :powerm34app MIN %powersub%
+:powermenu5
 cls
 title Heterogeneous Thread Policy - Power Plan
 echo ==================================================================
@@ -82,25 +81,25 @@ echo 0. Default (Automatic)
 echo 1. Prefer performant processors
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p ppsub=^> 
-if [%ppsub%] equ [0] call :ppm5app 5
-if [%ppsub%] equ [1] call :ppm5app 2
-if [%ppsub%] equ [+] goto :return
-goto :ppmenu5
-:ppm5app
+set /p powersub=^> 
+if [%powersub%] equ [0] call :powerm5app 5
+if [%powersub%] equ [1] call :powerm5app 2
+if [%powersub%] equ [+] goto :powerback
+goto :powermenu5
+:powerm5app
 powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY %1
 powercfg /setacvalueindex scheme_current sub_processor SHORTSCHEDPOLICY %1
 powercfg /setactive scheme_current
-goto :return
-:ppcstate
-powercfg /setacvalueindex scheme_current sub_processor %1 %2
+goto :powerback
+:powerm34app
+powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLE%1 %2
 powercfg /setactive scheme_current
-goto :return
-:mainmenu
-if exist %main% call %main%
-goto :winpower
-:return
-set ppact=
-set ppsub=
+goto :powerback
+:powerback
+set powermain=
+set powersub=
 timeout /t 5
-goto :winpower
+goto :powermain
+:backmain
+if exist "%~1" call "%~1"
+goto :powermain
