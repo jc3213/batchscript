@@ -1,6 +1,5 @@
 @echo off
-set main="%~1"
-:antivirus
+:virusmain
 cls
 title Manage Windows Defender
 echo ==================================================================
@@ -8,16 +7,16 @@ echo 1. Manage Context Menu
 echo 2. Manage System Tray Icon
 echo 3. Manage Scheduled Scan
 echo 4. Manage Real-time Protection
-if exist %main% echo +. Return to Main Menu
+if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p deact=^> 
-if [%deact%] equ [1] goto :demenu1
-if [%deact%] equ [2] goto :demenu2
-if [%deact%] equ [3] goto :demenu3
-if [%deact%] equ [4] goto :demenu4
-if [%deact%] equ [+] goto :mainmenu
-goto :antivirus
-:demenu1
+set /p virusmain=^> 
+if [%virusmain%] equ [1] goto :virusmenu1
+if [%virusmain%] equ [2] goto :virusmenu2
+if [%virusmain%] equ [3] goto :virusmenu3
+if [%virusmain%] equ [4] goto :virusmenu4
+if [%virusmain%] equ [+] goto :backmain
+goto :virusmain
+:virusmenu1
 cls
 title Context Menu - Windows Defender
 echo ==================================================================
@@ -25,24 +24,24 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p desub=^> 
-if [%desub%] equ [0] goto :dem1off
-if [%desub%] equ [1] goto :dem1on
-if [%desub%] equ [+] goto :return
-goto :demenu1
-:dem1off
+set /p virussub=^> 
+if [%virussub%] equ [0] goto :virusm1off
+if [%virussub%] equ [1] goto :virusm1on
+if [%virussub%] equ [+] goto :virusback
+goto :virusmenu1
+:virusm1off
 reg delete "HKCR\*\shellex\ContextMenuHandlers\EPP" /ve /f
 reg delete "HKCR\Drive\shellex\ContextMenuHandlers\EPP" /ve /f
 reg delete "HKCR\Directory\shellex\ContextMenuHandlers\EPP" /ve /f
 reg delete "HKCR\CLSID\{09A47860-11B0-4DA5-AFA5-26D86198A780}\InprocServer32" /ve /f
-goto :return
-:dem1on
+goto :virusback
+:virusm1on
 reg add "HKCR\*\shellex\ContextMenuHandlers\EPP" /ve /t "REG_SZ" /d "{09A47860-11B0-4DA5-AFA5-26D86198A780}" /f
 reg add "HKCR\Drive\shellex\ContextMenuHandlers\EPP" /ve /t "REG_SZ" /d "{09A47860-11B0-4DA5-AFA5-26D86198A780}" /f
 reg add "HKCR\Directory\shellex\ContextMenuHandlers\EPP" /ve /t "REG_SZ" /d "{09A47860-11B0-4DA5-AFA5-26D86198A780}" /f
-reg add "HKCR\CLSID\{09A47860-11B0-4DA5-AFA5-26D86198A780}\InprocServer32" /ve /t "REG_SZ" /d "%ProgramFiles%\Windows Defender\shellext.dll" /f
-goto :return
-:demenu2
+reg add "HKCR\CLSID\{09A47860-11B0-4DA5-AFA5-26D86198A780}\InprocServer32" /ve /t "REG_SZ" /d "%programfiles%\Windows Defender\shellext.dll" /f
+goto :virusback
+:virusmenu2
 cls
 title System Tray Icon - Windows Defender
 echo ==================================================================
@@ -50,22 +49,22 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p desub=^> 
-if [%desub%] equ [0] goto :dem2off
-if [%desub%] equ [1] goto :dem2on
-if [%desub%] equ [+] goto :return
-goto :demenu2
-:dem2off
+set /p virussub=^> 
+if [%virussub%] equ [0] goto :virusm2off
+if [%virussub%] equ [1] goto :virusm2on
+if [%virussub%] equ [+] goto :virusback
+goto :virusmenu2
+:virusm2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /t "REG_DWORD" /D "0x00000001" /f
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /v "SecurityHealth" /t "REG_BINARY" /D "07000000CD54F699D161D900" /f
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "SecurityHealth" /f
-goto :return
-:dem2on
+goto :virusback
+:virusm2on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /f
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /v "SecurityHealth" /t "REG_BINARY" /d "060000000000000000000000" /f
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "SecurityHealth" /t "REG_EXPAND_SZ" /d "%%windir%%\system32\SecurityHealthSystray.exe" /f
-goto :return
-:demenu3
+goto :virusback
+:virusmenu3
 cls
 title Scheduled Scan - Windows Defender
 echo ==================================================================
@@ -73,18 +72,18 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p desub=^> 
-if [%desub%] equ [0] goto :dem3off
-if [%desub%] equ [1] goto :dem3on
-if [%desub%] equ [+] goto :return
-goto :demenu3
-:dem3off
+set /p virussub=^> 
+if [%virussub%] equ [0] goto :virusm3off
+if [%virussub%] equ [1] goto :virusm3on
+if [%virussub%] equ [+] goto :virusback
+goto :virusmenu3
+:virusm3off
 schtasks /change /disable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
-goto :return
-:dem3on
+goto :virusback
+:virusm3on
 schtasks /change /enable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
-goto :return
-:demenu4
+goto :virusback
+:virusmenu4
 cls
 title Real-time Protection - Windows Defender
 echo ==================================================================
@@ -92,28 +91,28 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p desub=^> 
-if [%desub%] equ [0] goto :dem4off
-if [%desub%] equ [1] goto :dem4on
-if [%desub%] equ [+] goto :return
-goto :demenu4
-:dem4off
+set /p virussub=^> 
+if [%virussub%] equ [0] goto :virusm4off
+if [%virussub%] equ [1] goto :virusm4on
+if [%virussub%] equ [+] goto :virusback
+goto :virusmenu4
+:virusm4off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t "REG_DWORD" /D "0x00000001" /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableRealtimeMonitoring" /t "REG_DWORD" /D "0x00000001" /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableBehaviorMonitoring" /t "REG_DWORD" /D "0x00000001" /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v "DisableScanOnRealtimeEnable" /t "REG_DWORD" /D "0x00000001" /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DWORD" /D "0x00000004" /f
-goto :return
-:dem4on
+goto :virusback
+:virusm4on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /f
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DWORD" /d "0x00000002" /f
-goto :return
-:mainmenu
-if exist %main% call %main%
-goto :antivirus
-:return
-set deact=
-set desub=
+goto :virusback
+:virusback
+set virusmain=
+set virussub=
 timeout /t 5
-goto :antivirus
+goto :virusmain
+:backmain
+if exist "%~1" call "%~1"
+goto :virusmain
