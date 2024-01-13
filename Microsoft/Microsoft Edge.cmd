@@ -97,7 +97,7 @@ goto :edgeback
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%userprofile%\Documents\EdgeUserData" /f
 goto :edgeback
 :edgem4sel
-for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgedir=%%a)
+call :edgefolder
 if not defined edgedir goto :edgemenu4
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%edgedir%" /f
 goto :edgeback
@@ -124,16 +124,19 @@ for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| fin
 if not exist "%ramdisk%" goto :edgemenu5
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%ramdisk%" /f
 :edgem5sel
-for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgedir=%%a)
+call :edgefolder
 if not defined edgedir goto :edgemenu5
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%edgedir%" /f
 goto :edgeback
-:backmain
-if exist "%~1" call "%~1"
-goto :edgemenu
+:edgefolder
+for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgedir=%%a)
+exit /b
 :edgeback
 set edgemain=
 set edgesub=
 set edgedir=
 timeout /t 5
+goto :edgemenu
+:backmain
+if exist "%~1" call "%~1"
 goto :edgemenu
