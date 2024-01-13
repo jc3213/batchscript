@@ -9,12 +9,12 @@ echo 3. Manage Scheduled Scan
 echo 4. Manage Real-time Protection
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p virusmain=^> 
-if [%virusmain%] equ [1] goto :virusmenu1
-if [%virusmain%] equ [2] goto :virusmenu2
-if [%virusmain%] equ [3] goto :virusmenu3
-if [%virusmain%] equ [4] goto :virusmenu4
-if [%virusmain%] equ [+] goto :backmain
+set /p virusact=^> 
+if [%virusact%] equ [1] goto :virusmenu1
+if [%virusact%] equ [2] goto :virusmenu2
+if [%virusact%] equ [3] goto :virusmenu3
+if [%virusact%] equ [4] goto :virusmenu4
+if [%virusact%] equ [+] goto :backmain
 goto :virusmain
 :virusmenu1
 cls
@@ -109,7 +109,7 @@ reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protecti
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DWORD" /d "0x00000002" /f
 goto :virusback
 :virusback
-set virusmain=
+set virusact=
 set virussub=
 timeout /t 5
 goto :virusmain
