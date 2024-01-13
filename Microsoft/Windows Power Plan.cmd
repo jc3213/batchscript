@@ -10,13 +10,13 @@ echo 4. Manage Processor Minimum P-state
 echo 5. Manage Heterogeneous Thread Policy
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p powermain=^> 
-if [%powermain%] equ [1] goto :powermenu1
-if [%powermain%] equ [2] goto :powermenu2
-if [%powermain%] equ [3] goto :powermenu3
-if [%powermain%] equ [4] goto :powermenu4
-if [%powermain%] equ [5] goto :powermenu5
-if [%powermain%] equ [+] goto :backmain
+set /p poweract=^> 
+if [%poweract%] equ [1] goto :powermenu1
+if [%poweract%] equ [2] goto :powermenu2
+if [%poweract%] equ [3] goto :powermenu3
+if [%poweract%] equ [4] goto :powermenu4
+if [%poweract%] equ [5] goto :powermenu5
+if [%poweract%] equ [+] goto :backmain
 goto :powermain
 :powermenu1
 cls
@@ -96,7 +96,7 @@ powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLE%1 %2
 powercfg /setactive scheme_current
 goto :powerback
 :powerback
-set powermain=
+set poweract=
 set powersub=
 timeout /t 5
 goto :powermain
