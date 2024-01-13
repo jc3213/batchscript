@@ -13,13 +13,13 @@ echo 4. Context Menu (Windows 11)
 echo 5. CPU Microcode Update
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p miscmain=^> 
-if [%miscmain%] equ [1] goto :miscmenu1
-if [%miscmain%] equ [2] goto :miscmenu2
-if [%miscmain%] equ [3] goto :miscmenu3
-if [%miscmain%] equ [4] goto :miscmenu4
-if [%miscmain%] equ [5] goto :miscmenu5
-if [%miscmain%] equ [+] goto :backmain
+set /p miscact=^> 
+if [%miscact%] equ [1] goto :miscmenu1
+if [%miscact%] equ [2] goto :miscmenu2
+if [%miscact%] equ [3] goto :miscmenu3
+if [%miscact%] equ [4] goto :miscmenu4
+if [%miscact%] equ [5] goto :miscmenu5
+if [%miscact%] equ [+] goto :backmain
 goto :miscmain
 :miscmenu1
 cls
@@ -140,7 +140,7 @@ rd %1
 mklink /d %1 %2
 exit /b
 :miscback
-set miscmain=
+set miscact=
 set miscsub=
 timeout /t 5
 goto :miscmain
