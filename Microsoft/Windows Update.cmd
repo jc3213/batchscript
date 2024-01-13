@@ -1,21 +1,20 @@
 @echo off
-set main="%~1"
-:winupdate
+:updatemain
 cls
 title Manage Windows Update
 echo ==================================================================
 echo 1. Manage Auto Update
 echo 2. Manage Driver Auto Update
 echo 3. Manage Windows Update Service (wuauserv)
-if exist %main% echo +. Return to Main Menu
+if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p wuact=^> 
-if [%wuact%] equ [1] goto :wumenu1
-if [%wuact%] equ [2] goto :wumenu2
-if [%wuact%] equ [3] goto :wumenu3
-if [%wuact%] equ [+] goto :mainmenu
-goto :winupdate
-:wumenu1
+set /p updateact=^> 
+if [%updateact%] equ [1] goto :updatemenu1
+if [%updateact%] equ [2] goto :updatemenu2
+if [%updateact%] equ [3] goto :updatemenu3
+if [%updateact%] equ [+] goto :backmain
+goto :updatemain
+:updatemenu1
 cls
 title Auto Update - Windows Update
 echo ==================================================================
@@ -23,18 +22,18 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p wusub=^> 
-if [%wusub%] equ [0] goto :wum1off
-if [%wusub%] equ [1] goto :wum1on
-if [%wusub%] equ [+] goto :return
-goto :wumenu1
-:wum1off
+set /p updatesub=^> 
+if [%updatesub%] equ [0] goto :updatem1off
+if [%updatesub%] equ [1] goto :updatem1on
+if [%updatesub%] equ [+] goto :updateback
+goto :updatemenu1
+:updatem1off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t "REG_DWORD" /d "0x00000001" /f
-goto :return
-:wum1on
+goto :updateback
+:updatem1on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /f
-goto :return
-:wumenu2
+goto :updateback
+:updatemenu2
 cls
 title Driver Auto Update - Windows Update
 echo ==================================================================
@@ -42,18 +41,18 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p wusub=^> 
-if [%wusub%] equ [0] goto :wum2off
-if [%wusub%] equ [1] goto :wum2on
-if [%wusub%] equ [+] goto :return
-goto :wumenu2
-:wum2off
+set /p updatesub=^> 
+if [%updatesub%] equ [0] goto :updatem2off
+if [%updatesub%] equ [1] goto :updatem2on
+if [%updatesub%] equ [+] goto :updateback
+goto :updatemenu2
+:updatem2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t "REG_DWORD" /d "0x00000001" /f
-goto :return
-:wum2on
+goto :updateback
+:updatem2on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /f
-goto :return
-:wumenu3
+goto :updateback
+:updatemenu3
 cls
 title Windows Update Service - Windows Update
 echo ==================================================================
@@ -61,24 +60,24 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p wusub=^> 
-if [%wusub%] equ [0] goto :wum3off
-if [%wusub%] equ [1] goto :wum3on
-if [%wusub%] equ [+] goto :return
-goto :wumenu3
-:wum3off
+set /p updatesub=^> 
+if [%updatesub%] equ [0] goto :updatem3off
+if [%updatesub%] equ [1] goto :updatem3on
+if [%updatesub%] equ [+] goto :updateback
+goto :updatemenu3
+:updatem3off
 sc stop "wuauserv"
 sc config "wuauserv" start=disabled
-goto :return
-:wum3on
+goto :updateback
+:updatem3on
 sc config "wuauserv" start=demand
 sc start "wuauserv"
-goto :return
-:mainmenu
-if exist %main% call %main%
-goto :winupdate
-:return
-set wuact=
-set wusub=
+goto :updateback
+:updateback
+set updateact=
+set updatesub=
 timeout /t 5
-goto :winupdate
+goto :updatemain
+:backmain
+if exist "%~1" call "%~1"
+goto :updatemain
