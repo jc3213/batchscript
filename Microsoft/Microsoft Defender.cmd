@@ -14,7 +14,7 @@ if [%virusact%] equ [1] goto :virusmenu1
 if [%virusact%] equ [2] goto :virusmenu2
 if [%virusact%] equ [3] goto :virusmenu3
 if [%virusact%] equ [4] goto :virusmenu4
-if [%virusact%] equ [+] goto :backmain
+if [%virusact%] equ [+] goto :manageback
 goto :virusmain
 :virusmenu1
 cls
@@ -113,6 +113,6 @@ set virusact=
 set virussub=
 timeout /t 5
 goto :virusmain
-:backmain
+:manageback
 if exist "%~1" call "%~1"
 goto :virusmain
