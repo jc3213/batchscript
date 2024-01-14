@@ -3,78 +3,66 @@ title Image Upscale Utilities
 :menu
 cls
 echo ============================================================
-echo 1. Real-ESRGAN Plus
-echo 2. Real-ESRGAN Plus Anime
-echo 3. Real-ESRGAN Anime Video v3
-echo 4. Real-CUGAN Se
-echo 5. Real-CUGAN Pro
-echo 6. Waifu2x CUnet
-echo 7. Waifu2x Up-convert RGB
-echo 8. Waifu2x Up-convert Photo
+echo 1. Real-ESRGAN Plus Anime
+echo 2. Real-ESRGAN Anime Video v3
+echo 3. Real-CUGAN Se
+echo 4. Real-CUGAN Pro
+echo 5. Waifu2x CUnet
+echo 6. Waifu2x Anime Style
 echo ============================================================
 set /p md=^> 
-if [%md%] equ [1] goto :plusx4
-if [%md%] equ [2] goto :x4anime
-if [%md%] equ [3] goto :videoanime
-if [%md%] equ [4] goto :cuganse
-if [%md%] equ [5] goto :cuganpro
-if [%md%] equ [6] goto :cunet
-if [%md%] equ [7] goto :uprgb
-if [%md%] equ [8] goto :upphoto
+if [%md%] equ [1] goto :x4anime
+if [%md%] equ [2] goto :videoanime
+if [%md%] equ [3] goto :cuganse
+if [%md%] equ [4] goto :cuganpro
+if [%md%] equ [5] goto :cunet
+if [%md%] equ [6] goto :style
 goto :menu
-:plusx4
-set app=realesrgan
-set model=x4plus
-set name=(real-esrgan)(x4plus)(4x)
-set scale=4
-set params=-n %app%-%model%
-goto :format
 :x4anime
 set app=realesrgan
+set worker=Real-ESRGAN
 set model=x4plus-anime
-set name=(real-esrgan)(x4plus-anime)(4x)
+set name=(%app%)(x4plus-anime)(4x)
 set scale=4
 set params=-n %app%-%model%
 goto :format
 :videoanime
 set app=realesrgan
+set worker=Real-ESRGAN
 set model=animevideov3
-set name=(real-esrgan)(animevideov3)
+set name=(%app%)(animevideov3)
 set params=-n realesr-%model%
 call :scale
 goto :format
 :cuganse
 set app=realcugan
+set worker=Real-CUGAN
 set model=se
-set name=(real-cugan)(se)
+set name=(%app%)(se)
 set params=-m models-%model%
 call :scale
 goto :noise
 :cuganpro
 set app=realcugan
+set worker=Real-CUGAN
 set model=pro
-set name=(real-cugan)(pro)(2x)
+set name=(%app%)(pro)(2x)
 set scale=2
 set params=-m models-%model% -s 2
 goto :noise
 :cunet
 set app=waifu2x
+set worker=Waifu2x
 set model=cunet
 set name=(%app%)(cunet)
 set params=-m models-%model%
 call :scale
 goto :noise
-:uprgb
+:style
 set app=waifu2x
+set worker=Waifu2x
 set model=upconv_7_anime_style_art_rgb
 set name=(%app%)(upconv_7_anime_style_art_rgb)
-set params=-m models-%model%
-call :scale
-goto :noise
-:upphoto
-set app=waifu2x
-set model=upconv_7_photo
-set name=(%app%)(upconv_7_photo)
 set params=-m models-%model%
 call :scale
 goto :noise
@@ -127,7 +115,6 @@ if not defined format set format=png
 :main
 cls
 echo ============================================================
-for /f "delims=()" %%a in ("%name%") do (set worker=%%a)
 echo Upscaler     :   %worker%
 echo Model        :   %model%
 echo Scale Ratio  :   %scale%x
