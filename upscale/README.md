@@ -14,7 +14,6 @@
 - Drag and drop image files or directories over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
 - Read upscaler [settings](#Settings)
-- If output image is black, try to [fixed output](#Fixed-Output)
 
 ## Settings
 - Model (model)
@@ -38,15 +37,20 @@
         - Model `model`: models-upconv_7_anime_style_art_rgb
 - Scale Ratio (scale)
     - *not available for `realesrgan-x4plus-anime` and `models-pro`*
-    - 2x
-    - 4x
+    - `2x`
+    - `4x`
 - Denoise Level (noise)
     - *not available for `Real-ESRGAN`*
-    - 0
-        - *Disable*
-    - 1
-    - 2
-    - 3
+    - `-1`
+    - `0` *default*
+    - `1`
+    - `2`
+    - `3`
+- Split Tile (tile)
+    - `0` *default*
+        - Auto
+$$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx result$$
+    - 6GB VRAM, 1600x1600, FP 16, tile≈156
 - TTA Mode (tta)
     - *not available for `Real-ESRGAN`*
     - 1
@@ -57,16 +61,3 @@
     - webp
 - Output Result
     - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.${format}`
-
-## Fixed Output
-- Referenced `tiles`
-    - 6GB VRAM
-        - `144` for 768x768
-        - `64` for 1600x1600
-    - 4GB VRAM
-        - `112` for 768x768
-        - `48` for 1600x1600
-- Add ` -t ${tiles}` to after `%params%` before `>`
-    - https://github.com/jc3213/batchscript/blob/5ea8548897910481ede91c9564d310175637eebc/upscale/upscale_ncnn_utilities.cmd#L143
-- Add ` -t ${tiles}` to after `$script:params` before `"`
-    - https://github.com/jc3213/batchscript/blob/5ea8548897910481ede91c9564d310175637eebc/upscale/upscale_ncnn_utilities.ps1#L101
