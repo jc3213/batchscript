@@ -23,7 +23,7 @@ set app=realesrgan
 set model=realesrgan-x4plus
 set name=(Real-EARGAN)(x4plus)(4x)
 set scale=4
-set params=-n %model% -t 144
+set params=-n %model%
 goto :format
 :x4anime
 set app=realesrgan
