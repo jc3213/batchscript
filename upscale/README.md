@@ -11,7 +11,7 @@
     - C:\cli\bin\models-upconv_7_photo\\*
 - Drag and drop image files or directories over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
-- Read [Settings](#Settings)
+- Read upscaler [settings](#Settings)
 - If output image is black, try to [fixed output](#Fixed-Output)
 
 ## Settings
