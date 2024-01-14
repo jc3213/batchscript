@@ -18,30 +18,37 @@
 
 ## Settings
 - Model (model)
-    - realesrgan-x4plus
-    - realesrgan-x4plus-anime
-    - realesr-animevideov3
-    - models-cunet
-    - models-upconv_7_anime_style_art_rgb
-    - models-upconv_7_photo
-- Method Name (ncnn)
-    - Real-ESRGAN
-        - *available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
-    - Waifu2x
-        - *available for `models-cunet`, `models-upconv_7_anime_style_art_rgb`, and `models-upconv_7_photo`*
+    - Real-ESRGAN Plus Anime
+        - Upscaler `ncnn`: Real-ESRGAN
+        - Model `model`: realesrgan-x4plus-anime
+    - Real-ESRGAN Anime Video v3
+        - Upscaler `ncnn`: Real-ESRGAN
+        - Model `model`: realesr-animevideov3
+    - Real-CUGAN Se
+        - Upscaler `ncnn`: Real-CUGAN
+        - Model `model`: models-se
+    - Real-CUGAN Pro
+        - Upscaler `ncnn`: Real-CUGAN
+        - Model `model`: models-pro
+    - Waifu2x CUnet
+        - Upscaler `ncnn`: Waifu2x
+        - Model `model`: models-cunet
+    - Waifu2x Anime Style
+        - Upscaler `ncnn`: Waifu2x
+        - Model `model`: models-upconv_7_anime_style_art_rgb
 - Scale Ratio (scale)
-    - *not available for `realesrgan-x4plus` and `realesrgan-x4plus-anime`*
+    - *not available for `realesrgan-x4plus-anime` and `models-pro`*
     - 2x
     - 4x
 - Denoise Level (noise)
-    - *not available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
+    - *not available for `Real-ESRGAN`*
     - 0
         - *Disable*
     - 1
     - 2
     - 3
 - TTA Mode (tta)
-    - *not available for `realesrgan-x4plus`, `realesrgan-x4plus-anime`, and `realesr-animevideov3`*
+    - *not available for `Real-ESRGAN`*
     - 1
         - *Enable*
 - Output Format (format)
@@ -52,10 +59,13 @@
     - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.${format}`
 
 ## Fixed Output
-- Recomennded `tiles`
-    - `48` for 2GB VRAM
-    - `96` for 4GB VRAM
-    - `144` for 6GB VRAM
+- Referenced `tiles`
+    - 6GB VRAM
+        - `144` for 768x768
+        - `64` for 1600x1600
+    - 4GB VRAM
+        - `112` for 768x768
+        - `48` for 1600x1600
 - Add ` -t ${tiles}` to after `%params%` before `>`
     - https://github.com/jc3213/batchscript/blob/5ea8548897910481ede91c9564d310175637eebc/upscale/upscale_ncnn_utilities.cmd#L143
 - Add ` -t ${tiles}` to after `$script:params` before `"`
