@@ -12,8 +12,9 @@
 - Drag and drop image files or directories over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
 - Read [Settings](#Settings)
+- If output image is black, try to [fixed output](#Fixed-Output)
 
-## Real-ESRGAN Settings
+## Settings
 - Model (model)
     - realesrgan-x4plus
     - realesrgan-x4plus-anime
@@ -47,3 +48,13 @@
     - webp
 - Output Result
     - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.${format}`
+
+## Fixed Output
+- Recomennded `tiles`
+    - `48` for 2GB VRAM
+    - `96` for 4GB VRAM
+    - `128` for 6GB VRAM
+- Add ` -t ${tiles}` to after `%params%` before `>`
+    - https://github.com/jc3213/batchscript/blob/5909d803770110e6a3b1f24dfa294cbf11a626f4/upscale/upscale_ncnn_utilities.cmd#L138
+- Add ` -t ${tiles}` to after `$script:params` before `"`
+    - https://github.com/jc3213/batchscript/blob/5909d803770110e6a3b1f24dfa294cbf11a626f4/upscale/upscale_ncnn_utilities.ps1#L102
