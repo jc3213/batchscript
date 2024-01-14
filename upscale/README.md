@@ -4,14 +4,13 @@
     - C:\cli\\[upscale_ncnn_utilities.cmd](https://raw.githubusercontent.com/jc3213/batchscript/main/upscale/upscale_ncnn_utilities.cmd)
     - C:\cli\\[upscale_ncnn_utilities.ps1](https://raw.githubusercontent.com/jc3213/batchscript/main/upscale/upscale_ncnn_utilities.ps1)
     - C:\cli\bin\realesrgan-ncnn-vulkan.exe
-    - C:\cli\bin\models\\*
+    - C:\cli\bin\models\\\*
     - C:\cli\bin\realcugan-ncnn-vulkan.exe
     - C:\cli\bin\models-se\\*
     - C:\cli\bin\models-pro\\*
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
     - C:\cli\bin\models-cunet\\*
     - C:\cli\bin\models-upconv_7_anime_style_art_rgb\\*
-    - C:\cli\bin\models-upconv_7_photo\\*
 - Drag and drop image files or directories over `upscale_ncnn_utilities.cmd`
 - Execute `upscale_ncnn_utilities.ps1` with `Run with PowerShell`
 - Read upscaler [settings](#Settings)
@@ -58,6 +57,6 @@
     - `96` for 4GB VRAM
     - `144` for 6GB VRAM
 - Add ` -t ${tiles}` to after `%params%` before `>`
-    - https://github.com/jc3213/batchscript/blob/3883fbf311de999a8c5403971f598336eeb7682f/upscale/upscale_ncnn_utilities.cmd#L156
+    - https://github.com/jc3213/batchscript/blob/5ea8548897910481ede91c9564d310175637eebc/upscale/upscale_ncnn_utilities.cmd#L143
 - Add ` -t ${tiles}` to after `$script:params` before `"`
-    - https://github.com/jc3213/batchscript/blob/3883fbf311de999a8c5403971f598336eeb7682f/upscale/upscale_ncnn_utilities.ps1#L103
+    - https://github.com/jc3213/batchscript/blob/5ea8548897910481ede91c9564d310175637eebc/upscale/upscale_ncnn_utilities.ps1#L101
