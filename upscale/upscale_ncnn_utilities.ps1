@@ -136,7 +136,7 @@ while ($true) {
             $script:scale = "4"
             $script:worker = "Real-ESRGAN"
             $script:name = "(real-esrgan)(x4plus)(4x)"
-            $script:params = "-n realesrgan-x4plus"
+            $script:params = "-n realesrgan-x4plus -t 144"
             Real-ESRGAN
         }
         "2" {
