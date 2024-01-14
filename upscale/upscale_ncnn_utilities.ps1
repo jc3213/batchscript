@@ -1,7 +1,4 @@
 Add-Type -AssemblyName System.Windows.Forms
-$realesrgan = Join-Path $PSScriptRoot "bin\realesrgan-ncnn-vulkan.exe"
-$realcugan = Join-Path $PSScriptRoot "bin\realcugan-ncnn-vulkan.exe"
-$waifu2x = Join-Path $PSScriptRoot "bin\waifu2x-ncnn-vulkan.exe"
 
 function Set-Scale {
     Write-Host "`n`n============================================================"
@@ -86,6 +83,7 @@ function Upscale-Output {
     }
     Write-Host "============================================================"
 
+    $appx = "$PSScriptRoot\bin\$script:app-ncnn-vulkan.exe"
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.Multiselect = $true
     $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
@@ -100,7 +98,7 @@ function Upscale-Output {
         $folder = Split-Path -Path $file -Parent
         $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + " $script:name.$script:format"
         $output = "$folder$name"
-        Start-Process -FilePath $script:app -ArgumentList "-i `"$file`" -o `"$output`" $script:params" -Wait -WindowStyle Hidden
+        Start-Process -FilePath "$appx" -ArgumentList "-i `"$file`" -o `"$output`" $script:params" -Wait -WindowStyle Hidden
         Write-Host "Output file: `"$output`""
     }
     Pause
@@ -121,85 +119,66 @@ function Waifu2x-CUGAN {
 while ($true) {
     Clear-Host
     Write-Host "============================================================"
-    Write-Host "1. Real-ESRGAN Plus"
-    Write-Host "2. Real-ESRGAN Plus Anime"
-    Write-Host "3. Real-ESRGAN Anime Video v3"
-    Write-Host "4. Real-CUGAN Se"
-    Write-Host "5. Real-CUGAN Pro"
-    Write-Host "6. Waifu2x CUnet"
-    Write-Host "7. Waifu2x Up-convert RGB"
-    Write-Host "8. Waifu2x Up-convert Photo"
+    Write-Host "1. Real-ESRGAN Plus Anime"
+    Write-Host "2. Real-ESRGAN Anime Video v3"
+    Write-Host "3. Real-CUGAN Se"
+    Write-Host "4. Real-CUGAN Pro"
+    Write-Host "5. Waifu2x CUnet"
+    Write-Host "6. Waifu2x Anime Style"
     Write-Host "============================================================"
     $model = Read-Host ">"
 
     switch ($model) {
         "1" {
-            $script:app = $realesrgan
-            $script:model = "x4plus"
-            $script:scale = "4"
-            $script:worker = "Real-ESRGAN"
-            $script:name = "(real-esrgan)(x4plus)(4x)"
-            $script:params = "-n realesrgan-x4plus -t 144"
-            ESRGAN-CUGAN
-        }
-        "2" {
-            $script:app = $realesrgan
+            $script:app = "realesrgan"
             $script:model = "x4plus-anime"
             $script:scale = "4"
             $script:worker = "Real-ESRGAN"
-            $script:name = "(real-esrgan))(x4plus-anime)(4x)"
+            $script:name = "(realesrgan))(x4plus-anime)(4x)"
             $script:params = "-n realesrgan-x4plus-anime"
             ESRGAN-CUGAN
         }
-        "3" {
-            $script:app = $realesrgan
+        "2" {
+            $script:app = "realesrgan"
             $script:model = "animevideov3"
             $script:worker = "Real-ESRGAN"
-            $script:name = "(real-esrgan)(animevideov3)"
+            $script:name = "(realesrgan)(animevideov3)"
             $script:params = "-n realesr-animevideov3"
             Set-Scale
             ESRGAN-CUGAN
         }
-        "4" {
-            $script:app = $realcugan
+        "3" {
+            $script:app = "realcugan"
             $script:model = "se"
             $script:worker = "Real-CUGAN"
-            $script:name = "(real-cugan)(se)"
+            $script:name = "(realcugan)(se)"
             $script:params = "-m models-se"
             Waifu2x-CUGAN
         }
-        "5" {
-            $script:app = $realcugan
+        "4" {
+            $script:app = "realcugan"
             $script:model = "pro"
             $script:scale = "2"
             $script:worker = "Real-CUGAN"
-            $script:name = "(real-cugan)(pro)(2x)"
+            $script:name = "(realcugan)(pro)(2x)"
             $script:params = "-m models-pro -s 2"
             Set-Denoise
             ESRGAN-CUGAN
         }
-        "6" {
-            $script:app = $waifu2x
+        "5" {
+            $script:app = "waifu2x"
             $script:model = "cunet"
             $script:worker = "Waifu2x"
             $script:name = "(waifu2x)(cunet)"
             $script:params = "-m models-cunet"
             Waifu2x-CUGAN
         }
-        "7" {
-            $script:app = $waifu2x
+        "6" {
+            $script:app = "waifu2x"
             $script:model = "upconv_7_anime_style_art_rgb"
             $script:worker = "Waifu2x"
             $script:name = "(waifu2x)(upconv_7_anime_style_art_rgb)"
             $script:params = "-m models-upconv_7_anime_style_art_rgb"
-            Waifu2x-CUGAN
-        }
-        "8" {
-            $script:app = $waifu2x
-            $script:model = "upconv_7_photo"
-            $script:worker = "Waifu2x"
-            $script:name = "(waifu2x)(upconv_7_photo)"
-            $script:params = "-m models-upconv_7_photo"
             Waifu2x-CUGAN
         }
     }
