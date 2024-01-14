@@ -60,21 +60,21 @@ goto :noise
 :cunet
 set app=waifu2x
 set model=cunet
-set name=(Waifu2x)(cunet)
+set name=(%app%)(cunet)
 set params=-m models-%model%
 call :scale
 goto :noise
 :uprgb
 set app=waifu2x
 set model=upconv_7_anime_style_art_rgb
-set name=(Waifu2x)(upconv_7_anime_style_art_rgb)
+set name=(%app%)(upconv_7_anime_style_art_rgb)
 set params=-m models-%model%
 call :scale
 goto :noise
 :upphoto
 set app=waifu2x
 set model=upconv_7_photo
-set name=(Waifu2x)(upconv_7_photo)
+set name=(%app%)(upconv_7_photo)
 set params=-m models-%model%
 call :scale
 goto :noise
