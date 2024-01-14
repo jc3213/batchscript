@@ -58,6 +58,6 @@
     - `96` for 4GB VRAM
     - `128` for 6GB VRAM
 - Add ` -t ${tiles}` to after `%params%` before `>`
-    - https://github.com/jc3213/batchscript/blob/5909d803770110e6a3b1f24dfa294cbf11a626f4/upscale/upscale_ncnn_utilities.cmd#L138
+    - https://github.com/jc3213/batchscript/blob/b2c4054519ee7c4b77354d6973c884b3c81dbaf6/upscale/upscale_ncnn_utilities.cmd#L156
 - Add ` -t ${tiles}` to after `$script:params` before `"`
     - https://github.com/jc3213/batchscript/blob/5909d803770110e6a3b1f24dfa294cbf11a626f4/upscale/upscale_ncnn_utilities.ps1#L102
