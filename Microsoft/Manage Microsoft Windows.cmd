@@ -17,11 +17,13 @@ echo 4. Microsoft Defender
 echo 5. Windows Maintenance
 echo 6. Windows Accessibility
 echo ==================================================================
-set /p main=^> 
-if [%main%] equ [1] goto :powermain
-if [%main%] equ [2] goto :updatemain
-if [%main%] equ [3] goto :edgemain
-if [%main%] equ [4] goto :virusmain
+set /p act=^> 
+if [%act%] equ [1] goto :powermain
+if [%act%] equ [2] goto :updatemain
+if [%act%] equ [3] goto :edgemain
+if [%act%] equ [4] goto :virusmain
+if [%act%] equ [5] goto :advancemain
+if [%act%] equ [6] goto :miscmain
 goto :managemain
 :powermain
 cls
