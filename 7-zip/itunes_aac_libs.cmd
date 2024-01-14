@@ -13,7 +13,7 @@ set output=iTunes%bit%
 set iTunes=iTunes%bit%.msi
 set unpack=%~dp0_iTunes%bit%
 if exist %setup% goto :unzip
-curl https://www.apple.com/itunes/download/win%ver% --location --output %setup%
+curl https://www.apple.com/itunes/download/win%ver% --location --output %setup% >nul 2>&1
 :unzip
 "%zip%" e -y %setup% %iTunes%
 md %unpack% 2>nul
