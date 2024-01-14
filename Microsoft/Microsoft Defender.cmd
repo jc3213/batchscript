@@ -111,7 +111,6 @@ goto :virusback
 :virusback
 set sec=
 set sub=
-timeout /t 5
 goto :virusmain
 :manageback
 if exist "%~1" call "%~1"
