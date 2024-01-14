@@ -32,7 +32,20 @@ function Set-Denoise {
     $script:name += "(Lv.$denoise)"
     $script:params += " -n $denoise"
     $script:denoise = $denoise
-    Set-TTA
+}
+
+function Set-Tile {
+    Write-Host "`n`n============================================================"
+    Write-Host "Split Tiles: 0 ~ 144"
+    Write-Host "Default: 0 (Auto)"
+    Write-Host "============================================================"
+    $tile = Read-Host ">"
+
+    if ($tile -notmatch "^([0-9]|[1-9][0-9]|1[0-3][0-9]|14[0-4])$") {
+        $tile = "0"
+    }
+
+    $script:params += " -t $tile"
 }
 
 function Set-TTA {
@@ -105,6 +118,7 @@ function Upscale-Output {
 }
 
 function ESRGAN-CUGAN {
+    Set-Tile
     Set-Format
     Upscale-Output
 }
@@ -112,6 +126,8 @@ function ESRGAN-CUGAN {
 function Waifu2x-CUGAN {
     Set-Scale
     Set-Denoise
+    Set-Tile
+    Set-TTA
     Set-Format
     Upscale-Output
 }
