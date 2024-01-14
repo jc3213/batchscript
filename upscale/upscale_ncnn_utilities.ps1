@@ -124,8 +124,8 @@ while ($true) {
     Write-Host "1. Real-ESRGAN Plus"
     Write-Host "2. Real-ESRGAN Plus Anime"
     Write-Host "3. Real-ESRGAN Anime Video v3"
-    Write-Host "3. Real-CUGAN Se"
-    Write-Host "3. Real-CUGAN Pro"
+    Write-Host "4. Real-CUGAN Se"
+    Write-Host "5. Real-CUGAN Pro"
     Write-Host "6. Waifu2x CUnet"
     Write-Host "7. Waifu2x Up-convert RGB"
     Write-Host "8. Waifu2x Up-convert Photo"
@@ -171,6 +171,7 @@ while ($true) {
         "5" {
             $script:app = $realcugan
             $script:model = "pro"
+            $script:scale = "2"
             $script:worker = "Real-CUGAN"
             $script:name = "(real-cugan)(pro)(2x)"
             $script:params = "-m models-pro -s 2"
