@@ -89,7 +89,7 @@ function Upscale-Output {
     Write-Host "Upscaler   :   $script:worker"
     Write-Host "Model      :   $script:model"
     Write-Host "Scale      :   $script:scale`x"
-    Write-Host "Tile       :   $script:tile"
+    Write-Host "Tiles      :   $script:tile"
     if ($script:denoise) {
         Write-Host "Denoise    :   Lv.$script:denoise"
     }
