@@ -7,8 +7,6 @@ if %Processor_Architecture% equ ARM64 set arc=-arm64ec
 set app=foobar2000%arc%_%ver%
 set exe=%app%.exe
 set url=https://www.foobar2000.org/files/%exe%
-echo.
-echo.
 echo Downloading: "%exe%"
 curl %url% --location --output %exe% >nul 2>&1
 "%zip%" x %exe% -y -x!$PLUGINSDIR -x!$R0 -x!uninstall.exe -o"%app%"
