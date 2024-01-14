@@ -32,7 +32,7 @@ echo 2. Manage Disk Idle Timeout
 echo 3. Manage Processor Maximum P-state
 echo 4. Manage Processor Minimum P-state
 echo 5. Manage Heterogeneous Thread Policy
-if exist "%~1" echo +. Return to Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p sec=^> 
 if [%sec%] equ [1] goto :powermenu1
@@ -126,7 +126,7 @@ echo ==================================================================
 echo 1. Manage Auto Update
 echo 2. Manage Driver Auto Update
 echo 3. Manage Windows Update Service (wuauserv)
-if exist "%~1" echo +. Return to Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p sec=^> 
 if [%sec%] equ [1] goto :updatemenu1
@@ -202,7 +202,7 @@ echo 2. Desktop Search Bar
 echo 3. Alt + Tab Behavior
 echo 4. User Profile Directory
 echo 5. Browser Caches Directory
-if exist "%~1" echo +. Return to Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p sec=^> 
 if [%sec%] equ [1] goto :msedgemenu1
@@ -330,7 +330,7 @@ echo 1. Manage Context Menu
 echo 2. Manage System Tray Icon
 echo 3. Manage Scheduled Scan
 echo 4. Manage Real-time Protection
-if exist "%~1" echo +. Return to Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p sec=^> 
 if [%sec%] equ [1] goto :virusmenu1
@@ -547,7 +547,7 @@ echo 2. Move Temporary Files to Ramdisk
 echo 3. Move User Profile Data
 echo 4. Context Menu (Windows 11)
 echo 5. CPU Microcode Update
-if exist "%~1" echo +. Return to Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p sec=^> 
 if [%sec%] equ [1] goto :miscmenu1
