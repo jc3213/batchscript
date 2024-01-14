@@ -25,7 +25,7 @@ set model=x4plus-anime
 set name=(%app%)(x4plus-anime)(4x)
 set scale=4
 set params=-n %app%-%model%
-goto :format
+goto :tile
 :videoanime
 set app=realesrgan
 set worker=Real-ESRGAN
@@ -33,7 +33,7 @@ set model=animevideov3
 set name=(%app%)(animevideov3)
 set params=-n realesr-%model%
 call :scale
-goto :format
+goto :tile
 :cuganse
 set app=realcugan
 set worker=Real-CUGAN
@@ -90,16 +90,6 @@ set /p noise=^>
 echo %noise%| findstr /r "^[0-3]$ ^-1$" >nul || set noise=0
 set name=%name%(lv%noise%)
 set params=%params% -n %noise%
-:tile
-echo.
-echo.
-echo ============================================================
-echo Split Tiles: 0 ~ 144
-echo Default: 0 (Auto)
-echo ============================================================
-set /p tile=^> 
-echo %tile%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^1[0-3][0-9]$ ^14[1-4]$" >nul || set tile=0
-set params=%params% -t %tile%
 :tta
 echo.
 echo.
@@ -110,6 +100,16 @@ set /p tta=^>
 if [%tta%] neq [1] goto :format
 set name=%name%(TTA)
 set params=%params% -x
+:tile
+echo.
+echo.
+echo ============================================================
+echo Split Tiles: 0 ~ 144
+echo Default: 0 (Auto)
+echo ============================================================
+set /p tile=^> 
+echo %tile%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^1[0-3][0-9]$ ^14[1-4]$" >nul || set tile=0
+set params=%params% -t %tile%
 :format
 echo.
 echo.
@@ -125,11 +125,12 @@ if not defined format set format=png
 :main
 cls
 echo ============================================================
-echo Upscaler     :   %worker%
-echo Model        :   %model%
-echo Scale Ratio  :   %scale%x
-if defined noise echo Denoise      :   Lv.%noise%
-if [%tta%] equ [1] echo TTA Mode     :   Enabled
+echo Upscaler  :  %worker%
+echo Model     :  %model%
+echo Scale     :  %scale%x
+echo Tile      :  %tile%
+if defined noise echo Denoise   :  Lv.%noise%
+if [%tta%] equ [1] echo TTA Mode  :  Enabled
 echo ============================================================
 for %%a in (%*) do (call :upscale "%%~a")
 timeout /t 5
