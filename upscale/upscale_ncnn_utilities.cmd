@@ -125,12 +125,12 @@ if not defined format set format=png
 :main
 cls
 echo ============================================================
-echo Upscaler  :  %worker%
-echo Model     :  %model%
-echo Scale     :  %scale%x
-echo Tile      :  %tile%
-if defined noise echo Denoise   :  Lv.%noise%
-if [%tta%] equ [1] echo TTA Mode  :  Enabled
+echo Upscaler   :   %worker%
+echo Model      :   %model%
+echo Scale      :   %scale%x
+echo Tile       :   %tile%
+if defined noise echo Denoise    :   Lv.%noise%
+if [%tta%] equ [1] echo TTA Mode   :   Enabled
 echo ============================================================
 for %%a in (%*) do (call :upscale "%%~a")
 timeout /t 5
