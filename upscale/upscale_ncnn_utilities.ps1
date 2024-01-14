@@ -46,6 +46,7 @@ function Set-Tile {
     }
 
     $script:params += " -t $tile"
+    $script:tile = $tile
 }
 
 function Set-TTA {
@@ -85,14 +86,15 @@ function Set-Format {
 function Upscale-Output {
     Clear-Host
     Write-Host "============================================================"
-    Write-Host "Upscaler     :   $script:worker"
-    Write-Host "Model        :   $script:model"
-    Write-Host "Scale Ratio  :   $script:scale`x"
+    Write-Host "Upscaler   :   $script:worker"
+    Write-Host "Model      :   $script:model"
+    Write-Host "Scale      :   $script:scale`x"
+    Write-Host "Tile       :   $script:tile"
     if ($script:denoise) {
-        Write-Host "Denoise      :   Lv.$script:denoise"
+        Write-Host "Denoise    :   Lv.$script:denoise"
     }
     if ($script:tta) {
-        Write-Host "TTA Mode     :   Enabled"
+        Write-Host "TTA Mode   :   Enabled"
     }
     Write-Host "============================================================"
 
