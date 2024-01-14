@@ -25,35 +25,35 @@ goto :menu
 :plusx4
 set app=realesrgan
 set model=x4plus
-set name=(Real-EARGAN)(x4plus)(4x)
+set name=(real-esrgan)(x4plus)(4x)
 set scale=4
 set params=-n %app%-%model%
 goto :format
 :x4anime
 set app=realesrgan
 set model=x4plus-anime
-set name=(Real-EARGAN)(x4plus-anime)(4x)
+set name=(real-esrgan)(x4plus-anime)(4x)
 set scale=4
 set params=-n %app%-%model%
 goto :format
 :videoanime
 set app=realesrgan
 set model=animevideov3
-set name=(Real-EARGAN)(animevideov3)
+set name=(real-esrgan)(animevideov3)
 set params=-n realesr-%model%
 call :scale
 goto :format
 :cuganse
 set app=realcugan
 set model=se
-set name=(Real-CUGAN)(se)
+set name=(real-cugan)(se)
 set params=-m models-%model%
 call :scale
 goto :noise
 :cuganpro
 set app=realcugan
 set model=pro
-set name=(Real-CUGAN)(pro)(2x)
+set name=(real-cugan)(pro)(2x)
 set scale=2
 set params=-m models-%model% -s 2
 goto :noise
