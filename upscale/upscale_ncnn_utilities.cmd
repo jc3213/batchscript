@@ -23,7 +23,7 @@ set app=realesrgan
 set model=realesrgan-x4plus
 set name=(Real-EARGAN)(x4plus)(4x)
 set scale=4
-set params=-n %model%
+set params=-n %model% -t 144
 goto :format
 :x4anime
 set app=realesrgan
@@ -135,6 +135,6 @@ set output=%folder%\%~n1.%format%
 echo.
 echo.
 echo Processing : "%~dpnx1"
-"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%output%" %params% >nul 2>nul
+"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%output%" %params% >nul 2>&1
 echo Output     : "%output%"
 exit /b
