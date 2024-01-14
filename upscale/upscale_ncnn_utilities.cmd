@@ -128,7 +128,7 @@ echo ============================================================
 echo Upscaler   :   %worker%
 echo Model      :   %model%
 echo Scale      :   %scale%x
-echo Tile       :   %tile%
+echo Tiles      :   %tile%
 if defined noise echo Denoise    :   Lv.%noise%
 if [%tta%] equ [1] echo TTA Mode   :   Enabled
 echo ============================================================
