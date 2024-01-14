@@ -16,7 +16,7 @@
 - Read upscaler [settings](#Settings)
 
 ## Settings
-- Model (model)
+- Method
     - Real-ESRGAN Plus Anime
         - Upscaler `ncnn`: Real-ESRGAN
         - Model `model`: realesrgan-x4plus-anime
@@ -35,27 +35,23 @@
     - Waifu2x Anime Style
         - Upscaler `ncnn`: Waifu2x
         - Model `model`: models-upconv_7_anime_style_art_rgb
-- Scale Ratio (scale)
+- Scale Ratio `scale`
     - *not available for `realesrgan-x4plus-anime` and `models-pro`*
-    - `2x`
-    - `4x`
-- Denoise Level (noise)
+    - 2x, 4x
+- Denoise Level `noise`
     - *not available for `Real-ESRGAN`*
-    - `-1`
-    - `0` *default*
-    - `1`
-    - `2`
-    - `3`
-- Split Tile (tile)
-    - `0` *default*
-        - Auto
+    - -1, 0, 1, 2, 3
+    - Default: 0
+- Split Tile `tile`
 $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx result$$
-    - 6GB VRAM, 1600x1600, FP 16, tile≈156
-- TTA Mode (tta)
+    - Default: 0
+        - Auto
+    - `6`GB VRAM, `1600`x`1600`, FP `16`, tile≈156
+- TTA Mode `tta`
     - *not available for `Real-ESRGAN`*
     - 1
         - *Enable*
-- Output Format (format)
+- Output Format `format`
     - jpg
     - png
     - webp
