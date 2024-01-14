@@ -17,7 +17,7 @@ function Set-Area ($action) {
         Set-Area
     }
 
-    $script:name = "[$action][$area]"
+    $script:name = "[cutted][$area]"
     $script:params = "-$action $area"
     $script:method = "convert"
 }
