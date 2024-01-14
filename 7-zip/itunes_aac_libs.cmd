@@ -1,33 +1,36 @@
 @echo off
 pushd %~dp0
 for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set zip=%%b7z.exe)
-if %Processor_Architecture% equ AMD64 goto :x64
+if %processor_architecture% equ AMD64 goto :x64
 set ver=32
 goto :main
 :x64
 set bit=64
 set ver=64
 :main
+set url=https://www.apple.com/itunes/download/win%ver%
 set setup=iTunes%bit%Setup.exe
-set output=iTunes%bit%
-set iTunes=iTunes%bit%.msi
+set itunes=iTunes%bit%.msi
 set unpack=%~dp0_iTunes%bit%
+set output=%~dp0iTunes%bit%
 if exist %setup% goto :unzip
-curl https://www.apple.com/itunes/download/win%ver% --location --output %setup% >nul 2>&1
+echo Downloading    :  "%url%"
+curl %url% --location --output %setup% >nul 2>&1
 :unzip
-"%zip%" e -y %setup% %iTunes%
-md %unpack% 2>nul
-md %output% 2>nul
-msiexec /a %iTunes% /qn TARGETDIR="%unpack%"
-copy %unpack%\iTunes\ASL.dll %output%
-copy %unpack%\iTunes\CoreAudioToolbox.dll %output%
-copy %unpack%\iTunes\CoreFoundation.dll %output%
-copy %unpack%\iTunes\icudt*.dll %output%
-copy %unpack%\iTunes\libdispatch.dll %output%
-copy %unpack%\iTunes\libicuin.dll %output%
-copy %unpack%\iTunes\libicuuc.dll %output%
-copy %unpack%\iTunes\objc.dll %output%
-del %iTunes% 2>nul
-del %setup% 2>nul
-rd %unpack% /s /q 2>nul
+if exist %unpack% goto :copy
+md %unpack% %output% 2>nul
+echo Extracting     :  "%~dp0%setup%"
+"%zip%" e -y %setup% %itunes% >nul 2>&1
+echo Uncompressing  :  "%~dp0%itunes%"
+msiexec /a %itunes% /qn TARGETDIR="%unpack%" >nul 2>&1
+:copy
+pushd %unpack%\iTunes
+for %%a in (ASL CoreAudioToolbox CoreFoundation libdispatch objc) do (copy /y %%a.dll "%output%" >nul )
+copy icudt*.dll "%output%" >nul
+copy libicu*.dll "%output%" >nul
+pushd %~dp0
+del /f /q "%itunes%" "%setup%"
+rd /s /q "%unpack%"
+echo iTunes Library :  "%output%
+start "" "%output%
 timeout /t 5
