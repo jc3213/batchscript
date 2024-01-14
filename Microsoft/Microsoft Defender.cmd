@@ -9,12 +9,12 @@ echo 3. Manage Scheduled Scan
 echo 4. Manage Real-time Protection
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p virusact=^> 
-if [%virusact%] equ [1] goto :virusmenu1
-if [%virusact%] equ [2] goto :virusmenu2
-if [%virusact%] equ [3] goto :virusmenu3
-if [%virusact%] equ [4] goto :virusmenu4
-if [%virusact%] equ [+] goto :manageback
+set /p sec=^> 
+if [%sec%] equ [1] goto :virusmenu1
+if [%sec%] equ [2] goto :virusmenu2
+if [%sec%] equ [3] goto :virusmenu3
+if [%sec%] equ [4] goto :virusmenu4
+if [%sec%] equ [+] goto :manageback
 goto :virusmain
 :virusmenu1
 cls
@@ -24,10 +24,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p virussub=^> 
-if [%virussub%] equ [0] goto :virusm1off
-if [%virussub%] equ [1] goto :virusm1on
-if [%virussub%] equ [+] goto :virusback
+set /p sub=^> 
+if [%sub%] equ [0] goto :virusm1off
+if [%sub%] equ [1] goto :virusm1on
+if [%sub%] equ [+] goto :virusback
 goto :virusmenu1
 :virusm1off
 reg delete "HKCR\*\shellex\ContextMenuHandlers\EPP" /ve /f
@@ -49,10 +49,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p virussub=^> 
-if [%virussub%] equ [0] goto :virusm2off
-if [%virussub%] equ [1] goto :virusm2on
-if [%virussub%] equ [+] goto :virusback
+set /p sub=^> 
+if [%sub%] equ [0] goto :virusm2off
+if [%sub%] equ [1] goto :virusm2on
+if [%sub%] equ [+] goto :virusback
 goto :virusmenu2
 :virusm2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /t "REG_DWORD" /D "0x00000001" /f
@@ -72,10 +72,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p virussub=^> 
-if [%virussub%] equ [0] goto :virusm3off
-if [%virussub%] equ [1] goto :virusm3on
-if [%virussub%] equ [+] goto :virusback
+set /p sub=^> 
+if [%sub%] equ [0] goto :virusm3off
+if [%sub%] equ [1] goto :virusm3on
+if [%sub%] equ [+] goto :virusback
 goto :virusmenu3
 :virusm3off
 schtasks /change /disable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
@@ -91,10 +91,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p virussub=^> 
-if [%virussub%] equ [0] goto :virusm4off
-if [%virussub%] equ [1] goto :virusm4on
-if [%virussub%] equ [+] goto :virusback
+set /p sub=^> 
+if [%sub%] equ [0] goto :virusm4off
+if [%sub%] equ [1] goto :virusm4on
+if [%sub%] equ [+] goto :virusback
 goto :virusmenu4
 :virusm4off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t "REG_DWORD" /D "0x00000001" /f
@@ -109,8 +109,8 @@ reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protecti
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\WinDefend" /v "Start" /t "REG_DWORD" /d "0x00000002" /f
 goto :virusback
 :virusback
-set virusact=
-set virussub=
+set sec=
+set sub=
 timeout /t 5
 goto :virusmain
 :manageback
