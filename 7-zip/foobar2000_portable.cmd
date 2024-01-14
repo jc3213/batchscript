@@ -13,4 +13,5 @@ curl %url% --location --output %exe% >nul 2>&1
 type nul > %app%\portable_mode_enabled
 del /s /q %exe% >nul 2>&1
 echo Foobar2000 Portable: "%app%"
+start "" "%app%"
 timeout /t 5
