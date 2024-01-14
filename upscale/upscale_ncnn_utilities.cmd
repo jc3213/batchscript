@@ -48,7 +48,7 @@ set worker=Real-CUGAN
 set model=pro
 set name=(%app%)(pro)(2x)
 set scale=2
-set params=-m models-%model% -s 2
+set params=-m models-%model%
 goto :noise
 :cunet
 set app=waifu2x
@@ -90,6 +90,16 @@ set /p noise=^>
 echo %noise%| findstr /r "^[0-3]$ ^-1$" >nul || set noise=0
 set name=%name%(lv%noise%)
 set params=%params% -n %noise%
+:tile
+echo.
+echo.
+echo ============================================================
+echo Split Tiles: 0 ~ 144
+echo Default: 0 (Auto)
+echo ============================================================
+set /p tile=^> 
+echo %tile%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^1[0-3][0-9]$ ^14[1-4]$" >nul || set tile=0
+set params=%params% -t %tile%
 :tta
 echo.
 echo.
