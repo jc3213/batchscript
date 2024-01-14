@@ -7,16 +7,12 @@ if %Processor_Architecture% equ ARM64 set arc=-arm64ec
 set app=foobar2000%arc%_%ver%
 set exe=%app%.exe
 set url=https://www.foobar2000.org/files/%exe%
-curl %url% --location --output %exe%
 echo.
 echo.
-echo Portable folder - %app%
+echo Downloading: "%exe%"
+curl %url% --location --output %exe% >nul 2>&1
 "%zip%" x %exe% -y -x!$PLUGINSDIR -x!$R0 -x!uninstall.exe -o"%app%"
 type nul > %app%\portable_mode_enabled
-echo.
-echo.
-del /s /q %exe%
-echo.
-echo.
-echo Done!
+del /s /q %exe% >nul 2>&1
+echo Foobar2000 Portable: "%app%"
 timeout /t 5
