@@ -97,7 +97,7 @@ goto :msedgeback
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%userprofile%\Documents\EdgeUserData" /f
 goto :msedgeback
 :msedgem4sel
-call :msedgefolder
+call :foldersel
 if not defined sub goto :msedgemenu4
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%sub%" /f
 goto :msedgeback
@@ -124,11 +124,11 @@ for /f %%a in ('wmic logicaldisk where "VolumeName='RAMDISK'" get Caption ^| fin
 if not exist "%ramdisk%" goto :msedgemenu5
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%ramdisk%" /f
 :msedgem5sel
-call :msedgefolder
+call :foldersel
 if not defined sub goto :msedgemenu5
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%sub%" /f
 goto :msedgeback
-:msedgefolder
+:foldersel
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set sub=%%a)
 exit /b
 :msedgeback
