@@ -7,7 +7,7 @@ if %Processor_Architecture% equ ARM64 set arc=-arm64ec
 set app=foobar2000%arc%_%ver%
 set exe=%app%.exe
 set url=https://www.foobar2000.org/files/%exe%
-curl %url% --location --output %exe% -x 127.0.0.1:7890
+curl %url% --location --output %exe%
 echo.
 echo.
 echo Portable folder - %app%
