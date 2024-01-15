@@ -121,6 +121,7 @@ function Upscale-Output {
 
 function ESRGAN-CUGAN {
     Set-Tile
+    Set-TTA
     Set-Format
     Upscale-Output
 }
