@@ -1,7 +1,7 @@
 ## First of all
 - Download the latest portable [ImageMagick](https://imagemagick.org/script/download.php#windows) binaries
-    - C:\cli\[magick_utilities.cmd](https://raw.githubusercontent.com/jc3213/batchscript/main/magick/magick_utilities.cmd)
-    - C:\cli\[magick_utilities.ps1](https://raw.githubusercontent.com/jc3213/batchscript/main/magick/magick_utilities.ps1)
+    - C:\cli\\[magick_utilities.cmd](https://raw.githubusercontent.com/jc3213/batchscript/main/magick/magick_utilities.cmd)
+    - C:\cli\\[magick_utilities.ps1](https://raw.githubusercontent.com/jc3213/batchscript/main/magick/magick_utilities.ps1)
     - C:\cli\bin\magick.exe
 - Drag and drop folders of images, or image files over `magick_utilities.cmd`
     - See [Usage](#Usage)
@@ -27,7 +27,7 @@
 - Convert images
     - Image Quality: 1 ~ 100
     - Default: 90
-    - For `png`, it is compress ratio, which is 10% quality
+    - For `png`, it is compress level, which is 10% quality
 - Darken images
     - Minimum color level: 0 ~ 100
     - Default: 30
