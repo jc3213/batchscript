@@ -42,11 +42,11 @@
     - *not available for `Real-ESRGAN`*
     - -1, 0, 1, 2, 3
     - Default: 0
-- Split Tile `tile`
+- Split Tiles `tile`
 $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx result$$
     - Default: 0
         - Auto
-    - `6`GB VRAM, `1600`x`1600`, FP `16`, tile≈156
+    - `6GB` VRAM, `1600`x`1600`, FP`16`, tile≈156
 - TTA Mode `tta`
     - *not available for `Real-ESRGAN`*
     - 1
