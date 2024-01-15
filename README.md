@@ -7,5 +7,6 @@
 - [aria2c](/aria2c/README.md)
 - [youtube-dl](/youtube-dl/README.md)
 - [magick](/magick/README.md)
+- [upscale](/upscale/README.md)
 - [QQ](/QQ/README.md)
 - Working
