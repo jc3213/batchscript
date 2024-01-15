@@ -92,11 +92,11 @@ function Youtube-Download {
         Write-Host "External Downloader :   aria2c"
     }
     Write-Host "============================================================"
-    $app = "$PSScriptRoot\bin\youtube-dl.exe"
+    $appx = "$PSScriptRoot\bin\youtube-dl.exe"
 
     while ($true) {
         $uri = Read-Host "`n`nVideo Uri"
-        Start-Process -FilePath "$app" -ArgumentList "$script:params" -Wait -NoNewWindow
+        Start-Process -FilePath "$appx" -ArgumentList "$script:params $uri" -Wait -NoNewWindow
     }
 }
 
