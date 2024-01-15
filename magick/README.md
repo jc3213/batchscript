@@ -25,10 +25,10 @@
     - Cut 400px from both left and right of the image
     - Cut 200px from both top and bottom of the image
 - Convert images
-    - Image Quality: 1-100
+    - Image Quality: 1 ~ 100
     - Default: 90
-    - For `png`, it is compress ratio, which is 1/10 of quality value
+    - For `png`, it is compress ratio, which is 10% quality
 - Darken images
-    - Minimum color level: 0-100
+    - Minimum color level: 0 ~ 100
     - Default: 30
     - The larger number, the darker image
