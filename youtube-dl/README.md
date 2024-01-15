@@ -18,15 +18,17 @@
 - Download Directory
     - ${CurrentDirectory}\Youtube-DL
         - *Default*
-    - **EMPTY** value to use default download directory
-    - **Cancel** for `youtube-dl.ps1` and `youtube-dl_mixed.cmd`
+        - **EMPTY** value to use default download directory
+        - **Cancel** for `youtube-dl.ps1` and `youtube-dl_mixed.cmd`
 - Download History
-    - **EMPTY** value to disable download history
-    - **Cancel** for `youtube-dl.ps1` and `youtube-dl_mixed.cmd`
+    - Disable
+        - **EMPTY** value to disable download history
+        - **Cancel** for `youtube-dl.ps1` and `youtube-dl_mixed.cmd`
 - Proxy Server
-    - **EMPTY** value to disable proxy server
     - Ping `proxy server` in `youtube-dl.cmd` and `youtube-dl_mixed.cmd`
     - Match `^(http(s)?://)?([\w-]+\.)+[\w-]+(:[\d-]+)?/?$` in `youtube-dl.ps1`
+    - Disable
+        - **EMPTY** value to disable proxy server
 - Download Subtitle
     - All subtitles
     - Disabled
