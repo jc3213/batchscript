@@ -92,19 +92,15 @@ function Youtube-Download {
         Write-Host "External Downloader :   aria2c"
     }
     Write-Host "============================================================"
-    $uri = Read-Host "Video Uri"
-    $app = Join-Path $PSScriptRoot "bin\youtube-dl.exe"
+    $app = "$PSScriptRoot\bin\youtube-dl.exe"
 
-    switch ($uri) {
-        default {
-            Start-Process -FilePath $app -ArgumentList $script:params -Wait -NoNewWindow
-        }
+    while ($true) {
+        $uri = Read-Host "`n`nVideo Uri"
+        Start-Process -FilePath "$app" -ArgumentList "$script:params" -Wait -NoNewWindow
     }
-
-    Youtube-Download
 }
 
-while ($true) {
+function Set-Quality {
     Clear-Host
     Write-Host "Video Quality"
     Write-Host "============================================================"
@@ -143,11 +139,12 @@ while ($true) {
             $script:params = "--format `"bestvideo+bestaudio/best`""
         }
     }
-
-    Set-Directory
-    Set-History
-    Set-Proxy
-    Set-Subtitle
-    Set-Aria2c
-    Youtube-Download
 }
+
+Set-Quality
+Set-Directory
+Set-History
+Set-Proxy
+Set-Subtitle
+Set-Aria2c
+Youtube-Download
