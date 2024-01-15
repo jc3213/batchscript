@@ -90,16 +90,6 @@ set /p noise=^>
 echo %noise%| findstr /r "^[0-3]$ ^-1$" >nul || set noise=0
 set name=%name%(lv%noise%)
 set params=%params% -n %noise%
-:tta
-echo.
-echo.
-echo ============================================================
-echo 1. Enable TTA Mode
-echo ============================================================
-set /p tta=^> 
-if [%tta%] neq [1] goto :format
-set name=%name%(TTA)
-set params=%params% -x
 :tile
 echo.
 echo.
@@ -110,6 +100,16 @@ echo ============================================================
 set /p tile=^> 
 echo %tile%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^1[0-3][0-9]$ ^14[1-4]$" >nul || set tile=0
 set params=%params% -t %tile%
+:tta
+echo.
+echo.
+echo ============================================================
+echo 1. Enable TTA Mode
+echo ============================================================
+set /p tta=^> 
+if [%tta%] neq [1] goto :format
+set name=%name%(TTA)
+set params=%params% -x
 :format
 echo.
 echo.
