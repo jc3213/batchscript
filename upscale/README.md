@@ -38,6 +38,7 @@
 - Scale Ratio `scale`
     - *not available for `realesrgan-x4plus-anime` and `models-pro`*
     - 2x, 4x
+    - Default: 2x
 - Denoise Level `noise`
     - *not available for `Real-ESRGAN`*
     - -1, 0, 1, 2, 3
@@ -48,7 +49,6 @@ $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx re
         - Auto
     - `6GB` VRAM, `1600`x`1600`, FP`16`, tile≈156
 - TTA Mode `tta`
-    - *not available for `Real-ESRGAN`*
     - 1
         - *Enable*
 - Output Format `format`
