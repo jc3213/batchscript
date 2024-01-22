@@ -1,5 +1,5 @@
 @echo off
-net session >nul 2>&1 && goto :runasadmin
+net session >nul 2>nul && goto :runasadmin
 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","","runas",1)(window.close)
 exit
 :runasadmin
