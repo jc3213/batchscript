@@ -151,6 +151,6 @@ set output=%folder%\%~n1.%format%
 echo.
 echo.
 echo Processing : "%~dpnx1"
-"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%output%" %params% >nul 2>&1
+"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%output%" %params% >nul 2>nul
 echo Output     : "%output%"
 exit /b
