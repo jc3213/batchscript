@@ -4,7 +4,7 @@ for %%a in (%*) do (call :codec %%a)
 timeout /t 5
 exit
 :codec
-for /f "tokens=3,4 delims= " %%a in ('ffmpeg.exe -i %1 2^>^&1 ^| findstr /i "audio"') do (if %%a equ Audio: set codec=%%b)
+for /f "tokens=3,4 delims= " %%a in ('ffmpeg.exe -i %1 2^>^nul ^| findstr /i "audio"') do (if %%a equ Audio: set codec=%%b)
 if [%codec%] equ [aac] set ext=m4a
 if [%codec%] equ [opus] set ext=webm
 if [%codec%] equ [mp3] set ext=mp3
