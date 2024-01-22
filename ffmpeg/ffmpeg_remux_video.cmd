@@ -6,7 +6,7 @@ ffmpeg.exe %file% %map% -c:v copy -c:a copy %output%
 timeout /t 5
 exit
 :codec
-for /f "tokens=3,4 delims= " %%a in ('ffmpeg.exe -i %1 2^>^&1 ^| findstr /i "video audio"') do (call :map "%~1" %%a)
+for /f "tokens=3,4 delims= " %%a in ('ffmpeg.exe -i %1 2^>^nul ^| findstr /i "video audio"') do (call :map "%~1" %%a)
 exit /b
 :map
 echo %1 %2
