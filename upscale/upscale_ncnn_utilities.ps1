@@ -112,7 +112,7 @@ function Upscale-Output {
         Write-Host "`n`nProcessing: `"$file`""
         $folder = Split-Path -Path $file -Parent
         $name = [System.IO.Path]::GetFileNameWithoutExtension($file) + " $script:name.$script:format"
-        $output = "$folder$name"
+        $output = "$folder\$name"
         Start-Process -FilePath "$appx" -ArgumentList "-i `"$file`" -o `"$output`" $script:params" -Wait -WindowStyle Hidden
         Write-Host "Output file: `"$output`""
     }
