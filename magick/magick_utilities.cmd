@@ -102,7 +102,7 @@ echo Resize image to width 300px and height 100px
 echo Sample: 500x (width), or x400 (height)
 echo Resize image and keep aspect ratio
 echo Sample: 50%%%%
-echo Resize image to 50% of its size
+echo Resize image to 50%% of its size
 echo ============================================================
 set /p size=^> 
 if not defined size goto :size
