@@ -132,7 +132,7 @@ xcopy %1 %2 /e /i /h
 :symboforce
 rd %1 /s /q
 :symbomake
-mklink /d %1 "%drive%\Home\%~n1"
+mklink /d %1 %2
 exit /b
 :miscback
 set miscact=
