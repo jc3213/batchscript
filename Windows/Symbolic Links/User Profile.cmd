@@ -21,6 +21,5 @@ if not exist "%~1" goto :symbomake
 rd %1 2>nul && goto :symbomake
 xcopy %1 %2 /e /i /h
 rd %1 /s /q
-goto :symbomake
 :symbomake
 mklink /d %1 "%drive%\Home\%~n1"
