@@ -30,11 +30,11 @@ if [%type%] equ [2] goto :defined
 goto :exit
 :defined
 if not exist "%path%" md "%path%"
-cd /d %path%
+pushd %path%
 goto :process
 :document
 if not exist "%user%" md "%user%"
-cd /d %user%
+pushd %user%
 :process
 for /d %%a in (*) do (call :users "%%~a")
 goto :exit
@@ -50,10 +50,7 @@ exit /b
 call :link "%1\global\nt_temp"
 exit /b
 :link
-for /f "tokens=3,4" %%a in ('fsutil reparsepoint query "%1" ^| findstr /c:"Symbolic Link"') do (
-    if "%%a %%b" neq "Symbolic Link" set params=/s /q
-)
-rd %params% %1 2>nul
+rd %1 2>nul || rd %1 /s /q
 mklink /d %1 %ramdisk%
 exit /b
 :exit
