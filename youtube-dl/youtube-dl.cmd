@@ -85,7 +85,7 @@ set /p sb=^>
 if [%sb%] neq [1] goto :aria2c
 set subtitle=all
 set params=%params% --all-subs
-:aria2c
+:options
 cls
 echo ============================================================
 echo Selected Quality    :   %quality%
@@ -93,9 +93,10 @@ echo Download Directory  :   %folder%
 if defined history echo Download History    :   %history%
 if defined proxy echo Proxy Server        :   %proxy%
 if defined subtitle echo Download Subtitles  :   all
-if not exist "%aria2c%" goto :link
+if not exist "%aria2c%" goto :aria2c
 echo External Downloader :   aria2c
 set params=%params% --external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+:aria2c
 echo ============================================================
 :dialog
 set /p uri=Video URI: 
