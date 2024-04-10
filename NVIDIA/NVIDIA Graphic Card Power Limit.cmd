@@ -1,4 +1,9 @@
 @echo off
+net session >nul 2>nul && goto :runasadmin
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","","runas",1)(window.close)
+exit
+:runasadmin
+title NVIDIA Graphic Card Power Limit Utility
 for /f "tokens=1,3 delims=., " %%a in ('nvidia-smi --query-gpu=power.min_limit^,power.max_limit --format=csv^,noheader^,nounits ^|^| goto :error') do (call :powerlimit %%a %%b)
 :powerlimit
 cls
