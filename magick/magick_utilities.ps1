@@ -101,7 +101,7 @@ function Set-Resize {
 function Run-Imagick {
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.Multiselect = $true
-    $dialog.Filter = "Image files|*.jpg;*.png;*.avif;*.webp;*."
+    $dialog.Filter = "Image files|*.jpg;*.jpeg;*.png;*.avif;*.webp;"
     $result = $dialog.ShowDialog()
 
     if ($result -ne "OK") {
