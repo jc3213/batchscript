@@ -103,7 +103,6 @@ set /p uri=Video URI:
 if not defined uri goto :dialog
 :download
 echo.
-echo.
 echo Youtube-DL is downloading: "%uri%"
 "%youtube%" %params% "%uri%"
 echo Youtube-DL has completed:  "%uri%"
