@@ -49,8 +49,8 @@ echo Default: %~dp0Youtube-DL
 echo Press [Cancel] to use default directory
 echo ============================================================
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set folder=%%a)
-if defined folder goto :history
-set folder=%~dp0Youtube-DL
+if not defined folder set folder=%~dp0Youtube-DL
+set params=%params% --output "%folder%\%%(title)s.%%(ext)s"
 :history
 echo.
 echo.
@@ -61,7 +61,7 @@ echo Press [Cancel] not to save history
 echo ============================================================
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.OpenFileDialog; $dialog.Filter = 'Text files (*.txt)|*.txt'; $dialog.ShowDialog() | Out-Null; $dialog.FileName"') do (set history=%%a)
 if not defined history goto :proxy
-set params=%params% --output "%folder%\%%(title)s.%%(ext)s" --download-archive "%history%"
+set params=%params% --download-archive "%history%"
 :proxy
 echo.
 echo.
@@ -87,6 +87,9 @@ if [%sb%] neq [1] goto :aria2c
 set subtitle=all
 set params=%params% --all-subs
 :aria2c
+if not exist "%aria2c%" goto :dialog
+set params=%params% --external-downloader "aria2c" --external-downloader-args "--continue=true --split=10 --min-split-size=1M --max-connection-per-server=10 --disk-cache 128M"
+:dialog
 cls
 echo ============================================================
 echo Selected Quality    :   %quality%
@@ -94,17 +97,15 @@ echo Download Directory  :   %folder%
 if defined history echo Download History    :   %history%
 if defined proxy echo Proxy Server        :   %proxy%
 if defined subtitle echo Download Subtitles  :   all
-if not exist "%aria2c%" goto :link
-echo External Downloader :   aria2c
-set params=%params% --external-downloader "aria2c" --external-downloader-args "-c -j 10 -x 10 -s 10 -k 1M"
+if exist "%aria2c%" echo External Downloader :   aria2c
 echo ============================================================
-:dialog
+echo.
 set /p uri=Video URI: 
 if not defined uri goto :dialog
 :download
 echo.
-echo.
 echo Youtube-DL is downloading: "%uri%"
 "%youtube%" %params% "%uri%"
 set uri=
+timeout /t 5
 goto :dialog
