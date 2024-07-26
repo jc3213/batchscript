@@ -5,16 +5,18 @@ cls
 echo ============================================================
 echo 1. Crop with area
 echo 2. Cut off border
-echo 3. Convert format
-echo 4. Darken images
-echo 5. Resize images
+echo 3. Trim images
+echo 4. Convert format
+echo 5. Darken images
+echo 6. Resize images
 echo ============================================================
 set /p op=^> 
 if [%op%] equ [1] goto :crop
 if [%op%] equ [2] goto :shave
-if [%op%] equ [3] goto :format
-if [%op%] equ [4] goto :darken
-if [%op%] equ [5] goto :resize
+if [%op%] equ [3] goto :trim
+if [%op%] equ [4] goto :format
+if [%op%] equ [5] goto :darken
+if [%op%] equ [6] goto :resize
 goto :menu
 :crop
 call :area
@@ -26,6 +28,11 @@ goto :main
 call :area
 set name=[cutted][%area%]
 set params=-shave %area%
+set method=convert
+goto :main
+:Trim
+set name=[trimmed]
+set params=-trim -define trim:edges=north,east,south,west -background white -fuzz 85%%
 set method=convert
 goto :main
 :format
@@ -106,6 +113,26 @@ echo Resize image to 50%% of its size
 echo ============================================================
 set /p size=^> 
 if not defined size goto :size
+echo.
+echo.
+echo ============================================================
+echo 1. Lanczos Filter [Default]
+echo 2. Lanczos2 Filter
+echo 3. Hermite Filter
+echo 4. Mitchell Filter *Recommended for enlarging*
+echo 5. Hamming Filter
+echo 6. Catrom Filter
+echo 7. Gaussian Filter
+echo ============================================================
+set /p ft=^> 
+if [%ft%] equ [2] set filter=Lanczos2
+if [%ft%] equ [3] set filter=Hermite
+if [%ft%] equ [4] set filter=Mitchell
+if [%ft%] equ [5] set filter=Hamming
+if [%ft%] equ [6] set filter=Catrom
+if [%ft%] equ [7] set filter=Gaussian
+if defined ft set filter=Lanczos
+set params=%params% -filter %filter%
 exit /b
 :imagick
 cd /d %1 2>nul
