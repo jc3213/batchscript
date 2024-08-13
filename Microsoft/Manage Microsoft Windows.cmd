@@ -17,13 +17,13 @@ echo 4. Microsoft Defender
 echo 5. Windows Maintenance
 echo 6. Windows Accessibility
 echo ==================================================================
-set /p act=^> 
-if [%act%] equ [1] goto :powermain
-if [%act%] equ [2] goto :updatemain
-if [%act%] equ [3] goto :msedgemain
-if [%act%] equ [4] goto :virusmain
-if [%act%] equ [5] goto :advancemain
-if [%act%] equ [6] goto :miscmain
+set /p mainmenu=^> 
+if [%mainmenu%] equ [1] goto :powermain
+if [%mainmenu%] equ [2] goto :updatemain
+if [%mainmenu%] equ [3] goto :msedgemain
+if [%mainmenu%] equ [4] goto :virusmain
+if [%mainmenu%] equ [5] goto :advancemain
+if [%mainmenu%] equ [6] goto :miscmain
 goto :managemain
 :powermain
 cls
@@ -36,13 +36,13 @@ echo 4. Manage Processor Minimum P-state
 echo 5. Manage Heterogeneous Thread Policy
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sec=^> 
-if [%sec%] equ [1] goto :powermenu1
-if [%sec%] equ [2] goto :powermenu2
-if [%sec%] equ [3] goto :powermenu3
-if [%sec%] equ [4] goto :powermenu4
-if [%sec%] equ [5] goto :powermenu5
-if [%sec%] equ [+] goto :manageback
+set /p submenu=^> 
+if [%submenu%] equ [1] goto :powermenu1
+if [%submenu%] equ [2] goto :powermenu2
+if [%submenu%] equ [3] goto :powermenu3
+if [%submenu%] equ [4] goto :powermenu4
+if [%submenu%] equ [5] goto :powermenu5
+if [%submenu%] equ [+] goto :manageback
 goto :powermain
 :powermenu1
 cls
@@ -52,10 +52,10 @@ echo 0. Disable
 echo 1. Enable
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] call :powerm1app off
-if [%sub%] equ [1] call :powerm1app on
-if [%sub%] equ [+] goto :powerback
+set /p function=^> 
+if [%function%] equ [0] call :powerm1app off
+if [%function%] equ [1] call :powerm1app on
+if [%function%] equ [+] goto :powerback
 goto :powermenu1
 :powerm1app
 powercfg /hibernate %1
@@ -68,10 +68,10 @@ echo 0. Never
 echo 1. Default (20 minutes)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] call :powerm2app 0
-if [%sub%] equ [1] call :powerm2app 20
-if [%sub%] equ [+] goto :powerback
+set /p function=^> 
+if [%function%] equ [0] call :powerm2app 0
+if [%function%] equ [1] call :powerm2app 20
+if [%function%] equ [+] goto :powerback
 goto :powermenu2
 :powerm2app
 powercfg /change disk-timeout-ac %1
@@ -84,10 +84,10 @@ echo ==================================================================
 echo Minimum: 50
 echo Maximum: 100 (Default)
 echo ==================================================================
-set /p sub=^> 
-echo %sub%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
+set /p function=^> 
+echo %function%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
 if %errorlevel% equ 1 set sub=100
-call :powerm34app MAX %sub%
+call :powerm34app MAX %function%
 :powermenu4
 cls
 title Processor Minimum P-state - Power Plan
@@ -95,10 +95,10 @@ echo ==================================================================
 echo Minimum: 0 (Default)
 echo Maximum: 100
 echo ==================================================================
-set /p sub=^> 
-echo %sub%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
+set /p function=^> 
+echo %function%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
 if %errorlevel% equ 1 set sub=0
-call :powerm34app MIN %sub%
+call :powerm34app MIN %function%
 :powermenu5
 cls
 title Heterogeneous Thread Policy - Power Plan
@@ -107,10 +107,10 @@ echo 0. Default (Automatic)
 echo 1. Prefer performant processors
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] call :powerm5app 5
-if [%sub%] equ [1] call :powerm5app 2
-if [%sub%] equ [+] goto :powerback
+set /p function=^> 
+if [%function%] equ [0] call :powerm5app 5
+if [%function%] equ [1] call :powerm5app 2
+if [%function%] equ [+] goto :powerback
 goto :powermenu5
 :powerm5app
 powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY %1
@@ -131,12 +131,12 @@ echo 3. Manage Windows Update Service (wuauserv)
 echo 4. Manage Malicious Software Removal Tool
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sec=^> 
-if [%sec%] equ [1] goto :updatemenu1
-if [%sec%] equ [2] goto :updatemenu2
-if [%sec%] equ [3] goto :updatemenu3
-if [%sec%] equ [4] goto :updatemenu4
-if [%sec%] equ [+] goto :manageback
+set /p submenu=^> 
+if [%submenu%] equ [1] goto :updatemenu1
+if [%submenu%] equ [2] goto :updatemenu2
+if [%submenu%] equ [3] goto :updatemenu3
+if [%submenu%] equ [4] goto :updatemenu4
+if [%submenu%] equ [+] goto :manageback
 goto :updatemain
 :updatemenu1
 cls
@@ -146,10 +146,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :updatem1off
-if [%sub%] equ [1] goto :updatem1on
-if [%sub%] equ [+] goto :updateback
+set /p function=^> 
+if [%function%] equ [0] goto :updatem1off
+if [%function%] equ [1] goto :updatem1on
+if [%function%] equ [+] goto :updateback
 goto :updatemenu1
 :updatem1off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t "REG_DWORD" /d "0x00000001" /f
@@ -165,10 +165,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :updatem2off
-if [%sub%] equ [1] goto :updatem2on
-if [%sub%] equ [+] goto :updateback
+set /p function=^> 
+if [%function%] equ [0] goto :updatem2off
+if [%function%] equ [1] goto :updatem2on
+if [%function%] equ [+] goto :updateback
 goto :updatemenu2
 :updatem2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t "REG_DWORD" /d "0x00000001" /f
@@ -184,10 +184,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :updatem3off
-if [%sub%] equ [1] goto :updatem3on
-if [%sub%] equ [+] goto :updateback
+set /p function=^> 
+if [%function%] equ [0] goto :updatem3off
+if [%function%] equ [1] goto :updatem3on
+if [%function%] equ [+] goto :updateback
 goto :updatemenu3
 :updatem3off
 sc stop "wuauserv"
@@ -205,10 +205,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :updatem4off
-if [%sub%] equ [1] goto :updatem4on
-if [%sub%] equ [+] goto :updateback
+set /p function=^> 
+if [%function%] equ [0] goto :updatem4off
+if [%function%] equ [1] goto :updatem4on
+if [%function%] equ [+] goto :updateback
 goto :updatemenu4
 :updatem4off
 ren "%WinDir%\System32\MRT.exe" "MRT.nouse"
@@ -227,15 +227,15 @@ echo 2. Desktop Search Bar
 echo 3. Alt + Tab Behavior
 echo 4. User Profile Directory
 echo 5. Browser Caches Directory
-echo +. Return to Main Menu
+if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p sec=^> 
-if [%sec%] equ [1] goto :msedgemenu1
-if [%sec%] equ [2] goto :msedgemenu2
-if [%sec%] equ [3] goto :msedgemenu3
-if [%sec%] equ [4] goto :msedgemenu4
-if [%sec%] equ [5] goto :msedgemenu5
-if [%sec%] equ [+] goto :manageback
+set /p submenu=^> 
+if [%submenu%] equ [1] goto :msedgemenu1
+if [%submenu%] equ [2] goto :msedgemenu2
+if [%submenu%] equ [3] goto :msedgemenu3
+if [%submenu%] equ [4] goto :msedgemenu4
+if [%submenu%] equ [5] goto :msedgemenu5
+if [%submenu%] equ [+] goto :manageback
 goto :msedgemain
 :msedgemenu1
 cls
@@ -245,10 +245,10 @@ echo 0. Hide
 echo 1. Show (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :msedgem1off
-if [%sub%] equ [1] goto :msedgem1on
-if [%sub%] equ [+] goto :msedgeback
+set /p function=^> 
+if [%function%] equ [0] goto :msedgem1off
+if [%function%] equ [1] goto :msedgem1on
+if [%function%] equ [+] goto :msedgeback
 goto :msedgemenu1
 :msedgem1off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled"  /t "REG_DWORD" /d "0x00000000" /f
@@ -264,10 +264,10 @@ echo 0. Hide
 echo 1. Show (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :msedgem2off
-if [%sub%] equ [1] goto :msedgem2on
-if [%sub%] equ [+] goto :msedgeback
+set /p function=^> 
+if [%function%] equ [0] goto :msedgem2off
+if [%function%] equ [1] goto :msedgem2on
+if [%function%] equ [+] goto :msedgeback
 goto :msedgemenu2
 :msedgem2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed"  /t "REG_DWORD" /d "0x00000000" /f
@@ -283,10 +283,10 @@ echo 0. Default
 echo 1. Switch only via windows
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :msedgem3off
-if [%sub%] equ [1] goto :msedgem3on
-if [%sub%] equ [+] goto :msedgeback
+set /p function=^> 
+if [%function%] equ [0] goto :msedgem3off
+if [%function%] equ [1] goto :msedgem3on
+if [%function%] equ [+] goto :msedgeback
 goto :msedgemenu3
 :msedgem3off
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingegmenu3Filter" /f
@@ -303,11 +303,11 @@ echo 1. Move to Documents
 echo 2. Move to User Directory
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :msedgem4off
-if [%sub%] equ [1] goto :msedgem4on
-if [%sub%] equ [2] goto :msedgem4sel
-if [%sub%] equ [+] goto :msedgeback
+set /p function=^> 
+if [%function%] equ [0] goto :msedgem4off
+if [%function%] equ [1] goto :msedgem4on
+if [%function%] equ [2] goto :msedgem4sel
+if [%function%] equ [+] goto :msedgeback
 goto :msedgemenu4
 :msedgem4off
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
@@ -318,7 +318,7 @@ goto :msedgeback
 :msedgem4sel
 call :foldersel
 if not defined sub goto :msedgemenu4
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%sub%" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%function%" /f
 goto :msedgeback
 :msedgemenu5
 cls
@@ -329,11 +329,11 @@ echo 1. Move to RAMDISK
 echo 2. Move to User Directory
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :msedgem5off
-if [%sub%] equ [1] goto :msedgem5on
-if [%sub%] equ [2] goto :msedgem5sel
-if [%sub%] equ [+] goto :msedgeback
+set /p function=^> 
+if [%function%] equ [0] goto :msedgem5off
+if [%function%] equ [1] goto :msedgem5on
+if [%function%] equ [2] goto :msedgem5sel
+if [%function%] equ [+] goto :msedgeback
 goto :msedgemenu5
 :msedgem5off
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /f
@@ -345,7 +345,7 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d
 :msedgem5sel
 call :foldersel
 if not defined sub goto :msedgemenu5
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%sub%" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%function%" /f
 goto :msedgeback
 :virusmain
 cls
@@ -357,12 +357,12 @@ echo 3. Manage Scheduled Scan
 echo 4. Manage Real-time Protection
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sec=^> 
-if [%sec%] equ [1] goto :virusmenu1
-if [%sec%] equ [2] goto :virusmenu2
-if [%sec%] equ [3] goto :virusmenu3
-if [%sec%] equ [4] goto :virusmenu4
-if [%sec%] equ [+] goto :manageback
+set /p submenu=^> 
+if [%submenu%] equ [1] goto :virusmenu1
+if [%submenu%] equ [2] goto :virusmenu2
+if [%submenu%] equ [3] goto :virusmenu3
+if [%submenu%] equ [4] goto :virusmenu4
+if [%submenu%] equ [+] goto :manageback
 goto :virusmain
 :virusmenu1
 cls
@@ -372,10 +372,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :virusm1off
-if [%sub%] equ [1] goto :virusm1on
-if [%sub%] equ [+] goto :virusback
+set /p function=^> 
+if [%function%] equ [0] goto :virusm1off
+if [%function%] equ [1] goto :virusm1on
+if [%function%] equ [+] goto :virusback
 goto :virusmenu1
 :virusm1off
 reg delete "HKCR\*\shellex\ContextMenuHandlers\EPP" /ve /f
@@ -397,10 +397,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :virusm2off
-if [%sub%] equ [1] goto :virusm2on
-if [%sub%] equ [+] goto :virusback
+set /p function=^> 
+if [%function%] equ [0] goto :virusm2off
+if [%function%] equ [1] goto :virusm2on
+if [%function%] equ [+] goto :virusback
 goto :virusmenu2
 :virusm2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /t "REG_DWORD" /D "0x00000001" /f
@@ -420,10 +420,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :virusm3off
-if [%sub%] equ [1] goto :virusm3on
-if [%sub%] equ [+] goto :virusback
+set /p function=^> 
+if [%function%] equ [0] goto :virusm3off
+if [%function%] equ [1] goto :virusm3on
+if [%function%] equ [+] goto :virusback
 goto :virusmenu3
 :virusm3off
 schtasks /change /disable /tn "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan"
@@ -439,10 +439,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :virusm4off
-if [%sub%] equ [1] goto :virusm4on
-if [%sub%] equ [+] goto :virusback
+set /p function=^> 
+if [%function%] equ [0] goto :virusm4off
+if [%function%] equ [1] goto :virusm4on
+if [%function%] equ [+] goto :virusback
 goto :virusmenu4
 :virusm4off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t "REG_DWORD" /D "0x00000001" /f
@@ -466,12 +466,12 @@ echo 3. Manage Diagnostic
 echo 4. Manage Auto Maintenance
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sec=^> 
-if [%sec%] equ [1] goto :advancemenu1
-if [%sec%] equ [2] goto :advancemenu2
-if [%sec%] equ [3] goto :advancemenu3
-if [%sec%] equ [4] goto :advancemenu4
-if [%sec%] equ [+] goto :manageback
+set /p submenu=^> 
+if [%submenu%] equ [1] goto :advancemenu1
+if [%submenu%] equ [2] goto :advancemenu2
+if [%submenu%] equ [3] goto :advancemenu3
+if [%submenu%] equ [4] goto :advancemenu4
+if [%submenu%] equ [+] goto :manageback
 goto :advancemain
 :advancemenu1
 cls
@@ -481,10 +481,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :advancem1off
-if [%sub%] equ [1] goto :advancem1on
-if [%sub%] equ [+] goto :advanceback
+set /p function=^> 
+if [%function%] equ [0] goto :advancem1off
+if [%function%] equ [1] goto :advancem1on
+if [%function%] equ [+] goto :advanceback
 goto :advancemenu1
 :advancem1off
 sc stop "SysMain"
@@ -502,10 +502,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :advancem2off
-if [%sub%] equ [1] goto :advancem2on
-if [%sub%] equ [+] goto :advanceback
+set /p function=^> 
+if [%function%] equ [0] goto :advancem2off
+if [%function%] equ [1] goto :advancem2on
+if [%function%] equ [+] goto :advanceback
 goto :advancemenu2
 :advancem2off
 schtasks /change /disable /tn "\Microsoft\Windows\Defrag\ScheduledDefrag"
@@ -521,10 +521,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :advancem3off
-if [%sub%] equ [1] goto :advancem3on
-if [%sub%] equ [+] goto :advanceback
+set /p function=^> 
+if [%function%] equ [0] goto :advancem3off
+if [%function%] equ [1] goto :advancem3on
+if [%function%] equ [+] goto :advanceback
 goto :advancemenu3
 :advancem3off
 schtasks /change /disable /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
@@ -552,10 +552,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :advancem4off
-if [%sub%] equ [1] goto :advancem4on
-if [%sub%] equ [+] goto :advanceback
+set /p function=^> 
+if [%function%] equ [0] goto :advancem4off
+if [%function%] equ [1] goto :advancem4on
+if [%function%] equ [+] goto :advanceback
 goto :advancemenu4
 :advancem4off
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "MaintenanceDisabled" /t "REG_DWORD" /d "0x00000001" /f
@@ -574,13 +574,13 @@ echo 4. Context Menu (Windows 11)
 echo 5. CPU Microcode Update
 echo +. Return to Main Menu
 echo ==================================================================
-set /p sec=^> 
-if [%sec%] equ [1] goto :miscmenu1
-if [%sec%] equ [2] goto :miscmenu2
-if [%sec%] equ [3] goto :miscmenu3
-if [%sec%] equ [4] goto :miscmenu4
-if [%sec%] equ [5] goto :miscmenu5
-if [%sec%] equ [+] goto :manageback
+set /p submenu=^> 
+if [%submenu%] equ [1] goto :miscmenu1
+if [%submenu%] equ [2] goto :miscmenu2
+if [%submenu%] equ [3] goto :miscmenu3
+if [%submenu%] equ [4] goto :miscmenu4
+if [%submenu%] equ [5] goto :miscmenu5
+if [%submenu%] equ [+] goto :manageback
 goto :miscmain
 :miscmenu1
 cls
@@ -633,7 +633,7 @@ echo ==================================================================
 echo Pleas enter the disk label
 echo For example, D or D: or D:\
 echo ==================================================================
-set /p sub=^> 
+set /p function=^> 
 set drive=%sub:~0,1%:
 if not exist "%drive%" goto :miscback
 call :symbolink "%UserProfile%\Desktop" "%drive%\Home\Desktop"
@@ -652,10 +652,10 @@ echo 0. Modern Mode (Default)
 echo 1. Legacy Mode
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :miscm4off
-if [%sub%] equ [1] goto :miscm4on
-if [%sub%] equ [+] goto :miscback
+set /p function=^> 
+if [%function%] equ [0] goto :miscm4off
+if [%function%] equ [1] goto :miscm4on
+if [%function%] equ [+] goto :miscback
 goto :miscmenu4
 :miscm4off
 reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
@@ -671,10 +671,10 @@ echo 0. Restore from Backup
 echo 1. Remove and Backup
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p sub=^> 
-if [%sub%] equ [0] goto :miscm5off
-if [%sub%] equ [1] goto :miscm5on
-if [%sub%] equ [+] goto :miscback
+set /p function=^> 
+if [%function%] equ [0] goto :miscm5off
+if [%function%] equ [1] goto :miscm5on
+if [%function%] equ [+] goto :miscback
 goto :miscmenu5
 :miscm5off
 if not exist "%cpuback%" goto :miscback
@@ -687,9 +687,9 @@ powershell -Command "Compress-Archive -Force -Path '%amdcpu%','%intlcpu%' -Desti
 del "%amdcpu%" "%intlcpu%" /f /q
 goto :miscback
 :varnull
-set act=
-set sec=
-set sub=
+set mainmenu=
+set submenu=
+set function=
 exit /b
 :foldersel
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set sub=%%a)
