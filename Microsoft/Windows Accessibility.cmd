@@ -19,7 +19,7 @@ if [%submenu%] equ [2] goto :miscmenu2
 if [%submenu%] equ [3] goto :miscmenu3
 if [%submenu%] equ [4] goto :miscmenu4
 if [%submenu%] equ [5] goto :miscmenu5
-if [%submenu%] equ [+] goto :backmain
+if [%submenu%] equ [+] goto :manageback
 goto :miscmain
 :miscmenu1
 cls
@@ -73,7 +73,7 @@ echo Pleas enter the disk label
 echo For example, D or D: or D:\
 echo ==================================================================
 set /p function=^> 
-set drive=%miscsub:~0,1%:
+set drive=%function:~0,1%:
 if not exist "%drive%" goto :miscback
 call :symbolink "%UserProfile%\Desktop" "%drive%\Home\Desktop"
 call :symbolink "%UserProfile%\Documents" "%drive%\Home\Documents"
@@ -138,6 +138,6 @@ exit /b
 set submenu=
 set function=
 goto :miscmain
-:backmain
+:manageback
 if exist "%~1" call "%~1"
 goto :miscmain

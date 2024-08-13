@@ -60,7 +60,7 @@ echo Maximum: 100 (Default)
 echo ==================================================================
 set /p function=^> 
 echo %function%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set sub=100
+if %errorlevel% equ 1 set function=100
 call :powerm34app MAX %function%
 :powermenu4
 cls
@@ -71,7 +71,7 @@ echo Maximum: 100
 echo ==================================================================
 set /p function=^> 
 echo %function%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set sub=0
+if %errorlevel% equ 1 set function=0
 call :powerm34app MIN %function%
 :powermenu5
 cls

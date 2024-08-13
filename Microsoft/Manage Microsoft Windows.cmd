@@ -86,7 +86,7 @@ echo Maximum: 100 (Default)
 echo ==================================================================
 set /p function=^> 
 echo %function%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set sub=100
+if %errorlevel% equ 1 set function=100
 call :powerm34app MAX %function%
 :powermenu4
 cls
@@ -97,7 +97,7 @@ echo Maximum: 100
 echo ==================================================================
 set /p function=^> 
 echo %function%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set sub=0
+if %errorlevel% equ 1 set function=0
 call :powerm34app MIN %function%
 :powermenu5
 cls
@@ -227,7 +227,7 @@ echo 2. Desktop Search Bar
 echo 3. Alt + Tab Behavior
 echo 4. User Profile Directory
 echo 5. Browser Caches Directory
-if exist "%~1" echo +. Return to Main Menu
+echo +. Return to Main Menu
 echo ==================================================================
 set /p submenu=^> 
 if [%submenu%] equ [1] goto :msedgemenu1
@@ -563,6 +563,7 @@ goto :advanceback
 :advancem4on
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "MaintenanceDisabled" /f
 goto :advanceback
+:advanceback
 :miscmain
 cls
 title Windows Accessibility
@@ -634,7 +635,7 @@ echo Pleas enter the disk label
 echo For example, D or D: or D:\
 echo ==================================================================
 set /p function=^> 
-set drive=%sub:~0,1%:
+set drive=%function:~0,1%:
 if not exist "%drive%" goto :miscback
 call :symbolink "%UserProfile%\Desktop" "%drive%\Home\Desktop"
 call :symbolink "%UserProfile%\Documents" "%drive%\Home\Documents"
@@ -692,7 +693,7 @@ set submenu=
 set function=
 exit /b
 :foldersel
-for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set sub=%%a)
+for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set function=%%a)
 exit /b
 :symbolink
 if not exist "%~1" goto :symbomake
