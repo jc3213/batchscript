@@ -20,7 +20,7 @@ echo ==================================================================
 set /p act=^> 
 if [%act%] equ [1] goto :powermain
 if [%act%] equ [2] goto :updatemain
-if [%act%] equ [3] goto :edgemain
+if [%act%] equ [3] goto :msedgemain
 if [%act%] equ [4] goto :virusmain
 if [%act%] equ [5] goto :advancemain
 if [%act%] equ [6] goto :miscmain
@@ -128,12 +128,14 @@ echo ==================================================================
 echo 1. Manage Auto Update
 echo 2. Manage Driver Auto Update
 echo 3. Manage Windows Update Service (wuauserv)
+echo 4. Manage Malicious Software Removal Tool
 echo +. Return to Main Menu
 echo ==================================================================
 set /p sec=^> 
 if [%sec%] equ [1] goto :updatemenu1
 if [%sec%] equ [2] goto :updatemenu2
 if [%sec%] equ [3] goto :updatemenu3
+if [%sec%] equ [4] goto :updatemenu4
 if [%sec%] equ [+] goto :manageback
 goto :updatemain
 :updatemenu1
@@ -194,6 +196,27 @@ goto :updateback
 :updatem3on
 sc config "wuauserv" start=demand
 sc start "wuauserv"
+goto :updateback
+:updatemenu4
+cls
+title Malicious Software Removal Tool - Windows Update
+echo ==================================================================
+echo 0. Disable
+echo 1. Enable (Default)
+echo +. Return to Upper Menu
+echo ==================================================================
+set /p sub=^> 
+if [%sub%] equ [0] goto :updatem4off
+if [%sub%] equ [1] goto :updatem4on
+if [%sub%] equ [+] goto :updateback
+goto :updatemenu4
+:updatem4off
+ren "%WinDir%\System32\MRT.exe" "MRT.nouse"
+reg add "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontOfferThroughWUAU" /t "REG_DWORD" /d "0x00000001" /f
+goto :updateback
+:updatem4on
+ren "%WinDir%\System32\MRT.nouse" "MRT.exe"
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontOfferThroughWUAU" /f
 goto :updateback
 :msedgemain
 cls
