@@ -91,10 +91,12 @@ goto :updatemenu4
 :updatem4off
 ren "%WinDir%\System32\MRT.exe" "MRT.nouse"
 reg add "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontOfferThroughWUAU" /t "REG_DWORD" /d "0x00000001" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontReportInfectionInformation" /t "REG_DWORD" /d "0x00000001" /f
 goto :updateback
 :updatem4on
 ren "%WinDir%\System32\MRT.nouse" "MRT.exe"
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontOfferThroughWUAU" /f
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontReportInfectionInformatio" /f
 goto :updateback
 :updateback
 set submenu=
