@@ -563,7 +563,6 @@ goto :advanceback
 :advancem4on
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "MaintenanceDisabled" /f
 goto :advanceback
-:advanceback
 :miscmain
 cls
 title Windows Accessibility
