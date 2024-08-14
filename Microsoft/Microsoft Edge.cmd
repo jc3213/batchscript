@@ -10,13 +10,13 @@ echo 4. User Profile Directory
 echo 5. Browser Caches Directory
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p submenu=^> 
-if [%submenu%] equ [1] goto :msedgemenu1
-if [%submenu%] equ [2] goto :msedgemenu2
-if [%submenu%] equ [3] goto :msedgemenu3
-if [%submenu%] equ [4] goto :msedgemenu4
-if [%submenu%] equ [5] goto :msedgemenu5
-if [%submenu%] equ [+] goto :manageback
+set /p edgmenu=^> 
+if [%edgmenu%] equ [1] goto :msedgemenu1
+if [%edgmenu%] equ [2] goto :msedgemenu2
+if [%edgmenu%] equ [3] goto :msedgemenu3
+if [%edgmenu%] equ [4] goto :msedgemenu4
+if [%edgmenu%] equ [5] goto :msedgemenu5
+if [%edgmenu%] equ [+] goto :manageback
 goto :msedgemain
 :msedgemenu1
 cls
@@ -26,10 +26,10 @@ echo 0. Hide
 echo 1. Show (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :msedgem1off
-if [%function%] equ [1] goto :msedgem1on
-if [%function%] equ [+] goto :msedgeback
+set /p edgsub=^> 
+if [%edgsub%] equ [0] goto :msedgem1off
+if [%edgsub%] equ [1] goto :msedgem1on
+if [%edgsub%] equ [+] goto :msedgeback
 goto :msedgemenu1
 :msedgem1off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HubsSidebarEnabled"  /t "REG_DWORD" /d "0x00000000" /f
@@ -45,10 +45,10 @@ echo 0. Hide
 echo 1. Show (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :msedgem2off
-if [%function%] equ [1] goto :msedgem2on
-if [%function%] equ [+] goto :msedgeback
+set /p edgsub=^> 
+if [%edgsub%] equ [0] goto :msedgem2off
+if [%edgsub%] equ [1] goto :msedgem2on
+if [%edgsub%] equ [+] goto :msedgeback
 goto :msedgemenu2
 :msedgem2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "WebWidgetAllowed"  /t "REG_DWORD" /d "0x00000000" /f
@@ -64,10 +64,10 @@ echo 0. Default
 echo 1. Switch only via windows
 echo +. Return to Main Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :msedgem3off
-if [%function%] equ [1] goto :msedgem3on
-if [%function%] equ [+] goto :msedgeback
+set /p edgsub=^> 
+if [%edgsub%] equ [0] goto :msedgem3off
+if [%edgsub%] equ [1] goto :msedgem3on
+if [%edgsub%] equ [+] goto :msedgeback
 goto :msedgemenu3
 :msedgem3off
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MultiTaskingegmenu3Filter" /f
@@ -84,11 +84,11 @@ echo 1. Move to Documents
 echo 2. Move to User Directory
 echo +. Return to Main Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :msedgem4off
-if [%function%] equ [1] goto :msedgem4on
-if [%function%] equ [2] goto :msedgem4sel
-if [%function%] equ [+] goto :msedgeback
+set /p edgsub=^> 
+if [%edgsub%] equ [0] goto :msedgem4off
+if [%edgsub%] equ [1] goto :msedgem4on
+if [%edgsub%] equ [2] goto :msedgem4sel
+if [%edgsub%] equ [+] goto :msedgeback
 goto :msedgemenu4
 :msedgem4off
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir" /f
@@ -99,7 +99,7 @@ goto :msedgeback
 :msedgem4sel
 call :foldersel
 if not defined sub goto :msedgemenu4
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%function%" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "UserDataDir"  /t "REG_SZ" /d "%edgsub%" /f
 goto :msedgeback
 :msedgemenu5
 cls
@@ -110,11 +110,11 @@ echo 1. Move to RAMDISK
 echo 2. Move to User Directory
 echo +. Return to Main Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :msedgem5off
-if [%function%] equ [1] goto :msedgem5on
-if [%function%] equ [2] goto :msedgem5sel
-if [%function%] equ [+] goto :msedgeback
+set /p edgsub=^> 
+if [%edgsub%] equ [0] goto :msedgem5off
+if [%edgsub%] equ [1] goto :msedgem5on
+if [%edgsub%] equ [2] goto :msedgem5sel
+if [%edgsub%] equ [+] goto :msedgeback
 goto :msedgemenu5
 :msedgem5off
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /f
@@ -126,14 +126,14 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d
 :msedgem5sel
 call :foldersel
 if not defined sub goto :msedgemenu5
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%function%" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "DiskCacheDir" /t "REG_SZ" /d "%edgsub%" /f
 goto :msedgeback
 :foldersel
-for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set function=%%a)
+for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set edgsub=%%a)
 exit /b
 :msedgeback
-set submenu=
-set function=
+set edgmenu=
+set edgsub=
 goto :msedgemain
 :manageback
 if exist "%~1" call "%~1"

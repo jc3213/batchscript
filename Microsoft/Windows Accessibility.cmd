@@ -13,13 +13,13 @@ echo 4. Context Menu (Windows 11)
 echo 5. CPU Microcode Update
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p submenu=^> 
-if [%submenu%] equ [1] goto :miscmenu1
-if [%submenu%] equ [2] goto :miscmenu2
-if [%submenu%] equ [3] goto :miscmenu3
-if [%submenu%] equ [4] goto :miscmenu4
-if [%submenu%] equ [5] goto :miscmenu5
-if [%submenu%] equ [+] goto :manageback
+set /p mscmenu=^> 
+if [%mscmenu%] equ [1] goto :miscmenu1
+if [%mscmenu%] equ [2] goto :miscmenu2
+if [%mscmenu%] equ [3] goto :miscmenu3
+if [%mscmenu%] equ [4] goto :miscmenu4
+if [%mscmenu%] equ [5] goto :miscmenu5
+if [%mscmenu%] equ [+] goto :manageback
 goto :miscmain
 :miscmenu1
 cls
@@ -72,8 +72,8 @@ echo ==================================================================
 echo Pleas enter the disk label
 echo For example, D or D: or D:\
 echo ==================================================================
-set /p function=^> 
-set drive=%function:~0,1%:
+set /p mscsub=^> 
+set drive=%mscsub:~0,1%:
 if not exist "%drive%" goto :miscback
 call :symbolink "%UserProfile%\Desktop" "%drive%\Home\Desktop"
 call :symbolink "%UserProfile%\Documents" "%drive%\Home\Documents"
@@ -91,10 +91,10 @@ echo 0. Modern Mode (Default)
 echo 1. Legacy Mode
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :miscm4off
-if [%function%] equ [1] goto :miscm4on
-if [%function%] equ [+] goto :miscback
+set /p mscsub=^> 
+if [%mscsub%] equ [0] goto :miscm4off
+if [%mscsub%] equ [1] goto :miscm4on
+if [%mscsub%] equ [+] goto :miscback
 goto :miscmenu4
 :miscm4off
 reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
@@ -110,10 +110,10 @@ echo 0. Restore from Backup
 echo 1. Remove and Backup
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :miscm5off
-if [%function%] equ [1] goto :miscm5on
-if [%function%] equ [+] goto :miscback
+set /p mscsub=^> 
+if [%mscsub%] equ [0] goto :miscm5off
+if [%mscsub%] equ [1] goto :miscm5on
+if [%mscsub%] equ [+] goto :miscback
 goto :miscmenu5
 :miscm5off
 if not exist "%cpuback%" goto :miscback
@@ -135,8 +135,8 @@ rd %1 /s /q
 mklink /d %1 %2
 exit /b
 :miscback
-set submenu=
-set function=
+set mscmenu=
+set mscsub=
 goto :miscmain
 :manageback
 if exist "%~1" call "%~1"

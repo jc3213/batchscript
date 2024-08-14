@@ -9,12 +9,12 @@ echo 3. Manage Windows Update Service (wuauserv)
 echo 4. Manage Malicious Software Removal Tool
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p submenu=^> 
-if [%submenu%] equ [1] goto :updatemenu1
-if [%submenu%] equ [2] goto :updatemenu2
-if [%submenu%] equ [3] goto :updatemenu3
-if [%submenu%] equ [4] goto :updatemenu4
-if [%submenu%] equ [+] goto :manageback
+set /p updmenu=^> 
+if [%updmenu%] equ [1] goto :updatemenu1
+if [%updmenu%] equ [2] goto :updatemenu2
+if [%updmenu%] equ [3] goto :updatemenu3
+if [%updmenu%] equ [4] goto :updatemenu4
+if [%updmenu%] equ [+] goto :manageback
 goto :updatemain
 :updatemenu1
 cls
@@ -24,10 +24,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :updatem1off
-if [%function%] equ [1] goto :updatem1on
-if [%function%] equ [+] goto :updateback
+set /p updsub=^> 
+if [%updsub%] equ [0] goto :updatem1off
+if [%updsub%] equ [1] goto :updatem1on
+if [%updsub%] equ [+] goto :updateback
 goto :updatemenu1
 :updatem1off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t "REG_DWORD" /d "0x00000001" /f
@@ -43,10 +43,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :updatem2off
-if [%function%] equ [1] goto :updatem2on
-if [%function%] equ [+] goto :updateback
+set /p updsub=^> 
+if [%updsub%] equ [0] goto :updatem2off
+if [%updsub%] equ [1] goto :updatem2on
+if [%updsub%] equ [+] goto :updateback
 goto :updatemenu2
 :updatem2off
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t "REG_DWORD" /d "0x00000001" /f
@@ -62,10 +62,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :updatem3off
-if [%function%] equ [1] goto :updatem3on
-if [%function%] equ [+] goto :updateback
+set /p updsub=^> 
+if [%updsub%] equ [0] goto :updatem3off
+if [%updsub%] equ [1] goto :updatem3on
+if [%updsub%] equ [+] goto :updateback
 goto :updatemenu3
 :updatem3off
 sc stop "wuauserv"
@@ -83,10 +83,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :updatem4off
-if [%function%] equ [1] goto :updatem4on
-if [%function%] equ [+] goto :updateback
+set /p updsub=^> 
+if [%updsub%] equ [0] goto :updatem4off
+if [%updsub%] equ [1] goto :updatem4on
+if [%updsub%] equ [+] goto :updateback
 goto :updatemenu4
 :updatem4off
 ren "%WinDir%\System32\MRT.exe" "MRT.nouse"
@@ -99,8 +99,8 @@ reg delete "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontOfferThroughWUAU" /f
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v "DontReportInfectionInformatio" /f
 goto :updateback
 :updateback
-set submenu=
-set function=
+set updmenu=
+set updsub=
 goto :updatemain
 :manageback
 if exist "%~1" call "%~1"

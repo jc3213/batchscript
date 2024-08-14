@@ -10,13 +10,13 @@ echo 4. Manage Processor Minimum P-state
 echo 5. Manage Heterogeneous Thread Policy
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p submenu=^> 
-if [%submenu%] equ [1] goto :powermenu1
-if [%submenu%] equ [2] goto :powermenu2
-if [%submenu%] equ [3] goto :powermenu3
-if [%submenu%] equ [4] goto :powermenu4
-if [%submenu%] equ [5] goto :powermenu5
-if [%submenu%] equ [+] goto :manageback
+set /p pwrmenu=^> 
+if [%pwrmenu%] equ [1] goto :powermenu1
+if [%pwrmenu%] equ [2] goto :powermenu2
+if [%pwrmenu%] equ [3] goto :powermenu3
+if [%pwrmenu%] equ [4] goto :powermenu4
+if [%pwrmenu%] equ [5] goto :powermenu5
+if [%pwrmenu%] equ [+] goto :manageback
 goto :powermain
 :powermenu1
 cls
@@ -26,10 +26,10 @@ echo 0. Disable
 echo 1. Enable
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] call :powerm1app off
-if [%function%] equ [1] call :powerm1app on
-if [%function%] equ [+] goto :powerback
+set /p pwrsub=^> 
+if [%pwrsub%] equ [0] call :powerm1app off
+if [%pwrsub%] equ [1] call :powerm1app on
+if [%pwrsub%] equ [+] goto :powerback
 goto :powermenu1
 :powerm1app
 powercfg /hibernate %1
@@ -42,10 +42,10 @@ echo 0. Never
 echo 1. Default (20 minutes)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] call :powerm2app 0
-if [%function%] equ [1] call :powerm2app 20
-if [%function%] equ [+] goto :powerback
+set /p pwrsub=^> 
+if [%pwrsub%] equ [0] call :powerm2app 0
+if [%pwrsub%] equ [1] call :powerm2app 20
+if [%pwrsub%] equ [+] goto :powerback
 goto :powermenu2
 :powerm2app
 powercfg /change disk-timeout-ac %1
@@ -58,10 +58,10 @@ echo ==================================================================
 echo Minimum: 50
 echo Maximum: 100 (Default)
 echo ==================================================================
-set /p function=^> 
-echo %function%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set function=100
-call :powerm34app MAX %function%
+set /p pwrsub=^> 
+echo %pwrsub%| findstr /r /c:"^[5-9][0-9]$" /c:"^100$" >nul
+if %errorlevel% equ 1 set pwrsub=100
+call :powerm34app MAX %pwrsub%
 :powermenu4
 cls
 title Processor Minimum P-state - Power Plan
@@ -69,10 +69,10 @@ echo ==================================================================
 echo Minimum: 0 (Default)
 echo Maximum: 100
 echo ==================================================================
-set /p function=^> 
-echo %function%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
-if %errorlevel% equ 1 set function=0
-call :powerm34app MIN %function%
+set /p pwrsub=^> 
+echo %pwrsub%| findstr /r /c:"^[0-9]$" /c:"^[1-9][0-9]$" /c:"^100$" >nul
+if %errorlevel% equ 1 set pwrsub=0
+call :powerm34app MIN %pwrsub%
 :powermenu5
 cls
 title Heterogeneous Thread Policy - Power Plan
@@ -81,10 +81,10 @@ echo 0. Default (Automatic)
 echo 1. Prefer performant processors
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] call :powerm5app 5
-if [%function%] equ [1] call :powerm5app 2
-if [%function%] equ [+] goto :powerback
+set /p pwrsub=^> 
+if [%pwrsub%] equ [0] call :powerm5app 5
+if [%pwrsub%] equ [1] call :powerm5app 2
+if [%pwrsub%] equ [+] goto :powerback
 goto :powermenu5
 :powerm5app
 powercfg /setacvalueindex scheme_current sub_processor SCHEDPOLICY %1
@@ -96,8 +96,8 @@ powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLE%1 %2
 powercfg /setactive scheme_current
 goto :powerback
 :powerback
-set submenu=
-set function=
+set pwrmenu=
+set pwrsub=
 goto :powermain
 :manageback
 if exist "%~1" call "%~1"

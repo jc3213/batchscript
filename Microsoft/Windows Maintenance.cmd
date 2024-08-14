@@ -9,12 +9,12 @@ echo 3. Manage Diagnostic
 echo 4. Manage Auto Maintenance
 if exist "%~1" echo +. Return to Main Menu
 echo ==================================================================
-set /p submenu=^> 
-if [%submenu%] equ [1] goto :advancemenu1
-if [%submenu%] equ [2] goto :advancemenu2
-if [%submenu%] equ [3] goto :advancemenu3
-if [%submenu%] equ [4] goto :advancemenu4
-if [%submenu%] equ [+] goto :manageback
+set /p manmenu=^> 
+if [%manmenu%] equ [1] goto :advancemenu1
+if [%manmenu%] equ [2] goto :advancemenu2
+if [%manmenu%] equ [3] goto :advancemenu3
+if [%manmenu%] equ [4] goto :advancemenu4
+if [%manmenu%] equ [+] goto :manageback
 goto :advancemain
 :advancemenu1
 cls
@@ -24,10 +24,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :advancem1off
-if [%function%] equ [1] goto :advancem1on
-if [%function%] equ [+] goto :advanceback
+set /p mansub=^> 
+if [%mansub%] equ [0] goto :advancem1off
+if [%mansub%] equ [1] goto :advancem1on
+if [%mansub%] equ [+] goto :advanceback
 goto :advancemenu1
 :advancem1off
 sc stop "SysMain"
@@ -45,10 +45,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :advancem2off
-if [%function%] equ [1] goto :advancem2on
-if [%function%] equ [+] goto :advanceback
+set /p mansub=^> 
+if [%mansub%] equ [0] goto :advancem2off
+if [%mansub%] equ [1] goto :advancem2on
+if [%mansub%] equ [+] goto :advanceback
 goto :advancemenu2
 :advancem2off
 schtasks /change /disable /tn "\Microsoft\Windows\Defrag\ScheduledDefrag"
@@ -64,10 +64,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :advancem3off
-if [%function%] equ [1] goto :advancem3on
-if [%function%] equ [+] goto :advanceback
+set /p mansub=^> 
+if [%mansub%] equ [0] goto :advancem3off
+if [%mansub%] equ [1] goto :advancem3on
+if [%mansub%] equ [+] goto :advanceback
 goto :advancemenu3
 :advancem3off
 schtasks /change /disable /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
@@ -95,10 +95,10 @@ echo 0. Disable
 echo 1. Enable (Default)
 echo +. Return to Upper Menu
 echo ==================================================================
-set /p function=^> 
-if [%function%] equ [0] goto :advancem4off
-if [%function%] equ [1] goto :advancem4on
-if [%function%] equ [+] goto :advanceback
+set /p mansub=^> 
+if [%mansub%] equ [0] goto :advancem4off
+if [%mansub%] equ [1] goto :advancem4on
+if [%mansub%] equ [+] goto :advanceback
 goto :advancemenu4
 :advancem4off
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "MaintenanceDisabled" /t "REG_DWORD" /d "0x00000001" /f
@@ -107,8 +107,8 @@ goto :advanceback
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v "MaintenanceDisabled" /f
 goto :advanceback
 :advanceback
-set submenu=
-set function=
+set manmenu=
+set mansub=
 goto :advancemain
 :manageback
 if exist "%~1" call "%~1"
