@@ -3,7 +3,7 @@ net session >nul 2>nul && goto :main
 mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c pushd ""%~dp0"" && ""%~s0","","runas",1)(window.close)
 exit
 :main
-for /f %%a in ('wmic logicaldisk where "VolumeName='ramdisk'" get Caption ^| find ":"') do (set ramdisk=%%a\Temp\QQFiles)
+for /f %%a in ('wmic logicaldisk where "VolumeName='ramdisk'" get Caption ^| find ":"') do (set ramdisk="%%~a\Temp\QQ Files")
 if not defined ramdisk goto :exit
 md %ramdisk% >nul 2>nul
 echo ======================================================
