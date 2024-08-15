@@ -2,6 +2,7 @@
 setlocal enabledelayedexpansion
 pushd %~dp0
 for /f "delims=" %%a in ('dir /s /b aria2c.exe') do (set aria2c=%%a)
+if not defined aria2c goto :eof
 set aria2c=!aria2c:%~dp0=!
 if not exist aria2c.session type nul > aria2c.session
 if [%1] equ [/s] goto :nowindow
@@ -16,4 +17,3 @@ exit
 :unregister
 taskkill /im "aria2c.exe"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /f
-timeout /t 5
