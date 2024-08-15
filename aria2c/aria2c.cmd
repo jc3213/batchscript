@@ -8,7 +8,6 @@ if [%1] equ [/s] goto :nowindow
 if [%1] equ [/r] goto :register
 if [%1] equ [/u] goto :Unregister
 "%aria2c%" --conf=aria2c.conf
-exit
 :register
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "aria2c" /t "REG_SZ" /d "mshta vbscript:CreateObject(\"Shell.Application\").ShellExecute(\"%aria2c%\",\"--conf=aria2c.conf\",\"%~dp0",\"\",0)(window.close)" /f
 :nowindow
