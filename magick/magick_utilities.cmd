@@ -5,7 +5,7 @@ cls
 echo ============================================================
 echo 1. Crop with area
 echo 2. Cut off border
-echo 3. Trim images
+echo 3. Trim empty area
 echo 4. Convert format
 echo 5. Darken images
 echo 6. Resize images
