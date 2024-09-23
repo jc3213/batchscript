@@ -4,7 +4,7 @@
 
 # How to use
 - [7-Zip](/7-zip/README.md)
-- [aria2c](/aria2c/README.md)
+- [aria2c](https://github.com/jc3213/aria2.js/tree/main/cli)
 - [youtube-dl](/youtube-dl/README.md)
 - [magick](/magick/README.md)
 - [upscale](/upscale/README.md)
