@@ -47,8 +47,9 @@ set params=-level %lv%%%,100%%
 goto :main
 :resize
 call :size
-set name=[resize][%size%]
-set params=-resize %size%
+call :quality
+set name=[resize][%size%][%qu%]
+set params=-resize %size% -quality %qu%
 set method=convert
 goto :main
 :area
@@ -56,12 +57,14 @@ echo.
 echo.
 echo ============================================================
 echo https://imagemagick.org/script/command-line-processing.php#geometry
-echo Sample: 300x100 (width x height)
-echo Cut left and right: 300px(width), cut top and bottom: 100px(height)
+echo Sample: 300x (width)
+echo Cut 300px from both left and right of the image
+echo Sample: x400 (height)
+echo Cut 400px from both top and bottom of the image
 echo Sample: 300x100+20+30 (width x height + left + top)
 echo Crop image area start from: left 20px to 320px, top 30px to 130px
-echo Sample: 200x100%%%%+50 (width x height + left)
-echo Crop image area start from: left 50px to 250px, top: 100%%
+echo Sample: 200x+50 (width + left)
+echo Crop image area start from: left 50px to 250px, height 100%%
 echo ============================================================
 set /p area=^> 
 if not defined area goto :area
@@ -105,8 +108,9 @@ echo.
 echo.
 echo ============================================================
 echo Sample: 300x100 (width x height)
-echo Resize image to width 300px and height 100px
-echo Sample: 500x (width), or x400 (height)
+echo Resize image to 300px width and 100px height
+echo Sample: 500x (width)
+echo Sample: x400 (height)
 echo Resize image and keep aspect ratio
 echo Sample: 50%%%%
 echo Resize image to 50%% of its size
@@ -152,7 +156,7 @@ set output=%folder%\%~n1%format%
 :appx
 echo.
 echo.
-echo ImageMagick is processing: %~dpnx1
+echo Processing: %~dpnx1
 "%~dp0bin\magick.exe" %method% "%~1" %params% "%output%"
 echo Output file: "%output%"
 exit /b
