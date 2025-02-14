@@ -136,7 +136,6 @@ for %%a in (%*) do (call :upscale "%%~a")
 timeout /t 5
 exit
 :upscale
-pause
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 set output=%~dpn1 %name%.%format%
