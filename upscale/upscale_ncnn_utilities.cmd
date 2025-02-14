@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 title Image Upscale Utilities
 :menu
 cls
@@ -123,6 +124,7 @@ if [%fm%] equ [1] set format=jpg
 if [%fm%] equ [3] set format=webp
 if not defined format set format=png
 :main
+set start=%time%
 cls
 echo ============================================================
 echo Engine     :   %engine%
@@ -133,7 +135,38 @@ if defined noise echo Denoise    :   Lv.%noise%
 if [%tta%] equ [1] echo TTA Mode   :   Enabled
 echo ============================================================
 for %%a in (%*) do (call :upscale "%%~a")
-timeout /t 5
+set finish=%time%
+set /a hour=%finish:~0,2%-%start:~0,2%
+set /a minute=%finish:~3,2%-%start:~3,2%
+set /a second=%finish:~6,2%-%start:~6,2%
+set /a millisecond=%finish:~9,2%-%start:~9,2%
+if %millisecond% lss 0 (
+    set /a millisecond+=100
+    set /a second-=1
+)
+if %second% lss 0 (
+    set /a second+=60
+    set /a minute-=1
+)
+if %minute% lss 0 (
+    set /a minute+=60
+    set /a hour-=1
+)
+if %hour% lss 0 (
+    set /a hour+=24
+)
+if %hour% neq 0 (
+    set dur=%hour%:%minute%:%second%.%millisecond%
+) else if %minute% neq 0 (
+    set dur=%minute%:%second%.%millisecond%
+) else (
+    set dur=%second%.%millisecond%
+)
+echo.
+echo.
+echo Elapsed    : %dur%
+endlocal
+timeout /t 10
 exit
 :upscale
 cd /d %1 2>nul
