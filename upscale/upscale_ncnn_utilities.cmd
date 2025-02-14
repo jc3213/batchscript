@@ -125,7 +125,7 @@ if not defined format set format=png
 :main
 cls
 echo ============================================================
-echo Upscaler   :   %worker%
+echo Engine     :   %worker%
 echo Model      :   %model%
 echo Scale      :   %scale%x
 echo Tiles      :   %tile%
