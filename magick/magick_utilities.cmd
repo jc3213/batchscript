@@ -22,18 +22,15 @@ goto :menu
 call :area
 set name=[cropped][%area%]
 set params=-crop %area%
-set method=convert
 goto :main
 :shave
 call :area
 set name=[cutted][%area%]
 set params=-shave %area%
-set method=convert
 goto :main
 :Trim
 set name=[trimmed]
 set params=-trim -define trim:edges=north,east,south,west -background white -fuzz 85%%
-set method=convert
 goto :main
 :format
 call :output
@@ -50,7 +47,6 @@ call :size
 call :quality
 set name=[resize][%size%][%qu%]
 set params=-resize %size% -quality %qu%
-set method=convert
 goto :main
 :area
 echo.
@@ -157,7 +153,7 @@ set output=%folder%\%~n1%format%
 echo.
 echo.
 echo Processing: %~dpnx1
-"%~dp0bin\magick.exe" %method% "%~1" %params% "%output%"
+"%~dp0bin\magick.exe" "%~1" %params% "%output%"
 echo Output file: "%output%"
 exit /b
 :main
