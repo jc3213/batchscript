@@ -20,7 +20,7 @@ if [%md%] equ [6] goto :style
 goto :menu
 :x4anime
 set app=realesrgan
-set worker=Real-ESRGAN
+set engine=Real-ESRGAN
 set model=x4plus-anime
 set name=(%app%)(x4plus-anime)(4x)
 set scale=4
@@ -28,7 +28,7 @@ set params=-n %app%-%model%
 goto :tile
 :videoanime
 set app=realesrgan
-set worker=Real-ESRGAN
+set engine=Real-ESRGAN
 set model=animevideov3
 set name=(%app%)(animevideov3)
 set params=-n realesr-%model%
@@ -36,7 +36,7 @@ call :scale
 goto :tile
 :cuganse
 set app=realcugan
-set worker=Real-CUGAN
+set engine=Real-CUGAN
 set model=se
 set name=(%app%)(se)
 set params=-m models-%model%
@@ -44,7 +44,7 @@ call :scale
 goto :noise
 :cuganpro
 set app=realcugan
-set worker=Real-CUGAN
+set engine=Real-CUGAN
 set model=pro
 set name=(%app%)(pro)(2x)
 set scale=2
@@ -52,7 +52,7 @@ set params=-m models-%model%
 goto :noise
 :cunet
 set app=waifu2x
-set worker=Waifu2x
+set engine=Waifu2x
 set model=cunet
 set name=(%app%)(cunet)
 set params=-m models-%model%
@@ -60,7 +60,7 @@ call :scale
 goto :noise
 :style
 set app=waifu2x
-set worker=Waifu2x
+set engine=Waifu2x
 set model=upconv_7_anime_style_art_rgb
 set name=(%app%)(upconv_7_anime_style_art_rgb)
 set params=-m models-%model%
@@ -125,7 +125,7 @@ if not defined format set format=png
 :main
 cls
 echo ============================================================
-echo Engine     :   %worker%
+echo Engine     :   %engine%
 echo Model      :   %model%
 echo Scale      :   %scale%x
 echo Tiles      :   %tile%
@@ -136,6 +136,7 @@ for %%a in (%*) do (call :upscale "%%~a")
 timeout /t 5
 exit
 :upscale
+pause
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 set output=%~dpn1 %name%.%format%
