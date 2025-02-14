@@ -5,18 +5,16 @@ cls
 echo ============================================================
 echo 1. Crop with area
 echo 2. Cut off border
-echo 3. Trim empty area
-echo 4. Convert format
+echo 3. Convert format
+echo 4. Resize images
 echo 5. Darken images
-echo 6. Resize images
 echo ============================================================
 set /p op=^> 
 if [%op%] equ [1] goto :crop
 if [%op%] equ [2] goto :shave
-if [%op%] equ [3] goto :trim
-if [%op%] equ [4] goto :format
+if [%op%] equ [3] goto :format
+if [%op%] equ [4] goto :resize
 if [%op%] equ [5] goto :darken
-if [%op%] equ [6] goto :resize
 goto :menu
 :crop
 call :area
@@ -28,25 +26,23 @@ call :area
 set name=[cutted][%area%]
 set params=-shave %area%
 goto :main
-:Trim
-set name=[trimmed]
-set params=-trim -define trim:edges=north,east,south,west -background white -fuzz 85%%
-goto :main
 :format
 call :output
+call :quality
 set name=[output][%format:~1%][%qu%]
 set params=-quality %qu%
+goto :main
+:resize
+call :size
+call :outxxx
+call :quality
+set name=[resize][%size%][%qu%]
+set params=-resize %size% -quality %qu%
 goto :main
 :darken
 call :level
 set name=[darken][%lv%]
 set params=-level %lv%%%,100%%
-goto :main
-:resize
-call :size
-call :output
-set name=[resize][%size%][%qu%]
-set params=-resize %size% -quality %qu%
 goto :main
 :area
 echo.
@@ -65,7 +61,7 @@ echo ============================================================
 set /p area=^> 
 if not defined area goto :area
 exit /b
-:output
+:outxxx
 echo.
 echo.
 echo ============================================================
@@ -73,13 +69,29 @@ echo 1. jpg
 echo 2. png
 echo 3. avif
 echo 4. webp
-echo other. Original Format [Default]
+echo *. Keep Original Format [Default]
 echo ============================================================
 set /p fm=^> 
 if [%fm%] equ [1] set format=.jpg
 if [%fm%] equ [2] set format=.png
 if [%fm%] equ [3] set format=.avif
 if [%fm%] equ [4] set format=.webp
+exit /b
+:output
+echo.
+echo.
+echo ============================================================
+echo 1. jpg
+echo 2. png [Default]
+echo 3. avif
+echo 4. webp
+echo ============================================================
+set /p fm=^> 
+if [%fm%] equ [1] set format=.jpg
+if [%fm%] equ [3] set format=.avif
+if [%fm%] equ [4] set format=.webp
+if not defined format set format=.png
+exit /b
 :quality
 echo.
 echo.
