@@ -44,7 +44,7 @@ set params=-level %lv%%%,100%%
 goto :main
 :resize
 call :size
-call :quality
+call :output
 set name=[resize][%size%][%qu%]
 set params=-resize %size% -quality %qu%
 goto :main
@@ -70,15 +70,16 @@ echo.
 echo.
 echo ============================================================
 echo 1. jpg
-echo 2. png [Default]
+echo 2. png
 echo 3. avif
 echo 4. webp
+echo other. Original Format [Default]
 echo ============================================================
 set /p fm=^> 
 if [%fm%] equ [1] set format=.jpg
+if [%fm%] equ [2] set format=.png
 if [%fm%] equ [3] set format=.avif
 if [%fm%] equ [4] set format=.webp
-if not defined format set format=.png
 :quality
 echo.
 echo.
