@@ -180,7 +180,7 @@ if %hour% neq 0 (
 )
 echo.
 echo.
-echo Elapsed   : %dur%
+echo Elapsed    : %dur%
 endlocal
 pause
 exit
@@ -188,7 +188,7 @@ exit
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 if not defined format set format=%~x1
-set output=%~dpn1 %name%%format%
+set result=%~dpn1 %name%%format%
 goto :result
 exit /b
 :folder
@@ -198,11 +198,11 @@ for %%a in (*) do (call :files "%%~a")
 exit /b
 :files
 if not defined format set format=%~x1
-set output=%folder%\%~n1%format%
+set result=%folder%\%~n1%format%
 :result
 echo.
 echo.
-echo Processing: %~dpnx1
-"%~dp0bin\magick.exe" "%~1" %params% "%output%"
-echo Output file: "%output%"
+echo Processing : %~dpnx1
+"%~dp0bin\magick.exe" "%~1" %params% "%result%"
+echo Result     : "%result%"
 exit /b
