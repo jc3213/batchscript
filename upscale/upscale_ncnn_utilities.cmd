@@ -176,14 +176,14 @@ if %hour% neq 0 (
 )
 echo.
 echo.
-echo Elapsed    : %dur%
+echo Elapsed   : %dur%
 endlocal
 pause
 exit
 :upscale
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-set output=%~dpn1 %name%.%format%
+set result=%~dpn1 %name%.%format%
 goto :result
 :folder
 set folder=%~1 %name%
@@ -191,11 +191,11 @@ md "%folder%" 2>nul
 for %%a in (*) do (call :files "%%~a")
 exit /b
 :files
-set output=%folder%\%~n1.%format%
+set result=%folder%\%~n1.%format%
 :result
 echo.
 echo.
-echo Processing : "%~dpnx1"
-"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%output%" %params% >nul 2>nul
-echo Output     : "%output%"
+echo Upscaling : "%~dpnx1"
+"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%result%" %params% >nul 2>nul
+echo Result    : "%result%"
 exit /b
