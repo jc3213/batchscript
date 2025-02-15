@@ -54,6 +54,7 @@ $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx re
     - 1
         - *Enable*
 - Output Format `format`
+    - Default: png
     - jpg
     - png
     - webp
