@@ -55,8 +55,6 @@ $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx re
         - *Enable*
 - Output Format `format`
     - Default: png
-    - jpg
-    - png
-    - webp
+    - jpg, png, webp
 - Output Result
     - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.${format}`
