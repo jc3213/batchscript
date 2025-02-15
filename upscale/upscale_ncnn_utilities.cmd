@@ -3,14 +3,14 @@ setlocal enabledelayedexpansion
 title Image Upscale Utilities
 :menu
 cls
-echo ============================================================
+echo ===================================================================
 echo 1. Real-ESRGAN Plus Anime
 echo 2. Real-ESRGAN Anime Video v3
 echo 3. Real-CUGAN Se
 echo 4. Real-CUGAN Pro
 echo 5. Waifu2x CUnet
 echo 6. Waifu2x Anime Style
-echo ============================================================
+echo ===================================================================
 set /p md=^> 
 if [%md%] equ [1] goto :x4anime
 if [%md%] equ [2] goto :videoanime
@@ -70,10 +70,10 @@ goto :noise
 :scale
 echo.
 echo.
-echo ============================================================
+echo ===================================================================
 echo 1. Scale 2x [Default]
 echo 2. Scale 4x
-echo ============================================================
+echo ===================================================================
 set /p sc=^> 
 if [%sc%] equ [2] set scale=4
 if not defined scale set scale=2
@@ -83,10 +83,10 @@ exit /b
 :noise
 echo.
 echo.
-echo ============================================================
+echo ===================================================================
 echo Denoise Level: 0 ~ 3
 echo Default: 0
-echo ============================================================
+echo ===================================================================
 set /p noise=^> 
 echo %noise%| findstr /r "^[0-3]$" >nul || set noise=0
 set name=%name%(lv%noise%)
@@ -95,10 +95,10 @@ goto :tile
 :noiscu
 echo.
 echo.
-echo ============================================================
+echo ===================================================================
 echo Denoise Level: -1 ~ 3
 echo Default: 0
-echo ============================================================
+echo ===================================================================
 set /p noise=^> 
 echo %noise%| findstr /r "^[0-3]$ ^-1$" >nul || set noise=0
 set name=%name%(lv%noise%)
@@ -106,19 +106,19 @@ set params=%params% -n %noise%
 :tile
 echo.
 echo.
-echo ============================================================
+echo ===================================================================
 echo Split Tiles: 0 ~ 144
 echo Default: 0 (Auto)
-echo ============================================================
+echo ===================================================================
 set /p tile=^> 
 echo %tile%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^1[0-3][0-9]$ ^14[1-4]$" >nul || set tile=0
 set params=%params% -t %tile%
 :tta
 echo.
 echo.
-echo ============================================================
+echo ===================================================================
 echo 1. Enable TTA Mode
-echo ============================================================
+echo ===================================================================
 set /p tta=^> 
 if [%tta%] neq [1] goto :format
 set name=%name%(TTA)
@@ -126,11 +126,11 @@ set params=%params% -x
 :format
 echo.
 echo.
-echo ============================================================
+echo ===================================================================
 echo 1. jpg
 echo 2. png [Default]
 echo 3. webp
-echo ============================================================
+echo ===================================================================
 set /p fm=^> 
 if [%fm%] equ [1] set format=jpg
 if [%fm%] equ [3] set format=webp
@@ -138,14 +138,14 @@ if not defined format set format=png
 :main
 set start=%time%
 cls
-echo ============================================================
+echo ===================================================================
 echo Engine     :   %engine%
 echo Model      :   %model%
 echo Scale      :   %scale%x
 if %tile% equ 0 (echo Tiles      :   Auto) else (echo Tiles      :   %tile%)
 if defined noise echo Denoise    :   Lv.%noise%
 if [%tta%] equ [1] echo TTA Mode   :   Enabled
-echo ============================================================
+echo ===================================================================
 for %%a in (%*) do (call :upscale "%%~a")
 set finish=%time%
 set /a hour=%finish:~0,2%-%start:~0,2%
@@ -184,7 +184,7 @@ exit
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
 set output=%~dpn1 %name%.%format%
-goto :appx
+goto :result
 :folder
 set folder=%~1 %name%
 md "%folder%" 2>nul
@@ -192,7 +192,7 @@ for %%a in (*) do (call :files "%%~a")
 exit /b
 :files
 set output=%folder%\%~n1.%format%
-:appx
+:result
 echo.
 echo.
 echo Processing : "%~dpnx1"
