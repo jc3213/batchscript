@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
 title Manga Denoise and Super Sampling
-echo ============================================================
+echo ===================================================================
 echo Use Real-CUGAN for Denoise and Upscale
 echo Use ImageMagick for Super Sampling
-echo ============================================================
+echo ===================================================================
 set start=%time%
 for %%a in (%*) do (call :fixer "%%~a")
 set finish=%time%
