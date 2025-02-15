@@ -16,24 +16,24 @@
 - Read upscaler [settings](#Settings)
 
 ## Settings
-- Method
+- Upscaler
     - Real-ESRGAN Plus Anime
-        - Upscaler `ncnn`: Real-ESRGAN
+        - Engine `ncnn`: Real-ESRGAN
         - Model `model`: realesrgan-x4plus-anime
     - Real-ESRGAN Anime Video v3
-        - Upscaler `ncnn`: Real-ESRGAN
+        - Engine `ncnn`: Real-ESRGAN
         - Model `model`: realesr-animevideov3
     - Real-CUGAN Se
-        - Upscaler `ncnn`: Real-CUGAN
+        - Engine `ncnn`: Real-CUGAN
         - Model `model`: models-se
     - Real-CUGAN Pro
-        - Upscaler `ncnn`: Real-CUGAN
+        - Engine `ncnn`: Real-CUGAN
         - Model `model`: models-pro
     - Waifu2x CUnet
-        - Upscaler `ncnn`: Waifu2x
+        - Engine `ncnn`: Waifu2x
         - Model `model`: models-cunet
     - Waifu2x Anime Style
-        - Upscaler `ncnn`: Waifu2x
+        - Engine `ncnn`: Waifu2x
         - Model `model`: models-upconv_7_anime_style_art_rgb
 - Scale Ratio `scale`
     - *not available for `realesrgan-x4plus-anime` and `models-pro`*
@@ -41,8 +41,10 @@
     - Default: 2x
 - Denoise Level `noise`
     - *not available for `Real-ESRGAN`*
+    - *only `Real-CUGAN` has -1 for denoise*
     - -1, 0, 1, 2, 3
     - Default: 0
+    - Recommended: 1
 - Split Tiles `tile`
 $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx result$$
     - Default: 0
