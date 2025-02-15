@@ -204,4 +204,4 @@ echo.
 echo.
 echo Elapsed   : %dur%
 endlocal
-timeout /t 10
+pause
