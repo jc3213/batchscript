@@ -47,14 +47,15 @@
     - Recommended: 1
 - Split Tiles `tile`
 $$\\frac{{VRAM \times 1024^3}}{{height \times width \times float.p}} \\approx result$$
+    - `6GB` VRAM, `1600`x`1600`, FP`16`, tile≈156
     - Default: 0
         - Auto
-    - `6GB` VRAM, `1600`x`1600`, FP`16`, tile≈156
 - TTA Mode `tta`
     - 1
         - *Enable*
+    - Default: Disabled
 - Output Format `format`
-    - Default: png
     - jpg, png, webp
+    - Default: png
 - Output Result
     - `${name} (${ncnn})(${model})(${scale})(${noise})?(${tta})?.${format}`
