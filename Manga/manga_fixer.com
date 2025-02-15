@@ -41,29 +41,26 @@ endlocal
 pause
 exit
 :fixer
+set tempxx=%~dp1_temp_
+set result=%~dp1_result_
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-md _tempxx_ 2>nul
-md _result_ 2>nul
-set tempxx=%~dp1_tempxx_\%~n1.png
-set result=%~dp1_result_\%~n1.jpg
-call :reult %1
+md %tempxx% 2>nul
+md %result% 2>nul
+goto :result
 exit /b
 :folder
-set folder=%~dp1_result_\%~nx1
-md "%folder%" 2>nul
-set foldxx=%~dp1_tempxx_\%~nx1
-md "%foldxx%" 2>nul
-for %%a in (*) do (call :files "%%~a")
+set tempxx=%tempxx%\%~nx1
+set result=%result%\%~nx1
+md "%tempxx%" 2>nul
+md "%result%" 2>nul
+for %%a in (*) do (call :result "%%~a")
 exit /b
-:files
-set tempxx=%foldxx%\%~n1.png
-set result=%folder%\%~n1.jpg
 :reult
 echo.
 echo.
 echo Fixing   : "%~dpnx1"
-"%~dp0bin\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%tempxx%" -m models-se -s 2 -n 1 -t 44 -x >nul 2>nul
-"%~dp0bin\magick.exe" "%tempxx%" -resize x1600 -quality 90 "%result%" >nul 2>nul
-echo Result   : "%result%"
+"%~dp0bin\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%tempxx%\%~n1.png" -m models-se -s 2 -n 1 -t 44 -x >nul 2>nul
+"%~dp0bin\magick.exe" "%tempxx%\%~n1.png" -resize x1600 -quality 90 "%result%\%~n1.jpg" >nul 2>nul
+echo Result   : "%result%\%~n1.jpg"
 exit /b
