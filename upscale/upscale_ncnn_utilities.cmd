@@ -142,7 +142,7 @@ echo ============================================================
 echo Engine     :   %engine%
 echo Model      :   %model%
 echo Scale      :   %scale%x
-echo Tiles      :   %tile%
+if %tile% equ 0 (echo Tiles      :   Auto) else (echo Tiles      :   %tile%)
 if defined noise echo Denoise    :   Lv.%noise%
 if [%tta%] equ [1] echo TTA Mode   :   Enabled
 echo ============================================================
