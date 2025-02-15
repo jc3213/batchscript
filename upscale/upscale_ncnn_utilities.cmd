@@ -42,7 +42,7 @@ set model=se
 set name=(%app%)(se)
 set params=-m models-%model%
 call :scale
-goto :noise
+goto :noiscu
 :cuganpro
 set app=realcugan
 set engine=Real-CUGAN
@@ -50,7 +50,7 @@ set model=pro
 set name=(%app%)(pro)(2x)
 set scale=2
 set params=-m models-%model%
-goto :noise
+goto :noiscu
 :cunet
 set app=waifu2x
 set engine=Waifu2x
@@ -81,6 +81,18 @@ set name=%name%(%scale%x)
 set params=%params% -s %scale%
 exit /b
 :noise
+echo.
+echo.
+echo ============================================================
+echo Denoise Level: 0 ~ 3
+echo Default: 0
+echo ============================================================
+set /p noise=^> 
+echo %noise%| findstr /r "^[0-3]$" >nul || set noise=0
+set name=%name%(lv%noise%)
+set params=%params% -n %noise%
+goto :tile
+:noiscu
 echo.
 echo.
 echo ============================================================
@@ -166,7 +178,7 @@ echo.
 echo.
 echo Elapsed    : %dur%
 endlocal
-timeout /t 10
+pause
 exit
 :upscale
 cd /d %1 2>nul
