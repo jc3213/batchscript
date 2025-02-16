@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 title Manga Denoise and Super Sampling (Extreme)
 echo ===================================================================
-echo Use Real-CUGAN, Real-ESRGAN, and Waifu2x for Denoise and Upscale
+echo Use Real-CUGAN, Real-ESRGAN, and Waifu2x to Denoise and Upscale
 echo Use ImageMagick for Evaluation and Super Sampling
 echo ===================================================================
 set start=%time%
