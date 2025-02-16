@@ -19,4 +19,4 @@
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
     - C:\cli\bin\models-cunet\\*
 - Drag and drop folders of images, or image files over `manga_fixer_extreme.cmd`
-- It will cost more power and time, better quality and compatibility
+- It will cost more power, time, and disk space for better quality and compatibility
