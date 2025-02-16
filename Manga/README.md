@@ -5,6 +5,7 @@
     - C:\cli\bin\realcugan-ncnn-vulkan.exe
     - C:\cli\bin\models-se\\*
 - Drag and drop folders of images, or image files over `manga_fixer.cmd`
+- It will not work porperly for certain image files
 
 
 ## Manga Fixer Extreme
@@ -17,4 +18,5 @@
     - C:\cli\bin\models\realesr-animevideov3-x2.*
     - C:\cli\bin\waifu2x-ncnn-vulkan.exe
     - C:\cli\bin\models-cunet\\*
-- Drag and drop folders of images, or image files over `manga_fixer.cmd`
+- Drag and drop folders of images, or image files over `manga_fixer_extreme.cmd`
+- It will cost more power and time, better quality and compatibility
