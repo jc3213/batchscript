@@ -181,21 +181,21 @@ endlocal
 pause
 exit
 :upscale
+set folder=%~dp1
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-set result=%~dpn1 %name%.%format%
-goto :result
+set output= %name%.%format%
+goto :output
 :folder
-set folder=%~1 %name%
+set folder=%folder%%~nx1 %name%\
+set output=.%format%
 md "%folder%" 2>nul
-for %%a in (*) do (call :files "%%~a")
+for %%a in (*) do (call :output "%%~a")
 exit /b
-:files
-set result=%folder%\%~n1.%format%
-:result
+:output
 echo.
 echo.
 echo Upscaling : "%~dpnx1"
-"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%result%" %params% >nul 2>nul
-echo Result    : "%result%"
+"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%folder%%~n1%output%" %params% >nul 2>nul
+echo Output    : "%folder%%~n1%output%"
 exit /b
