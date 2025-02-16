@@ -19,24 +19,22 @@ if [%op%] equ [5] goto :darken
 goto :menu
 :crop
 call :area
-set name=[cropped][%area%]
+set name=[crop][%area%]
 set params=-crop %area%
 goto :main
 :shave
 call :area
-set name=[cutted][%area%]
+set name=[cut][%area%]
 set params=-shave %area%
 goto :main
 :format
-call :output
-call :quality
-set name=[output][%format:~1%][%qu%]
+call :convert
+set name=[convert][%format:~1%][%qu%]
 set params=-quality %qu%
 goto :main
 :resize
 call :size
-call :outxxx
-call :quality
+call :convert
 set name=[resize][%size%][%qu%]
 set params=-resize %size% -quality %qu%
 goto :main
@@ -62,23 +60,7 @@ echo ===================================================================
 set /p area=^> 
 if not defined area goto :area
 exit /b
-:outxxx
-echo.
-echo.
-echo ===================================================================
-echo 1. jpg
-echo 2. png
-echo 3. avif
-echo 4. webp
-echo *. Keep Original Format [Default]
-echo ===================================================================
-set /p fm=^> 
-if [%fm%] equ [1] set format=.jpg
-if [%fm%] equ [2] set format=.png
-if [%fm%] equ [3] set format=.avif
-if [%fm%] equ [4] set format=.webp
-exit /b
-:output
+:convert
 echo.
 echo.
 echo ===================================================================
@@ -92,7 +74,6 @@ if [%fm%] equ [1] set format=.jpg
 if [%fm%] equ [3] set format=.avif
 if [%fm%] equ [4] set format=.webp
 if not defined format set format=.png
-exit /b
 :quality
 echo.
 echo.
@@ -171,38 +152,35 @@ if %minute% lss 0 (
 if %hour% lss 0 (
     set /a hour+=24
 )
-if %hour% neq 0 (
-    set dur=%hour%:%minute%:%second%.%millisecond%
-) else if %minute% neq 0 (
-    set dur=%minute%:%second%.%millisecond%
-) else (
-    set dur=%second%.%millisecond%
-)
+if %hour% lss 10 set hour=0%hour%
+if %minute% lss 10 set minute=0%minute%
+if %second% lss 10 set second=0%second%
+if %millisecond% lss 10 set millisecond=0%millisecond%
 echo.
 echo.
-echo Elapsed    : %dur%
+echo Elapsed    : %hour%:%minute%:%second%.%millisecond%
 endlocal
 pause
 exit
 :imagick
+set folder=%~dp1
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-if not defined format set format=%~x1
-set result=%~dpn1 %name%%format%
-goto :result
-exit /b
+set output= %name%%format%
+goto :output
 :folder
-set folder=%~1 %name%
+set folder=%folder%%~nx1 %name%\
+set output=%format%
 md "%folder%" 2>nul
-for %%a in (*) do (call :files "%%~a")
+for %%a in (*) do (call :output "%%~a")
 exit /b
 :files
 if not defined format set format=%~x1
 set result=%folder%\%~n1%format%
-:result
+:output
 echo.
 echo.
-echo Processing : %~dpnx1
-"%~dp0bin\magick.exe" "%~1" %params% "%result%"
-echo Result     : "%result%"
+echo Processing : "%~dpnx1"
+"%~dp0bin\magick.exe" "%~1" %params% "%folder%%~n1%output%" >nul 2>nul
+echo Result     : "%folder%%~n1%output%"
 exit /b
