@@ -132,9 +132,9 @@ echo 2. png [Default]
 echo 3. webp
 echo ===================================================================
 set /p fm=^> 
-if [%fm%] equ [1] set format=jpg
-if [%fm%] equ [3] set format=webp
-if not defined format set format=png
+if [%fm%] equ [1] set format=.jpg
+if [%fm%] equ [3] set format=.webp
+if not defined format set format=.png
 :main
 set start=%time%
 cls
@@ -184,11 +184,11 @@ exit
 set folder=%~dp1
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-set output= %name%.%format%
+set output= %name%%format%
 goto :output
 :folder
 set folder=%folder%%~nx1 %name%\
-set output=.%format%
+set output=%format%
 md "%folder%" 2>nul
 for %%a in (*) do (call :output "%%~a")
 exit /b
