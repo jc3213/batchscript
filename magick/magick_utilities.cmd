@@ -166,21 +166,19 @@ exit
 set folder=%~dp1
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-set output= %name%%format%
+if not defined format set format=%~x1
+set output= %name%
 goto :output
 :folder
 set folder=%folder%%~nx1 %name%\
-set output=%format%
 md "%folder%" 2>nul
 for %%a in (*) do (call :output "%%~a")
 exit /b
-:files
-if not defined format set format=%~x1
-set result=%folder%\%~n1%format%
 :output
 echo.
 echo.
 echo Processing : "%~dpnx1"
-"%~dp0bin\magick.exe" "%~1" %params% "%folder%%~n1%output%" >nul 2>nul
-echo Result     : "%folder%%~n1%output%"
+if not defined format set format=%~x1
+"%~dp0bin\magick.exe" "%~1" %params% "%folder%%~n1%output%%format%" >nul 2>nul
+echo Result     : "%folder%%~n1%output%%format%"
 exit /b
