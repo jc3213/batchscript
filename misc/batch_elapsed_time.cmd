@@ -26,12 +26,12 @@ if %minute% lss 0 (
 if %hour% lss 0 (
     set /a hour+=24
 )
-if %hour% neq 0 (
-    echo %hour%:%minute%:%second%.%millisecond%
-) else if %minute% neq 0 (
-    echo %minute%:%second%.%millisecond%
-) else (
-    echo %second%.%millisecond%
-)
+if %hour% lss 10 set hour=0%hour%
+if %minute% lss 10 set minute=0%minute%
+if %second% lss 10 set second=0%second%
+if %millisecond% lss 10 set millisecond=0%millisecond%
+echo.
+echo.
+echo Elapsed    : %hour%:%minute%:%second%.%millisecond%
 endlocal
 pause
