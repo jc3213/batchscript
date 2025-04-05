@@ -20,7 +20,7 @@ reg add "HKCR\*\shell\runas" /v "NoWorkingDirectory"  /t "REG_SZ" /d "" /f
 reg add "HKCR\*\shell\runas\command" /ve /t "REG_EXPAND_SZ" /d "%admin%" /f
 reg add "HKCR\*\shell\runas\command" /v "IsolatedCommand" /t "REG_EXPAND_SZ" /d "%admin%" /f
 :folder
-reg add "HKCR\Directory\shell\runas" /ve /t "REG_SZ" /d %menu% /f
+reg add "HKCR\Directory\shell\runas" /ve /t "REG_SZ" /d %1 /f
 reg add "HKCR\Directory\shell\runas" /v "Icon" /t "REG_SZ" /d "%icon%" /f
 reg add "HKCR\Directory\shell\runas" /v "NoWorkingDirectory" /t "REG_SZ" /d "" /f
 reg add "HKCR\Directory\shell\runas\command" /ve /t "REG_EXPAND_SZ" /d "%admin@%" /f
