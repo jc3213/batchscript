@@ -11,6 +11,8 @@ echo 3. AV1 Video Extension
 echo 4. HEVC Video Extensions
 echo 5. VP9 Video Extensions
 echo 6. MPEG-2 Video Extension
+echo a. Install image extensions
+echo b. Install video extensions
 echo 0. Install all extensions
 echo ===================================================================
 set /p sel=^> 
@@ -20,6 +22,8 @@ if "%sel%" equ "3" call :install "AV1 Video Extension" "AV1Video"
 if "%sel%" equ "4" call :install "HEVC Video Extensions" "HEVCVideo"
 if "%sel%" equ "5" call :install "VP9 Video Extensions" "VP9Video"
 if "%sel%" equ "6" call :install "MPEG-2 Video Extension" "MPEG2Video"
+if "%sel%" equ "a" call :install "Image Extensions" "*Image"
+if "%sel%" equ "b" call :install "Video Extensions" "*Video"
 if "%sel%" equ "0" call :install "All Extensions" "*"
 goto :main
 :install
