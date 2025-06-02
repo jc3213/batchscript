@@ -145,6 +145,8 @@ if %hour% lss 10 set hour=0%hour%
 if %minute% lss 10 set minute=0%minute%
 if %second% lss 10 set second=0%second%
 if %millsec% lss 10 set millsec=0%millsec%
+echo.
+echo.
 echo Elapsed    : %hour%:%minute%:%second%.%millsec%
 endlocal
 pause
