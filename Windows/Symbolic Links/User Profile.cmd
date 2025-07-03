@@ -1,25 +1,24 @@
 @echo off
-:input
+net session >nul 2>nul && goto :main
+mshta vbscript:CreateObject("Shell.Application").ShellExecute("cmd.exe","/c ""%~s0"" %*","%~dp0","runas",1)(window.close)
+exit
+:main
 echo ====================================================
 echo Pleas enter the disk label
 echo For example, D or D: or D:\
 echo ====================================================
-set /p label=^>
+set /p label=^> 
 set drive=%label:~0,1%:
-if not exist "%drive%" cls && goto :input
-call :symbolink "%UserProfile%\Desktop"
-call :symbolink "%UserProfile%\Documents"
-call :symbolink "%UserProfile%\Downloads"
-call :symbolink "%UserProfile%\Music"
-call :symbolink "%UserProfile%\Pictures"
-call :symbolink "%UserProfile%\Saved Games"
-call :symbolink "%UserProfile%\Videos"
+if not exist "%drive%" cls && goto :main
+for %%a in (Desktop Documents Downloads Music Pictures Saved Games Videos) do (call :symbolink %%a)
 timeout /t 5
 goto :eof
 :symbolink
-if not exist "%~1" goto :symbomake
-rd %1 2>nul && goto :symbomake
-xcopy %1 %2 /e /i /h
-rd %1 /s /q
+set origin=%userprofile%\%1
+set symbol=%drive%\Home\%1
+if not exist "%origin%" goto :symbomake
+rd "%origin%" 2>nul && goto :symbomake
+xcopy "%origin%" "%symbol%" /e /i /h 2>nul
+rd "%origin%" /s /q
 :symbomake
-mklink /d %1 "%drive%\Home\%~n1"
+mklink /d "%origin%" "%symbol%"
