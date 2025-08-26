@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 title Manga Denoise and Super Sampling
 echo ===================================================================
 echo Use Real-CUGAN to Denoise and Upscale

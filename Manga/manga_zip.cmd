@@ -1,6 +1,5 @@
 @echo off
-setlocal
-pushd %~dp0
+setlocal enabledelayedexpansion
 set start=%time%
 for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set zip=%%b7z.exe)
 for %%a in (%*) do (call :main %%a)
