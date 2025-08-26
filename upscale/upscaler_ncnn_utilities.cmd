@@ -182,6 +182,6 @@ exit /b
 echo.
 echo.
 echo Upscaling : "%~dpnx1"
-"%~dp0bin\%app%-ncnn-vulkan.exe" -i "%~1" -o "%folder%%~n1%output%" %params% >nul 2>nul
+"%~dp0upscaler\%app%-ncnn-vulkan.exe" -i "%~1" -o "%folder%%~n1%output%" %params% >nul 2>nul
 echo Output    : "%folder%%~n1%output%"
 exit /b
