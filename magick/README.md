@@ -1,8 +1,7 @@
 ## First of all
 - Download the latest portable [ImageMagick](https://imagemagick.org/script/download.php#windows) binaries
     - C:\cli\\[magick_utilities.cmd](https://raw.githubusercontent.com/jc3213/batchscript/main/magick/magick_utilities.cmd)
-    - C:\cli\\[magick_utilities.ps1](https://raw.githubusercontent.com/jc3213/batchscript/main/magick/magick_utilities.ps1)
-    - C:\cli\bin\magick.exe
+    - C:\cli\magick\magick.exe
 - Drag and drop folders of images, or image files over `magick_utilities.cmd`
     - See [Usage](#Usage)
 
