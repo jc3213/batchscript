@@ -27,29 +27,21 @@ endlocal
 pause
 exit
 :fixer
-set tempxx=%~dp1_temp_
-set result=%~dp1_result_
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-md %tempxx% 2>nul
-md %result% 2>nul
 goto :result
 exit /b
 :folder
-set tempxx=%tempxx%\%~nx1
-set result=%result%\%~nx1
-md "%tempxx%" 2>nul
-md "%result%" 2>nul
 for %%a in (*) do (call :result "%%~a")
 exit /b
 :result
 echo.
 echo.
 echo Fixing   : "%~dpnx1"
-"%~dp0bin\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%tempxx%\cugan_%~n1.png" -m models-se -s 2 -n 1 -t 44 -x >nul 2>nul
-"%~dp0bin\realesrgan-ncnn-vulkan.exe" -i "%~1" -o "%tempxx%\esrgan_%~n1.png" -n realesr-animevideov3 -s 2 -t 44 -x -x >nul 2>nul
-"%~dp0bin\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%tempxx%\waifu2x_%~n1.png" -m models-cunet -s 2 -n 1 -t 44 -x >nul 2>nul
-"%~dp0bin\magick.exe" "%tempxx%\esrgan_%~n1.png" "%tempxx%\cugan_%~n1.png" "%tempxx%\waifu2x_%~n1.png" "%tempxx%\esrgan_%~n1.png" -evaluate-sequence mean "%tempxx%\eval_%~n1.png"
-"%~dp0bin\magick.exe" "%tempxx%\eval_%~n1.png" -resize x1600 -quality 90 "%result%\%~n1.jpg" >nul 2>nul
-echo Result   : "%result%\%~n1.jpg"
+"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_cugan_%~n1.png" -m models-se -s 2 -n 1 -t 32 -x >nul 2>nul
+"%~dp0upscaler\realesrgan-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_esrgan_%~n1.png" -n realesr-animevideov3 -s 2 -t 32 -x >nul 2>nul
+"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_waifu2x_%~n1.png" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
+"%~dp0magick\magick.exe" "%~dp1temp_esrgan_%~n1.png" "%~dp1temp_cugan_%~n1.png" "%~dp1temp_waifu2x_%~n1.png" "%~dp1temp_esrgan_%~n1.png" -evaluate-sequence mean "%~dp1temp_eval_%~n1.png"
+"%~dp0magick\magick.exe" "%~dp1temp_eval_%~n1.png" -resize x1600 -quality 90 "%~dp1result_%~n1.jpg" >nul 2>nul
+echo Result   : "%~dp1result_%~n1.jpg"
 exit /b
