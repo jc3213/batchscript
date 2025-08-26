@@ -1,5 +1,5 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 title ImageMagick Utilities
 :menu
 cls
@@ -168,6 +168,6 @@ echo.
 echo.
 echo Processing : "%~dpnx1"
 if not defined format set format=%~x1
-%~dp0magick\magick.exe" "%~1" %params% "%folder%%~n1%output%%format%" >nul 2>nul
+"%~dp0magick\magick.exe" "%~1" %params% "%folder%%~n1%output%%format%" >nul 2>nul
 echo Result     : "%folder%%~n1%output%%format%"
 exit /b
