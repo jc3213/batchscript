@@ -1,5 +1,5 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 set start=%time%
 for %%a in (%*) do (call :main %%a)
 set finish=%time%
