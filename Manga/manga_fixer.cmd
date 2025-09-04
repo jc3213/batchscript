@@ -38,7 +38,7 @@ exit /b
 echo.
 echo.
 echo Fixing   : "%~dpnx1"
-"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_%~n1.png" -m models-se -s 2 -n 1 -t 32 -x >nul 2>nul
-"%~dp0magick\magick.exe" "%~dp1temp_%~n1.png" -resize x1600 -quality 90 "%~dp1result_%~n1.jpg" >nul 2>nul
+"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_cugan_%~n1.png" -m models-se -s 2 -n 1 -t 32 -x >nul 2>nul
+"%~dp0magick\magick.exe" "%~dp1temp_cugan_%~n1.png" -resize x1600 -quality 90 "%~dp1result_%~n1.jpg" >nul 2>nul
 echo Result   : "%~dp1result_%~n1.jpg"
 exit /b
