@@ -11,11 +11,11 @@ echo 4. Resize images
 echo 5. Darken images
 echo ===================================================================
 set /p op=^> 
-if [%op%] equ [1] goto :crop
-if [%op%] equ [2] goto :shave
-if [%op%] equ [3] goto :format
-if [%op%] equ [4] goto :resize
-if [%op%] equ [5] goto :darken
+if "%op%" equ "1" goto :crop
+if "%op%" equ "2" goto :shave
+if "%op%" equ "3" goto :format
+if "%op%" equ "4" goto :resize
+if "%op%" equ "5" goto :darken
 goto :menu
 :crop
 call :area
@@ -70,9 +70,9 @@ echo 3. avif
 echo 4. webp
 echo ===================================================================
 set /p fm=^> 
-if [%fm%] equ [1] set format=.jpg
-if [%fm%] equ [3] set format=.avif
-if [%fm%] equ [4] set format=.webp
+if "%fm%" equ "1" set format=.jpg
+if "%fm%" equ "3" set format=.avif
+if "%fm%" equ "4" set format=.webp
 if not defined format set format=.png
 :quality
 echo.
@@ -111,21 +111,23 @@ if not defined size goto :size
 echo.
 echo.
 echo ===================================================================
-echo 1. Lanczos Filter [Default]
-echo 2. Lanczos2 Filter
-echo 3. Hermite Filter
-echo 4. Mitchell Filter *Recommended for enlarging*
-echo 5. Hamming Filter
-echo 6. Catrom Filter
-echo 7. Gaussian Filter
+echo 1. Lanczos   [Default]
+echo 2. Lanczos2
+echo 3. Cubic     [↓Downscaling]
+echo 4. Hermite
+echo 5. Mitchell  [↑Upscaling]
+echo 6. Hamming
+echo 7. Catrom
+echo 8. Gaussian
 echo ===================================================================
 set /p ft=^> 
-if [%ft%] equ [2] set filter=Lanczos2
-if [%ft%] equ [3] set filter=Hermite
-if [%ft%] equ [4] set filter=Mitchell
-if [%ft%] equ [5] set filter=Hamming
-if [%ft%] equ [6] set filter=Catrom
-if [%ft%] equ [7] set filter=Gaussian
+if "%ft%" equ "2" set filter=Lanczos2
+if "%ft%" equ "3" set filter=Cubic
+if "%ft%" equ "4" set filter=Hermite
+if "%ft%" equ "5" set filter=Mitchell
+if "%ft%" equ "6" set filter=Hamming
+if "%ft%" equ "7" set filter=Catrom
+if "%ft%" equ "8" set filter=Gaussian
 if defined ft set filter=Lanczos
 set params=%params% -filter %filter%
 exit /b
