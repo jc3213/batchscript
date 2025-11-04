@@ -29,19 +29,23 @@ exit
 :fixer
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
+set folder=%~dp1result
 goto :result
 exit /b
 :folder
+set folder=%~dp1result_%~nx1
+md "%folder%" 2>nul
 for %%a in (*) do (call :result "%%~a")
 exit /b
 :result
 echo.
 echo.
 echo Fixing   : "%~dpnx1"
-"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_cugan_%~n1.png" -m models-se -s 2 -n 1 -t 32 -x >nul 2>nul
-"%~dp0upscaler\realesrgan-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_esrgan_%~n1.png" -n realesr-animevideov3 -s 2 -t 32 -x >nul 2>nul
-"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%~dp1temp_waifu2x_%~n1.png" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
-"%~dp0magick\magick.exe" "%~dp1temp_esrgan_%~n1.png" "%~dp1temp_cugan_%~n1.png" "%~dp1temp_waifu2x_%~n1.png" "%~dp1temp_esrgan_%~n1.png" -evaluate-sequence mean "%~dp1temp_eval_%~n1.png"
-"%~dp0magick\magick.exe" "%~dp1temp_eval_%~n1.png" -resize x1600 -quality 90 "%~dp1result_%~n1.jpg" >nul 2>nul
-echo Result   : "%~dp1result_%~n1.jpg"
+"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%folder%\temp_cugan_%~n1.png" -m models-se -s 2 -n 1 -t 32 -x >nul 2>nul
+"%~dp0upscaler\realesrgan-ncnn-vulkan.exe" -i "%~1" -o "%folder%\temp_esrgan_%~n1.png" -n realesr-animevideov3 -s 2 -t 32 -x >nul 2>nul
+"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%folder%\temp_waifu2x_%~n1.png" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
+"%~dp0magick\magick.exe" "%folder%\temp_esrgan_%~n1.png" "%folder%\temp_cugan_%~n1.png" "%folder%\temp_waifu2x_%~n1.png" "%folder%\temp_esrgan_%~n1.png" -evaluate-sequence mean "%folder%\temp_eval_%~n1.png" >nul 2>nul
+"%~dp0magick\magick.exe" "%folder%\temp_eval_%~n1.png" -resize x1600 -quality 90 "%folder%\result_%~n1.jpg" >nul 2>nul
+del /f /s /q "%folder%\temp_cugan_%~n1.png" "%folder%\temp_esrgan_%~n1.png" "%folder%\temp_waifu2x_%~n1.png" "%folder%\temp_eval_%~n1.png" >nul 2>nul
+echo Output   : "%folder%\result_%~n1.jpg"
 exit /b
