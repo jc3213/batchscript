@@ -15,7 +15,7 @@ set drive=%label:~0,1%:
 if not exist "%drive%" cls && goto :admin
 call :registry "Desktop" "Desktop"
 call :registry "Personal" "Documents"
-call :registry "Downloads" Downloads"
+call :registry "Downloads" "Downloads"
 call :registry "My Music" "Music"
 call :registry "My Pictures" "Pictures"
 call :registry "My Video" "Videos"
