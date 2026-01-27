@@ -51,5 +51,5 @@ set eval=%folder%\temp_eval_%~n1.png
 "%~dp0magick\magick.exe" "%waifu%" "%cugan%" "%esrgan%" "%waifu%" -evaluate-sequence mean "%eval%"
 ::"%~dp0magick\magick.exe" "%eval%" -resize x2046 -quality 90 "%folder%\result_%~n1.jpg" >nul 2>nul
 ::del /f /q "%waifu%" "%cugan%" "%esrgan%" >nul 2>nul
-echo Output   : "%folder%\result_%~n1.jpg"
+echo Output   : "%eval%"
 exit /b
