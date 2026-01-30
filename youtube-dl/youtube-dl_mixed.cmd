@@ -1,16 +1,16 @@
 @echo off
+setlocal
 title Youtube-DL Utilities
-set youtube=%~dp0bin\youtube-dl.exe
-set aria2c=%~dp0bin\aria2c.exe
+pushd %~dp0youtube-dl
 :format
-echo Video Quality
+echo Select video quality
 echo ============================================================
 echo 1. Best Video and Audio [Default]
 echo 2. Best Video and Audio @1080p
 echo 3. Best Video and Audio @2K
 echo 4. Best Video and Audio @4K
-echo 5. Only Audio
-echo 6. Only Audio (AAC)
+echo 5. Only Audio [Best]
+echo 6. Only Audio [AAC]
 echo ============================================================
 set /p format=^> 
 if [%format%] equ [2] goto :best1080
@@ -43,21 +43,21 @@ set quality=Best Audio Only (AAC)
 :folder
 echo.
 echo.
-echo Download Directory
+echo Set download directory
 echo ============================================================
-echo Default: %~dp0Youtube-DL
-echo Press [Cancel] to use default directory
+echo %~dp0Videos [Default]
+echo Press [Cancel] will use default directory
 echo ============================================================
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;$dialog.ShowDialog() | Out-Null;$dialog.SelectedPath"') do (set folder=%%a)
-if not defined folder set folder=%~dp0Youtube-DL
+if not defined folder set folder=%~dp0Videos
 set params=%params% --output "%folder%\%%(title)s.%%(ext)s"
 :history
 echo.
 echo.
-echo Download History
+echo Save download history?
 echo ============================================================
-echo Sample: %~dp0Youtube-DL.txt
-echo Press [Cancel] not to save history
+echo Sample: %~dp0Archive.txt
+echo Press [Cancel] will not save history
 echo ============================================================
 for /f "delims=" %%a in ('powershell -Command "Add-Type -AssemblyName System.windows.forms; $dialog = New-Object System.Windows.Forms.OpenFileDialog; $dialog.Filter = 'Text files (*.txt)|*.txt'; $dialog.ShowDialog() | Out-Null; $dialog.FileName"') do (set history=%%a)
 if not defined history goto :proxy
@@ -65,10 +65,10 @@ set params=%params% --download-archive "%history%"
 :proxy
 echo.
 echo.
-echo Proxy Server
+echo Set proxy server
 echo ============================================================
 echo Sample: 127.0.0.1:1080
-echo Keep [EMPTY] if not using proxy server
+echo Keep EMPTY if you don't use a proxy server
 echo ============================================================
 set /p proxy=^> 
 if not defined proxy goto :subtitle
@@ -77,7 +77,7 @@ ping "%test%" >nul 2>nul && set params=%params% --proxy "%proxy%" || set proxy=
 :subtitle
 echo.
 echo.
-echo Download Subtitles?
+echo Download all subtitles?
 echo ============================================================
 echo 1. Yes
 echo 0. No [Default]
@@ -87,8 +87,9 @@ if [%sb%] neq [1] goto :aria2c
 set subtitle=all
 set params=%params% --all-subs
 :aria2c
-if not exist "%aria2c%" goto :dialog
-set params=%params% --external-downloader "aria2c" --external-downloader-args "--continue=true --split=10 --min-split-size=1M --max-connection-per-server=10 --disk-cache 128M"
+if not exist "aria2c.exe" goto :dialog
+set aria2c=go
+set params=%params% --external-downloader "aria2c" --external-downloader-args "aria2c:-c -s 10 -k 1M -x 10 --disk-cache 256M"
 :dialog
 cls
 echo ============================================================
@@ -97,7 +98,7 @@ echo Download Directory  :   %folder%
 if defined history echo Download History    :   %history%
 if defined proxy echo Proxy Server        :   %proxy%
 if defined subtitle echo Download Subtitles  :   all
-if exist "%aria2c%" echo External Downloader :   aria2c
+if defined aria2c echo External Downloader :   aria2c
 echo ============================================================
 echo.
 set /p uri=Video URI: 
@@ -105,7 +106,8 @@ if not defined uri goto :dialog
 :download
 echo.
 echo Youtube-DL is downloading: "%uri%"
-"%youtube%" %params% "%uri%"
+yt-dlp.exe --js-runtimes quickjs --extractor-args "youtube:player_client=default,-android_vr" --paths temp:"%temp%" %params% "%uri%"
+echo Youtube-DL has completed:  "%uri%"
 set uri=
 timeout /t 5
 goto :dialog
