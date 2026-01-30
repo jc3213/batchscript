@@ -96,7 +96,7 @@ function Youtube-Download {
 
     while ($true) {
         $uri = Read-Host "`n`nVideo Uri"
-        Start-Process -FilePath "$appx" -ArgumentList "$script:params $uri" -Wait -NoNewWindow
+        Start-Process -FilePath "$appx" -ArgumentList "$script:params --js-runtimes quickjs --extractor-args 'youtube:player_client=default,-android_vr' --paths temp:$env:TEMP $uri" -Wait -NoNewWindow
     }
 }
 
