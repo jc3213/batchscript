@@ -1,7 +1,7 @@
 @echo off
+setlocal
 title Youtube-DL Utilities
-set youtube=%~dp0bin\youtube-dl.exe
-set aria2c=%~dp0bin\aria2c.exe
+pushd %~dp0youtube-dl
 :format
 echo Select video quality
 echo ============================================================
@@ -9,8 +9,8 @@ echo 1. Best Video and Audio [Default]
 echo 2. Best Video and Audio @1080p
 echo 3. Best Video and Audio @2K
 echo 4. Best Video and Audio @4K
-echo 5. Only Audio
-echo 6. Only Audio (AAC)
+echo 5. Only Audio [Best]
+echo 6. Only Audio [AAC]
 echo ============================================================
 set /p format=^> 
 if [%format%] equ [2] goto :best1080
@@ -45,17 +45,17 @@ echo.
 echo.
 echo Set download directory
 echo ============================================================
-echo %~dp0Youtube-DL [Default]
+echo %~dp0Videos [Default]
 echo ============================================================
 set /p folder=^> 
-if not defined folder set folder=%~dp0Youtube-DL
+if not defined folder set folder=%~dp0Videos
 set params=%params% --output "%folder%\%%(title)s.%%(ext)s"
 :history
 echo.
 echo.
 echo Save download history?
 echo ============================================================
-echo Sample: %~dp0Youtube-DL.txt
+echo Sample: %~dp0Videos.txt
 echo Keep EMPTY to avoid saving download history
 echo ============================================================
 set /p history=^> 
@@ -86,8 +86,9 @@ if [%sb%] neq [1] goto :aria2c
 set subtitle=all
 set params=%params% --all-subs
 :aria2c
-if not exist "%aria2c%" goto :dialog
-set params=%params% --external-downloader "aria2c" --external-downloader-args "--continue=true --split=10 --min-split-size=1M --max-connection-per-server=10 --disk-cache 128M"
+if not exist "aria2c.exe" goto :dialog
+set aria2c=go
+set params=%params% --external-downloader "aria2c" --external-downloader-args "aria2c:-c -s 10 -k 1M -x 10 --disk-cache 256M"
 :dialog
 cls
 echo ============================================================
@@ -96,7 +97,7 @@ echo Download Directory  :   %folder%
 if defined history echo Download History    :   %history%
 if defined proxy echo Proxy Server        :   %proxy%
 if defined subtitle echo Download Subtitles  :   all
-if exist "%aria2c%" echo External Downloader :   aria2c
+if defined aria2c echo External Downloader :   aria2c
 echo ============================================================
 echo.
 set /p uri=Video URI: 
@@ -104,7 +105,7 @@ if not defined uri goto :dialog
 :download
 echo.
 echo Youtube-DL is downloading: "%uri%"
-"%youtube%" %params% "%uri%"
+yt-dlp.exe --js-runtimes quickjs --extractor-args "youtube:player_client=default,-android_vr" --paths temp:"%temp%" %params% "%uri%"
 echo Youtube-DL has completed:  "%uri%"
 set uri=
 timeout /t 5
