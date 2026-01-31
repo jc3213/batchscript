@@ -105,9 +105,8 @@ set /p uri=Video URI:
 if not defined uri goto :dialog
 :download
 echo.
-echo Youtube-DL is downloading: "%uri%"
+echo.
 yt-dlp.exe --js-runtimes quickjs --extractor-args "youtube:player_client=default,-android_vr" --paths temp:"%temp%" %params% "%uri%"
-echo Youtube-DL has completed:  "%uri%"
 set uri=
 timeout /t 5
 goto :dialog
