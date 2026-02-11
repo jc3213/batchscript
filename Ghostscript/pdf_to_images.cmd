@@ -20,6 +20,7 @@ if %millsec% lss 10 set millsec=0%millsec%
 echo Elapsed  : %hour%:%minute%:%second%.%millsec%
 endlocal
 pause
+exit
 :pdf2img
 if "%~x1" neq ".pdf" exit /b
 echo Start converting "%~1" to images
@@ -36,4 +37,3 @@ if not exist "%folder%" mkdir "%folder%"
 echo.
 echo.
 echo Conversion of "%~1" has been completed!
-exit /b
