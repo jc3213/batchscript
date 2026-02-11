@@ -60,5 +60,5 @@ if not exist "%waifu2x%" goto :waifu2x
 echo Output   : "%waifu2x%"
 "%~dp0magick\magick.exe" "%waifu2x%" "%cugan%" "%esrgan%" "%waifu2x%" -evaluate-sequence mean "%result%"
 echo Output   : "%result%"
-::del /f /q "%waifu%" "%cugan%" "%esrgan%" >nul 2>nul
+del /f /q "%waifu%" "%cugan%" "%esrgan%" >nul 2>nul
 exit /b
