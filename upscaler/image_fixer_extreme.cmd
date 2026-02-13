@@ -3,7 +3,7 @@ setlocal
 title Manga Denoise and Super Sampling (Extreme)
 echo ===================================================================
 echo Use Real-CUGAN, Real-ESRGAN, and Waifu2x to Denoise and Upscale
-echo Use ImageMagick for Evaluation and Super Sampling
+echo Use ImageMagick for Evaluation all Upscaled Images as Output
 echo ===================================================================
 set start=%time%
 for %%a in (%*) do (call :fixer "%%~a")
