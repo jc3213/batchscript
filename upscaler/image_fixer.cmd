@@ -29,22 +29,21 @@ exit
 :fixer
 cd /d %1 2>nul
 if %errorlevel% equ 0 goto :folder
-set folder=%~dp1Output
-md "%folder%" 2>nul
-call :output %1
+set folder=%~dp1result
+goto :result
 exit /b
 :folder
 set folder=%~dp1result_%~nx1
 md "%folder%" 2>nul
-for %%a in (*) do (call :output "%%~a")
+for %%a in (*) do (call :result "%%~a")
 exit /b
-:output
+:result
 echo.
 echo.
 echo Fixing   : "%~dpnx1"
-set waifu2x=%folder%\temp_waifu2x_%~n1.png
+set waifu=%folder%\temp_waifu2x_%~n1.png
 :waifu2x
-"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%waifu2x%" -m models-cunet -s 2 -n 1 -t 32 -x
+"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%waifu%" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
 if not exist "%waifu2x%" goto :waifu2x
-echo Output   : "%waifu2x%"
+echo Output   : "%waifu%"
 exit /b
