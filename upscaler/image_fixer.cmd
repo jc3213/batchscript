@@ -40,9 +40,9 @@ exit /b
 echo.
 echo.
 echo Fixing   : "%~dpnx1"
-set waifu=%folder%\temp_waifu2x_%~n1.png
+set result=%folder%\result_%~n1.png
 :waifu2x
-"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%waifu%" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
-if not exist "%waifu2x%" goto :waifu2x
-echo Output   : "%waifu%"
+"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%result%" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
+if not exist "%result%" goto :waifu2x
+echo Output   : "%result%"
 exit /b
