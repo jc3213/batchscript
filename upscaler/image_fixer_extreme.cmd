@@ -47,18 +47,18 @@ set esrgan=%folder%\temp_esrgan_%~n1.png
 set waifu2x=%folder%\temp_waifu2x_%~n1.png
 set result=%folder%\result_%~n1.png
 :cugan
-"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%cugan%" -m models-se -s 2 -n 1 -t 32 -x
+"%~dp0upscaler\realcugan-ncnn-vulkan.exe" -i "%~1" -o "%cugan%" -m models-se -s 2 -n 1 -t 32 -x >nul 2>nul
 if not exist "%cugan%" goto :cugan
 echo Output   : "%cugan%"
 :esrgan
-"%~dp0upscaler\realesrgan-ncnn-vulkan.exe" -i "%~1" -o "%esrgan%" -n realesr-animevideov3 -s 2 -t 32 -x
+"%~dp0upscaler\realesrgan-ncnn-vulkan.exe" -i "%~1" -o "%esrgan%" -n realesr-animevideov3 -s 2 -t 32 -x >nul 2>nul
 if not exist "%esrgan%" goto :esrgan
 echo Output   : "%esrgan%"
 :waifu2x
-"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%waifu2x%" -m models-cunet -s 2 -n 1 -t 32 -x
+"%~dp0upscaler\waifu2x-ncnn-vulkan.exe" -i "%~1" -o "%waifu2x%" -m models-cunet -s 2 -n 1 -t 32 -x >nul 2>nul
 if not exist "%waifu2x%" goto :waifu2x
 echo Output   : "%waifu2x%"
-"%~dp0magick\magick.exe" "%waifu2x%" "%cugan%" "%esrgan%" "%waifu2x%" -evaluate-sequence mean "%result%"
+"%~dp0magick\magick.exe" "%waifu2x%" "%cugan%" "%esrgan%" "%waifu2x%" -evaluate-sequence mean "%result%" >nul 2>nul
 echo Output   : "%result%"
-del /f /q "%waifu%" "%cugan%" "%esrgan%" >nul 2>nul
+del /f /q "%waifu2x%" "%cugan%" "%esrgan%" >nul 2>nul
 exit /b
