@@ -6,16 +6,18 @@ cls
 echo ===================================================================
 echo 1. Crop with area
 echo 2. Cut off border
-echo 3. Convert format
-echo 4. Resize images
-echo 5. Darken images
+echo 3. Resize images
+echo 4. Convert format
+echo 5. Rotate images
+echo 6. Darken images
 echo ===================================================================
 set /p op=^> 
 if "%op%" equ "1" goto :crop
 if "%op%" equ "2" goto :shave
-if "%op%" equ "3" goto :format
-if "%op%" equ "4" goto :resize
-if "%op%" equ "5" goto :darken
+if "%op%" equ "3" goto :resize
+if "%op%" equ "4" goto :format
+if "%op%" equ "5" goto :rotate
+if "%op%" equ "6" goto :darken
 goto :menu
 :crop
 call :area
@@ -27,16 +29,21 @@ call :area
 set name=[cut][%area%]
 set params=-shave %area%
 goto :main
-:format
-call :convert
-set name=[convert][%format:~1%][%qu%]
-set params=-quality %qu%
-goto :main
 :resize
 call :size
 call :convert
 set name=[resize][%size%][%qu%]
 set params=-resize %size% -quality %qu%
+goto :main
+:format
+call :convert
+set name=[convert][%format:~1%][%qu%]
+set params=-quality %qu%
+goto :main
+:rotate
+call :rotate
+set name=[rotate][%ro%]
+set params=-rotate %ro%
 goto :main
 :darken
 call :level
@@ -92,7 +99,17 @@ echo Set minimum color level: 0-100
 echo Default: 30
 echo ===================================================================
 set /p lv=^> 
-echo %lv%| findstr /r "^[1-9]$ ^[1-9][0-9]$ ^100$" >nul || set lv=30
+echo %lv%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^100$" >nul || set lv=30
+exit /b
+:rotate
+echo.
+echo.
+echo ===================================================================
+echo Set degrees of rotation: 0-359
+echo Default: 0
+echo ===================================================================
+set /p ro=^> 
+echo %ro%| findstr /r "^[0-9]$ ^[1-9][0-9]$ ^[1-2][0-9][0-9]$ ^3[0-5][0-9]$" >nul || set ro=0
 exit /b
 :size
 echo.
@@ -113,9 +130,9 @@ echo.
 echo ===================================================================
 echo 1. Lanczos   [Default]
 echo 2. Lanczos2
-echo 3. Cubic     [↓Downscaling]
+echo 3. Cubic     [Downscaling]
 echo 4. Hermite
-echo 5. Mitchell  [↑Upscaling]
+echo 5. Mitchell  [Upscaling]
 echo 6. Hamming
 echo 7. Catrom
 echo 8. Gaussian
@@ -151,7 +168,7 @@ echo.
 echo.
 echo Elapsed    : %hour%:%minute%:%second%.%millsec%
 endlocal
-pause
+timeout /t 30
 exit
 :imagick
 set folder=%~dp1
