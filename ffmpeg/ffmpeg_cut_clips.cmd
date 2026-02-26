@@ -1,7 +1,6 @@
 @echo off
-pushd %~dp0bin
-set file=%1
-if defined file goto :main
+pushd %~dp0ffmpeg
+if exist "%~1" goto :main
 timeout /t 5
 exit
 :main
@@ -25,8 +24,8 @@ set fn0=%name%
 set ts0=%stamp%
 set out1=%~dp1%~n1_%fn0%_1%~x1
 set out2=%~dp1%~n1_%fn0%_2%~x1
-ffmpeg.exe -loglevel error -i "%1" -to %ss% -c copy %out1%
-ffmpeg.exe -loglevel error -i "%1" -ss %ss% -c copy %out2%
+ffmpeg.exe -loglevel error -i "%~1" -to %ss% -c copy %out1%
+ffmpeg.exe -loglevel error -i "%~1" -ss %ss% -c copy %out2%
 echo.
 echo.
 echo [Mode]        Split video by timestamp
@@ -42,7 +41,7 @@ call :name %to%
 set fn2=%name%
 set ts2=%stamp%
 set out0=%~dp1%~n1_%fn1%-%fn2%%~x1
-ffmpeg.exe -loglevel error -i "%1" -ss %ss% -to %to% -c copy %out0%
+ffmpeg.exe -loglevel error -i "%~1" -ss %ss% -to %to% -c copy %out0%
 echo.
 echo.
 echo [Mode]        Cut video during periods
@@ -60,7 +59,7 @@ echo.
 echo.
 goto :main
 :name
-for /f "tokens=1,2 delims=." %%a in ('echo %1') do (
+for /f "tokens=1,2 delims=." %%a in ('echo %~1') do (
     set full=%%a
     set msec=%%b
 )
