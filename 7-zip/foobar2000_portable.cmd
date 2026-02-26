@@ -1,6 +1,6 @@
 @echo off
 pushd %~dp0
-for /f "tokens=3" %%a in ('curl https://www.foobar2000.org/download --silent ^| findstr "foobar2000-arm64ec_v"') do (set ver=%%a)
+for /f "tokens=4,5,6 delims=._ " %%a in ('curl https://www.foobar2000.org/windows --silent ^| findstr "foobar2000-arm64ec"') do (set ver=%%a.%%b.%%c)
 for /f "tokens=2*" %%a in ('reg query "HKLM\Software\7-Zip" /v "Path"') do (set zip=%%b7z.exe)
 if %processor_architecture% equ AMD64 set arc=-x64
 if %processor_architecture% equ ARM64 set arc=-arm64ec
