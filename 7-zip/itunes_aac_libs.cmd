@@ -33,4 +33,4 @@ del /f /q "%itunes%" "%setup%"
 rd /s /q "%unpack%"
 echo iTunes Library :  "%output%
 start "" "%output%
-timeout /t 5
+timeout /t 30
