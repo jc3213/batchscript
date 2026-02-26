@@ -24,4 +24,4 @@ echo.
 echo "gswin64c.exe" and "gsdll64.dll" has been extracted
 :complete
 endlocal
-timeout /t 5
+timeout /t 30
