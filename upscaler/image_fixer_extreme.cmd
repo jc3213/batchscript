@@ -24,7 +24,7 @@ echo.
 echo.
 echo Elapsed  : %hour%:%minute%:%second%.%millsec%
 endlocal
-pause
+timeout /t 30
 exit
 :fixer
 cd /d %1 2>nul
