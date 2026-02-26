@@ -24,7 +24,7 @@ set /p act=^>
 echo.
 if %act% gtr %index% goto :input
 for /f "tokens=*" %%a in ('dir /b /a-d') do (call :rename "%%~a")
-timeout /t 5
+timeout /t 30
 exit
 :length
 set count=!count:~1!
@@ -32,7 +32,7 @@ set /a length+=1
 if not defined count exit /b
 goto :length
 :rename
-for /f "tokens=%act% delims=-_.() " %%a in ("%~1") do (call :exec "%~1" "%%a")
+for /f "tokens=%act% delims=-_.() " %%a in (%1) do (call :exec "%~1" "%%a")
 exit /b
 :exec
 set name=00000%~2

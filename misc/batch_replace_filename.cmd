@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 cd /d "%~1" || exit
 set /p rem=Remove string: 
 for %%a in (*) do (call :rename "%%~a")
-timeout /t 5
+timeout /t 30
 exit
 :rename
 set name=%~n1
