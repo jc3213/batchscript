@@ -17,7 +17,7 @@ if %second% lss 10 set second=0%second%
 if %millsec% lss 10 set millsec=0%millsec%
 echo Elapsed  : %hour%:%minute%:%second%.%millsec%
 endlocal
-pause
+timeout /t 30
 exit
 :main
 set name=%~n1
