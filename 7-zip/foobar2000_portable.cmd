@@ -14,4 +14,4 @@ type nul > %app%\portable_mode_enabled
 del /s /q %exe% >nul 2>&1
 echo Foobar2000  : "%app%"
 start "" "%app%"
-timeout /t 5
+timeout /t 30
