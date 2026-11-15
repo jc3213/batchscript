@@ -17,11 +17,9 @@ for /r %%i in (*_video.*) do (
         echo.
         ffmpeg.exe -i "!vid_path!" -i "!aud_path!" -c:v copy -c:a copy "!output!" -y
         echo.
-        echo.
         echo Output: !output!
     )
 
-    echo.
     echo.
     echo.
     echo.
